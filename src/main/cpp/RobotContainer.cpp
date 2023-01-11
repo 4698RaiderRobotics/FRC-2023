@@ -16,6 +16,8 @@ RobotContainer::RobotContainer() : m_autonomousCommand(&m_subsystem) {
 
 void RobotContainer::ConfigureButtonBindings() {
   // Configure your button bindings here
+  frc2::JoystickButton( &m_driverController, frc::XboxController::Button::kA)
+  .WhileTrue( TargetLimelight( &m_drive, &m_limelight ).ToPtr() );
 }
 
 frc2::Command* RobotContainer::GetAutonomousCommand() {

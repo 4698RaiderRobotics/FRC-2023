@@ -8,10 +8,11 @@
 #include "networktables/NetworkTableEntry.h"
 #include "networktables/NetworkTableValue.h"
 #include <span>
+#include <frc2/command/SubsystemBase.h>
 
 #include "Constants.h"
 
-class Limelight {
+class Limelight : public frc2::SubsystemBase {
     public:
         frc::ChassisSpeeds TargetRobot( void );
 

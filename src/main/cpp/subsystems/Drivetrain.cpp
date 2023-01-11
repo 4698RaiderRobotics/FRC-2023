@@ -1,5 +1,4 @@
 #include "subsystems/Drivetrain.h"
-#include <iostream>
 
 // Drives with joystick inputs
 // This takes -1 to 1 inputs
@@ -15,10 +14,6 @@ void Drivetrain::Drive( double xSpeed, double ySpeed, double omegaSpeed, bool fi
 }
 
 void Drivetrain::Drive( frc::ChassisSpeeds speeds, bool fieldRelative ) {
-
-    std::cout << speeds.vx.value() << " ";
-    std::cout << speeds.vy.value() << " ";
-    std::cout << speeds.omega.value() << "\n";
     // An array of SwerveModuleStates computed from the ChassisSpeeds object
     auto states = m_kinematics.ToSwerveModuleStates( fieldRelative ? speeds.FromFieldRelativeSpeeds( 
                     speeds.vx, speeds.vy, speeds.omega, frc::Rotation2d{ units::degree_t{ m_gyro.GetYaw() } } ) :
