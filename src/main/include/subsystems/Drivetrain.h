@@ -8,14 +8,13 @@
 #include <units/time.h>
 #include <frc2/command/SubsystemBase.h>
 
-using namespace units::literals;
-
 #include "SwerveModule.h"
 #include "SwerveModuleDisplay.h"
 
 
 class Drivetrain : public frc2::SubsystemBase {
   public:
+    Drivetrain( void );
 
     void Drive( double xSpeed, double ySpeed, double omegaSpeed, bool fieldRelative = true );
 
@@ -23,9 +22,11 @@ class Drivetrain : public frc2::SubsystemBase {
 
     void DriveTrajectory( frc::Trajectory::State trajectoryState );
 
-    frc::Pose2d GetPose( void );
-
     void ResetGyro( int angle );
+
+    double GetPitch( void );
+
+    frc::Pose2d GetPose( void );
 
     void ResetPose( frc::Translation2d position );
 
@@ -42,8 +43,6 @@ class Drivetrain : public frc2::SubsystemBase {
                             deviceIDs::kBackRightAbsoluteEncoderID, physical::kBackRightAbsoluteOffset };
 
     frc::Trajectory m_trajectory;
-
-    
 
     ctre::phoenix::sensors::PigeonIMU m_gyro{deviceIDs::kPigeonIMUID};
 

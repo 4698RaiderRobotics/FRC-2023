@@ -1,18 +1,4 @@
-// Copyright (c) FIRST and other WPILib contributors.
-// Open Source Software; you can modify and/or share it under the terms of
-// the WPILib BSD license file in the root directory of this project.
-
 #pragma once
-
-/**
- * The Constants header provides a convenient place for teams to hold robot-wide
- * numerical or boolean constants.  This should not be used for any other
- * purpose.
- *
- * It is generally a good idea to place constants into subsystem- or
- * command-specific namespaces within this header, which can then be used where
- * they are needed.
- */
 
 #include <numbers>
 #include <units/angle.h>
@@ -25,10 +11,13 @@ namespace pidf {
     constexpr double kTurnP = 0.005;
     constexpr double kTurnI = 0;
     constexpr double kTurnD = 0;
+
     constexpr double kDriveP = 0.00006;
     constexpr double kDriveI = 0.000001;
     constexpr double kDriveD = 0;
     constexpr double kDriveFF = 0.000015;
+
+    constexpr double kGyroBalanceP = 0.1;
 }
 
 namespace deviceIDs {
@@ -66,11 +55,14 @@ namespace physical {
     // The number of meters traveled per rotation of the drive motor
     // wheel circumference / gear ratio
     constexpr meters_per_rev_t kDriveMetersPerRotation = std::numbers::pi * 4_in / (kDriveGearRatio *  1_tr );
+
     // Gear ratio of the turn motors. 12.8 rotations of the turning motor is one rotation of the swerve module.
     constexpr double kTurnGearRatio = 12.8;
 
     // The width of the drive base from the center of one module to another adjacent one.
     constexpr units::meter_t kDriveBaseWidth = 22.5_in;
+
+    constexpr units::meter_t kDriveBaseLength = 22.5_in;
 
     constexpr double kFrontLeftAbsoluteOffset = 0.1244;
     constexpr double kFrontRightAbsoluteOffset = 0.3902;

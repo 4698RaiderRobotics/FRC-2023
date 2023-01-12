@@ -1,10 +1,9 @@
 
 #include "commands/TargetLimelight.h"
 
-TargetLimelight::TargetLimelight(Drivetrain* drive, Limelight* limelight)
+TargetLimelight::TargetLimelight( Drivetrain* drive, Limelight* limelight )
     : m_drive{ drive }, m_limelight{ limelight } {
-        AddRequirements( { drive } );
-        AddRequirements( { limelight } );
+        AddRequirements( { drive, limelight } );
     }
 
 void TargetLimelight::Execute() {

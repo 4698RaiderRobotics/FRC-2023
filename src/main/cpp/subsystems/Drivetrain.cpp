@@ -1,5 +1,9 @@
 #include "subsystems/Drivetrain.h"
 
+Drivetrain::Drivetrain() {
+    ResetGyro( 0 );
+}
+
 // Drives with joystick inputs
 // This takes -1 to 1 inputs
 void Drivetrain::Drive( double xSpeed, double ySpeed, double omegaSpeed, bool fieldRelative ) {
@@ -48,14 +52,20 @@ void Drivetrain::DriveTrajectory( frc::Trajectory::State trajectoryState ) {
     Drive( adjustedSpeeds );
 }
 
-// Returns the pose2d of the robot
-frc::Pose2d Drivetrain::GetPose( void ) {
-    return m_odometry.GetPose();
-}
-
 // Resets the gyro to an angle
 void Drivetrain::ResetGyro( int angle ) {
     m_gyro.SetYaw( angle );
+}
+
+// Returns the current pitch in degrees
+// Front down on the robot is positive pitch
+double Drivetrain::GetPitch( void ) {
+    return m_gyro.GetPitch();
+}
+
+// Returns the pose2d of the robot
+frc::Pose2d Drivetrain::GetPose( void ) {
+    return m_odometry.GetPose();
 }
 
 // Resets the pose to a position
