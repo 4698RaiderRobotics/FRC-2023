@@ -14,6 +14,7 @@ frc::ChassisSpeeds Limelight::TargetRobot( void ) {
     return t_speeds;
 }
 
+
 // Sets the limelight to new targeting settings
 void Limelight::SetPipeline( int pipelineId ) {
     table->PutNumber( "pipeline", pipelineId );

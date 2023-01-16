@@ -1,6 +1,7 @@
 #pragma once
 
 #include <frc/kinematics/ChassisSpeeds.h>
+#include <frc/geometry/Pose3d.h>
 
 #include "frc/smartdashboard/SmartDashboard.h"
 #include "networktables/NetworkTable.h"
@@ -9,13 +10,11 @@
 #include "networktables/NetworkTableValue.h"
 #include <span>
 #include <frc2/command/SubsystemBase.h>
-
 #include "Constants.h"
 
 class Limelight : public frc2::SubsystemBase {
     public:
         frc::ChassisSpeeds TargetRobot( void );
-
         void SetPipeline( int pipelineId );
 
     private:
