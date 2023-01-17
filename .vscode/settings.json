@@ -89,6 +89,6 @@
     "variant": "cpp"
   },
   "editor.fontFamily": "'Fira Code', 'Courier New', monospace",
-  "workbench.colorTheme": "Solarized Light",
+  "workbench.colorTheme": "Default Dark+",
   "editor.fontLigatures": true 
 }
