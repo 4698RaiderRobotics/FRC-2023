@@ -162,3 +162,5 @@ bin/
 *-window.json
 #clangd
 .cache/
+
+*.swp
