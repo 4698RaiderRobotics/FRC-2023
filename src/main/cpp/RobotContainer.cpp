@@ -20,11 +20,16 @@ void RobotContainer::ConfigureButtonBindings() {
 
   // Press the A button to follow a limelight target
   frc2::JoystickButton( &m_driverController, frc::XboxController::Button::kA)
-  .WhileTrue( TargetLimelight( &m_drive, &m_limelight ).ToPtr() );
+  .WhileTrue( TargetLimelight( &m_drive, &m_limelight, false).ToPtr() );
 
   // Press the B button to balance the robot on the Charge Station
   frc2::JoystickButton( &m_driverController, frc::XboxController::Button::kB )
   .WhileTrue( GyroBalance( &m_drive ).ToPtr() );
+  // Bress the X button to do Limelight targeting w/ Apriltags
+  frc2::JoystickButton( &m_driverController, frc::XboxController::Button::kX )
+  .WhileTrue( TargetLimelight( &m_drive, &m_limelight, true).ToPtr());
+  frc2::JoystickButton( &m_driverController, frc::XboxController::Button::kY )
+  .WhileTrue( UpdateOdom( &m_drive, &m_limelight).ToPtr());
 }
 
 frc2::Command* RobotContainer::GetAutonomousCommand() {

@@ -5,6 +5,9 @@
 #include <frc/controller/HolonomicDriveController.h>
 #include <ctre/phoenix/sensors/PigeonIMU.h>
 #include <frc/geometry/Pose2d.h>
+#include <frc/smartdashboard/SmartDashboard.h>
+#include <frc/smartdashboard/Field2d.h>
+
 #include <units/time.h>
 #include <frc2/command/SubsystemBase.h>
 
@@ -27,10 +30,11 @@ class Drivetrain : public frc2::SubsystemBase {
     double GetPitch( void );
 
     frc::Pose2d GetPose( void );
-
-    void ResetPose( frc::Translation2d position );
+    void ResetPose( frc::Pose2d position );
 
   private:
+    frc::Field2d m_field;
+
     SwerveStatusDisplay swerve_display{ "Swerve Drive", "Robot Wheel Status" };
 
     SwerveModule m_frontLeft{ deviceIDs::kFrontLeftTurnMotorID, deviceIDs::kFrontLeftDriveMotorID, 
@@ -43,7 +47,6 @@ class Drivetrain : public frc2::SubsystemBase {
                             deviceIDs::kBackRightAbsoluteEncoderID, physical::kBackRightAbsoluteOffset };
 
     frc::Trajectory m_trajectory;
-
     ctre::phoenix::sensors::PigeonIMU m_gyro{deviceIDs::kPigeonIMUID};
 
     frc::Translation2d m_frontLeftLocation{ +( physical::kDriveBaseWidth / 2 ), +( physical::kDriveBaseWidth / 2 ) };
