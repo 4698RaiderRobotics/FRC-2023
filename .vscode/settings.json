@@ -87,5 +87,8 @@
     "typeindex": "cpp",
     "typeinfo": "cpp",
     "variant": "cpp"
-  }
+  },
+  "editor.fontFamily": "'Fira Code', 'Courier New', monospace",
+  "workbench.colorTheme": "Solarized Light",
+  "editor.fontLigatures": true 
 }
