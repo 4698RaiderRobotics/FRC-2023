@@ -14,6 +14,8 @@ class TargetLimelight
 
   void Execute() override;
 
+  bool IsFinished() override;
+
  private:
   Drivetrain* m_drive;
   Limelight* m_limelight;
