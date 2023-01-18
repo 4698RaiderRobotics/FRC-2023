@@ -17,7 +17,7 @@ namespace pidf {
     constexpr double kDriveD = 0;
     constexpr double kDriveFF = 0.000015;
 
-    constexpr double kGyroBalanceP = 0.1;
+    constexpr double kGyroBalanceP = 0.015;
 }
 
 namespace deviceIDs {
