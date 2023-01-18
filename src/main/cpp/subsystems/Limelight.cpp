@@ -12,13 +12,17 @@ frc::ChassisSpeeds Limelight::TargetRobot_AT( void ) {
     
     camtran = table->GetNumberArray("camtran", defaultValue);
     // Back up if the target is high
-    t_speeds.vx = -targetY * kxP * physical::kMaxDriveSpeed;
+    t_speeds.vx = -targetY * pidf::kXTargetP * physical::kMaxDriveSpeed;
     // Go left if off center to the right
-    t_speeds.vy = camtran[0]*  kyP * physical::kMaxDriveSpeed;
+    t_speeds.vy = camtran[0]*  pidf::kYTargetP * physical::kMaxDriveSpeed;
     // Rotate if the target isn't centered
-    t_speeds.omega = -targetX * kOmegaP * physical::kMaxTurnSpeed;
+    t_speeds.omega = -targetX * pidf::kOmegaTargetP * physical::kMaxTurnSpeed;
     
     return t_speeds;
+}
+
+bool Limelight::Targeted( void ) {
+    return ( targetX && targetY && camtran[0] ) < 0.1;
 }
 
 // Sets the limelight to new targeting settings

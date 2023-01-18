@@ -21,6 +21,8 @@ class Limelight : public frc2::SubsystemBase {
         
         frc::ChassisSpeeds TargetRobot_AT ( void );
 
+        bool Targeted( void );
+
         frc::Pose2d VisionPose( void );
         
         void SetPipeline( int pipelineId );
@@ -34,15 +36,9 @@ class Limelight : public frc2::SubsystemBase {
         // The Y position of the target in the limelight's view
         double targetY;
 
-        // P value for omega targeting
-        double kOmegaP = 0.01;
-        // P value for x targeting
-        double kxP = 0.05;
-        // P value for y targeting
-        double kyP = 0.5;
         std::vector<double> camtran{};
         std::vector<double> botpose{};
-        std::vector<double> defaultValue{};
+        std::span<double> defaultValue{};
         units::degree_t rZ;
         frc::ChassisSpeeds t_speeds;
 };

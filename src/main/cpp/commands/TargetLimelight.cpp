@@ -10,3 +10,7 @@ void TargetLimelight::Execute() {
     m_drive->Drive( m_limelight->TargetRobot_AT() );
     
 }
+
+bool TargetLimelight::IsFinished() {
+    return m_limelight->Targeted();
+}
