@@ -36,12 +36,6 @@ void Drivetrain::Drive( frc::ChassisSpeeds speeds, bool fieldRelative ) {
     // Displays the SwerveModules current position
     swerve_display.SetState( opStates );
 
-    // Updates the odometry of the robot given the SwerveModules' states
-    m_odometry.Update( frc::Rotation2d{ units::degree_t{ m_gyro.GetYaw() } },
-    {
-        m_frontLeft.GetPosition(), m_frontRight.GetPosition(), 
-        m_backLeft.GetPosition(), m_backRight.GetPosition() 
-    });
 }
 
 // Drives a path given a trajectory state
@@ -50,6 +44,15 @@ void Drivetrain::DriveTrajectory( frc::Trajectory::State trajectoryState ) {
     auto adjustedSpeeds = m_controller.Calculate( m_odometry.GetPose(), trajectoryState, trajectoryState.pose.Rotation().Degrees() );
 
     Drive( adjustedSpeeds );
+}
+
+void Drivetrain::Periodic( ) {
+    // Updates the odometry of the robot given the SwerveModules' states
+    m_odometry.Update( frc::Rotation2d{ units::degree_t{ m_gyro.GetYaw() } },
+    {
+        m_frontLeft.GetPosition(), m_frontRight.GetPosition(), 
+        m_backLeft.GetPosition(), m_backRight.GetPosition() 
+    });
 }
 
 // Resets the gyro to an angle
