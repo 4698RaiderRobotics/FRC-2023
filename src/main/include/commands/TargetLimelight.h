@@ -10,12 +10,12 @@ class TargetLimelight
     : public frc2::CommandHelper<frc2::CommandBase, TargetLimelight> {
  public:
   
-  explicit TargetLimelight( Drivetrain* drive, Limelight* limelight, bool AprilTag );
+  explicit TargetLimelight( Drivetrain* drive, Limelight* limelight );
 
   void Execute() override;
 
  private:
   Drivetrain* m_drive;
   Limelight* m_limelight;
-  bool apriltag;
+  
 };

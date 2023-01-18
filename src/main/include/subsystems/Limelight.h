@@ -18,9 +18,11 @@
 class Limelight : public frc2::SubsystemBase {
     public:
         Limelight(void);
-        frc::ChassisSpeeds TargetRobot( void );
+        
         frc::ChassisSpeeds TargetRobot_AT ( void );
+
         frc::Pose2d VisionPose( void );
+        
         void SetPipeline( int pipelineId );
 
     private:
@@ -36,9 +38,11 @@ class Limelight : public frc2::SubsystemBase {
         double kOmegaP = 0.01;
         // P value for x targeting
         double kxP = 0.05;
+        // P value for y targeting
         double kyP = 0.5;
         std::vector<double> camtran{};
         std::vector<double> botpose{};
+        std::vector<double> defaultValue{};
         units::degree_t rZ;
         frc::ChassisSpeeds t_speeds;
 };
