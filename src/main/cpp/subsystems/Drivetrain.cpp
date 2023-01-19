@@ -1,13 +1,13 @@
 #include "subsystems/Drivetrain.h"
-
 Drivetrain::Drivetrain() {
     ResetGyro( 0 );
+    //frc::SmartDashboard::PutData("Field", &m_field);
+
 }
 
 // Drives with joystick inputs
 // This takes -1 to 1 inputs
 void Drivetrain::Drive( double xSpeed, double ySpeed, double omegaSpeed, bool fieldRelative ) {
-
     auto x = xSpeed * physical::kMaxDriveSpeed;
     auto y = ySpeed * physical::kMaxDriveSpeed;
     auto omega = omegaSpeed * physical::kMaxTurnSpeed;
@@ -18,6 +18,7 @@ void Drivetrain::Drive( double xSpeed, double ySpeed, double omegaSpeed, bool fi
 }
 
 void Drivetrain::Drive( frc::ChassisSpeeds speeds, bool fieldRelative ) {
+    //m_field.SetRobotPose(m_odometry.GetPose());
     // An array of SwerveModuleStates computed from the ChassisSpeeds object
     auto states = m_kinematics.ToSwerveModuleStates( fieldRelative ? speeds.FromFieldRelativeSpeeds( 
                     speeds.vx, speeds.vy, speeds.omega, frc::Rotation2d{ units::degree_t{ m_gyro.GetYaw() } } ) :
@@ -36,6 +37,19 @@ void Drivetrain::Drive( frc::ChassisSpeeds speeds, bool fieldRelative ) {
     // Displays the SwerveModules current position
     swerve_display.SetState( opStates );
 
+    // Updates the odometry of the robot given the SwerveModules' states
+    m_odometry.Update( frc::Rotation2d{ units::degree_t{ m_gyro.GetYaw() } },
+    {
+        m_frontLeft.GetPosition(), m_frontRight.GetPosition(), 
+        m_backLeft.GetPosition(), m_backRight.GetPosition() 
+    });
+    frc::Pose2d o_Pose = m_odometry.GetPose();
+    double oo_Pose[]  {
+        o_Pose.X().value(),
+        o_Pose.Y().value(),
+        o_Pose.Rotation().Degrees().value()
+    };
+    frc::SmartDashboard::PutNumberArray("oo_Pose", oo_Pose);
 }
 
 // Drives a path given a trajectory state
@@ -72,13 +86,14 @@ frc::Pose2d Drivetrain::GetPose( void ) {
 }
 
 // Resets the pose to a position
-void Drivetrain::ResetPose( frc::Translation2d position ) {
-    m_odometry.ResetPosition(
-        frc::Rotation2d{   units::degree_t{ m_gyro.GetYaw() }  },
-        {
-            m_frontLeft.GetPosition(), m_frontRight.GetPosition(), 
-            m_backLeft.GetPosition(), m_backRight.GetPosition() 
-        },
-        frc::Pose2d{ position.X(), position.Y(), units::degree_t{ m_gyro.GetYaw() } }
-    );
+void Drivetrain::ResetPose( frc::Pose2d position ) {
+        m_gyro.SetYaw(position.Rotation().Degrees().value());
+        m_odometry.ResetPosition(
+            frc::Rotation2d{units::degree_t{ m_gyro.GetYaw() }  },
+            {
+                m_frontLeft.GetPosition(), m_frontRight.GetPosition(), 
+                m_backLeft.GetPosition(), m_backRight.GetPosition() 
+            },
+            position
+        );
 }

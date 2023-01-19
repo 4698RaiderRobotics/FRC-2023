@@ -5,7 +5,9 @@
       "/Shuffleboard/Swerve Drive/Robot Wheel Status/Front Left Wheel Steering Angle": "Gyro",
       "/Shuffleboard/Swerve Drive/Robot Wheel Status/Front Right Wheel Steering Angle": "Gyro",
       "/Shuffleboard/Swerve Drive/Robot Wheel Status/Rear Left Wheel Steering Angle": "Gyro",
-      "/Shuffleboard/Swerve Drive/Robot Wheel Status/Rear Right Wheel Steering Angle": "Gyro"
+      "/Shuffleboard/Swerve Drive/Robot Wheel Status/Rear Right Wheel Steering Angle": "Gyro",
+      "/SmartDashboard/Field": "Field2d",
+      "/SmartDashboard/Field2": "Field2d"
     }
   }
 }

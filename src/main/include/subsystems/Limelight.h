@@ -1,35 +1,47 @@
 #pragma once
 
 #include <frc/kinematics/ChassisSpeeds.h>
+#include <vector>
+#include <frc/smartdashboard/Field2d.h>
 
 #include "frc/smartdashboard/SmartDashboard.h"
+#include "frc/shuffleboard/Shuffleboard.h"
 #include "networktables/NetworkTable.h"
 #include "networktables/NetworkTableInstance.h"
 #include "networktables/NetworkTableEntry.h"
 #include "networktables/NetworkTableValue.h"
 #include <span>
+#include <frc/geometry/Pose2d.h>
+#include <frc/geometry/Rotation2d.h>
 #include <frc2/command/SubsystemBase.h>
-
 #include "Constants.h"
 
 class Limelight : public frc2::SubsystemBase {
     public:
-        frc::ChassisSpeeds TargetRobot( void );
+        Limelight(void);
+        
+        frc::ChassisSpeeds TargetRobot_AT ( void );
 
+        bool Targeted( void );
+
+        bool VisionPose( frc::Pose2d* );
+        
         void SetPipeline( int pipelineId );
 
     private:
         std::shared_ptr<nt::NetworkTable> table = nt::NetworkTableInstance::GetDefault().GetTable("limelight");
+        frc::Field2d m_field;
 
         // The X position of the target in the limelight's view
         double targetX;
         // The Y position of the target in the limelight's view
         double targetY;
 
-        // P value for omega targeting
-        double kOmegaP = 0.02;
-        // P value for x targeting
-        double kxP = 0.05;
-
+        std::vector<double> camtran{};
+        std::vector<double> botpose{};
+        std::span<double> defaultValue{};
+        double ll_Pose[3];
+        frc::Pose2d l_Pose;
+        units::degree_t rZ;
         frc::ChassisSpeeds t_speeds;
 };

@@ -9,6 +9,7 @@
 #include "commands/ExampleCommand.h"
 #include "commands/TargetLimelight.h"
 #include "commands/GyroBalance.h"
+#include "commands/UpdateOdom.h"
 #include "subsystems/ExampleSubsystem.h"
 #include "subsystems/Drivetrain.h"
 #include "subsystems/Limelight.h"

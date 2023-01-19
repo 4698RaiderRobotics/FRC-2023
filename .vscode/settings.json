@@ -86,9 +86,12 @@
     "cinttypes": "cpp",
     "typeindex": "cpp",
     "typeinfo": "cpp",
-    "variant": "cpp"
+    "variant": "cpp",
+    "*.inc": "cpp",
+    "xmemory": "cpp",
+    "xstddef": "cpp",
+    "xtr1common": "cpp",
+    "xutility": "cpp"
   },
-  "editor.fontFamily": "'Fira Code', 'Courier New', monospace",
-  "workbench.colorTheme": "Default Dark+",
-  "editor.fontLigatures": true 
+  "editor.fontLigatures": true,
 }
