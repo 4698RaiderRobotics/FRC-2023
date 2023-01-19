@@ -5,6 +5,7 @@
 #include <frc/smartdashboard/Field2d.h>
 
 #include "frc/smartdashboard/SmartDashboard.h"
+#include "frc/shuffleboard/Shuffleboard.h"
 #include "networktables/NetworkTable.h"
 #include "networktables/NetworkTableInstance.h"
 #include "networktables/NetworkTableEntry.h"
@@ -39,6 +40,8 @@ class Limelight : public frc2::SubsystemBase {
         std::vector<double> camtran{};
         std::vector<double> botpose{};
         std::span<double> defaultValue{};
+        double ll_Pose[3];
+        frc::Pose2d l_Pose;
         units::degree_t rZ;
         frc::ChassisSpeeds t_speeds;
 };

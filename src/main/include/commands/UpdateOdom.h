@@ -9,7 +9,7 @@
 class UpdateOdom : public frc2::CommandHelper<frc2::CommandBase, UpdateOdom> {
     public:    
         explicit UpdateOdom( Drivetrain *drive, Limelight *limelight);
-        void Start();
+        void Execute();
     private:
         Drivetrain *m_drive;
         Limelight *m_limelight;
