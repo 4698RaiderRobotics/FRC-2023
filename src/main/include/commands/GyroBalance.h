@@ -15,8 +15,6 @@ class GyroBalance : public frc2::CommandHelper<frc2::CommandBase, GyroBalance> {
 
     void Execute() override;
 
-    bool IsFinished() override;
-
   private:
     Drivetrain* m_drive;
 
@@ -25,5 +23,5 @@ class GyroBalance : public frc2::CommandHelper<frc2::CommandBase, GyroBalance> {
     double error;
     double currentAngle;
   
-    double drivePower;
+    units::meters_per_second_t drivePower;
 };

@@ -10,14 +10,10 @@ void GyroBalance::Execute( ) {
 
     error = 0 - currentAngle;
 
-    drivePower = -fmin( pidf::kGyroBalanceP * error, 1);
+    drivePower = units::meters_per_second_t{pidf::kGyroBalanceP * error};
 
-    speeds.vx = drivePower * 1_mps;
+    speeds.vx = drivePower;
 
     m_drive->Drive( speeds, false );
     
-}
-
-bool GyroBalance::IsFinished( ) {
-    return abs( error ) < 1;
 }
