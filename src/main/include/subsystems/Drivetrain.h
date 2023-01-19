@@ -25,6 +25,8 @@ class Drivetrain : public frc2::SubsystemBase {
 
     void DriveTrajectory( frc::Trajectory::State trajectoryState );
 
+    void Periodic() override;
+
     void ResetGyro( int angle );
 
     double GetPitch( void );
