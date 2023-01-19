@@ -33,20 +33,23 @@ void Limelight::SetPipeline(int pipelineId)
     table->PutNumber("pipeline", pipelineId);
 }
 
-frc::Pose2d Limelight::VisionPose(void)
+bool Limelight::VisionPose(frc::Pose2d* AP_Pose)
 {
 
     // Translation(x, y, z)Rotation(pitch, yaw, roll)
     botpose = table->GetNumberArray("botpose", defaultValue);
+    if (botpose.size() == 0) {
+        return false;
+    }
     rZ = units::degree_t{botpose[5]};
-    l_Pose = frc::Pose2d(units::meter_t{botpose[0] + 8.26}, units::meter_t{botpose[1] + 4.01}, frc::Rotation2d{rZ});
+    *AP_Pose = frc::Pose2d(units::meter_t{botpose[0] + 8.26}, units::meter_t{botpose[1] + 4.01}, frc::Rotation2d{rZ});
     // m_field.SetRobotPose(p_Pose);
     // convert between limelight's center origin co-ordinats to wpi's bottom left corner origin
     //  field is 8.02m x 16.54m
     double ll_Pose[]{
-        (l_Pose.X().value()),
-        (l_Pose.Y().value()),
-        l_Pose.Rotation().Degrees().value()};
+        (AP_Pose->X().value()),
+        (AP_Pose->Y().value()),
+        AP_Pose->Rotation().Degrees().value()};
     frc::SmartDashboard::PutNumberArray("l_Pose", ll_Pose);
-    return l_Pose;
+    return true;
 }

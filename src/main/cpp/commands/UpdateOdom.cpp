@@ -5,5 +5,8 @@ UpdateOdom::UpdateOdom(Drivetrain *drive, Limelight *limelight)
     AddRequirements( { drive, limelight } );
 }
 void UpdateOdom::Execute() {
-    m_drive->ResetPose( m_limelight->VisionPose() );
+    frc::Pose2d AP_Pose;
+    if (m_limelight->VisionPose(&AP_Pose)) {
+        m_drive->ResetPose(AP_Pose);
+    }
 }

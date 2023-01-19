@@ -24,7 +24,7 @@ class Limelight : public frc2::SubsystemBase {
 
         bool Targeted( void );
 
-        frc::Pose2d VisionPose( void );
+        bool VisionPose( frc::Pose2d* );
         
         void SetPipeline( int pipelineId );
 

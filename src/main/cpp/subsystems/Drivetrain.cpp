@@ -79,13 +79,13 @@ frc::Pose2d Drivetrain::GetPose( void ) {
 
 // Resets the pose to a position
 void Drivetrain::ResetPose( frc::Pose2d position ) {
-    m_gyro.SetYaw(position.Rotation().Degrees().value());
-    m_odometry.ResetPosition(
-        frc::Rotation2d{units::degree_t{ m_gyro.GetYaw() }  },
-        {
-            m_frontLeft.GetPosition(), m_frontRight.GetPosition(), 
-            m_backLeft.GetPosition(), m_backRight.GetPosition() 
-        },
-        position
-    );
+        m_gyro.SetYaw(position.Rotation().Degrees().value());
+        m_odometry.ResetPosition(
+            frc::Rotation2d{units::degree_t{ m_gyro.GetYaw() }  },
+            {
+                m_frontLeft.GetPosition(), m_frontRight.GetPosition(), 
+                m_backLeft.GetPosition(), m_backRight.GetPosition() 
+            },
+            position
+        );
 }
