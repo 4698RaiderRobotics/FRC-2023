@@ -18,6 +18,10 @@ namespace pidf {
     constexpr double kDriveFF = 0.000015;
 
     constexpr double kGyroBalanceP = 0.005;
+
+    constexpr double kXTargetP = 0.05;
+    constexpr double kYTargetP = 0.5;
+    constexpr double kOmegaTargetP = 0.01;
 }
 
 namespace deviceIDs {
