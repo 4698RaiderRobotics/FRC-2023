@@ -17,7 +17,7 @@ namespace pidf {
     constexpr double kDriveD = 0;
     constexpr double kDriveFF = 0.000015;
 
-    constexpr double kGyroBalanceP = 0.1;
+    constexpr double kGyroBalanceP = 0.005;
 
     constexpr double kXTargetP = 0.05;
     constexpr double kYTargetP = 0.5;

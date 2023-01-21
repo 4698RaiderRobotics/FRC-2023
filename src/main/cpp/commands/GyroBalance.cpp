@@ -6,7 +6,18 @@ GyroBalance::GyroBalance( Drivetrain* drive )
 }
 
 void GyroBalance::Execute( ) {
-    speeds.vx = -m_drive->GetPitch( ) * pidf::kGyroBalanceP * physical::kMaxDriveSpeed;
+    currentAngle = m_drive->GetPitch();
+
+    error = 0 - currentAngle;
+
+    drivePower = units::meters_per_second_t{pidf::kGyroBalanceP * error};
+
+    speeds.vx = drivePower;
 
     m_drive->Drive( speeds, false );
+    
+}
+
+bool GyroBalance::IsFinished() {
+    return abs( error ) < 10;
 }

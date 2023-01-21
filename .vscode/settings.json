@@ -93,5 +93,5 @@
     "xtr1common": "cpp",
     "xutility": "cpp"
   },
-  "editor.fontLigatures": true,
+  "editor.fontLigatures": true
 }
