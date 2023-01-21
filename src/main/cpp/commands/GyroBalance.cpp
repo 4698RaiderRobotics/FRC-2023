@@ -17,3 +17,7 @@ void GyroBalance::Execute( ) {
     m_drive->Drive( speeds, false );
     
 }
+
+bool GyroBalance::IsFinished() {
+    return abs( error ) < 10;
+}

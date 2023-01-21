@@ -15,6 +15,8 @@ class GyroBalance : public frc2::CommandHelper<frc2::CommandBase, GyroBalance> {
 
     void Execute() override;
 
+    bool IsFinished() override;
+
   private:
     Drivetrain* m_drive;
 
