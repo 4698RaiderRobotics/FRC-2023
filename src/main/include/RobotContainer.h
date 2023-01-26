@@ -5,12 +5,13 @@
 #include <frc2/command/RepeatCommand.h>
 #include <frc2/command/button/JoystickButton.h>
 #include <frc/XboxController.h>
+#include <frc/trajectory/Trajectory.h>
 
-#include "commands/ExampleCommand.h"
+
 #include "commands/TargetLimelight.h"
 #include "commands/GyroBalance.h"
 #include "commands/UpdateOdom.h"
-#include "subsystems/ExampleSubsystem.h"
+#include "commands/autonomous/SimpleAuto.h"
 #include "subsystems/Drivetrain.h"
 #include "subsystems/Limelight.h"
 #include "ControllerAxis.h"
@@ -33,8 +34,8 @@ class RobotContainer {
   Drivetrain m_drive;
   Limelight m_limelight;
 
-  ExampleSubsystem m_subsystem;
-  ExampleCommand m_autonomousCommand;
+  SimpleAuto m_simpleAuto{ &m_drive };
+  
 
   frc::XboxController m_driverController{ 0 };
   ControllerAxis vx_axis{ m_driverController, frc::XboxController::Axis::kLeftY, true };

@@ -10,8 +10,7 @@ void Robot::RobotInit() {
  * This function is called every 20 ms, no matter the mode. Use
  * this for items like diagnostics that you want to run during disabled,
  * autonomous, teleoperated and test.
- *
- * <p> This runs after the mode specific periodic functions, but before
+ccc * <p> This runs after the mode specific periodic functions, but before
  * LiveWindow and SmartDashboard integrated updating.
  */
 void Robot::RobotPeriodic() {
