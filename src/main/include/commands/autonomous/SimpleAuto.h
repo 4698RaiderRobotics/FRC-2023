@@ -2,6 +2,7 @@
 
 #include <frc2/command/CommandHelper.h>
 #include <frc2/command/SequentialCommandGroup.h>
+#include <frc/trajectory/TrajectoryGenerator.h>
 #include <frc/Filesystem.h>
 #include <frc/trajectory/TrajectoryUtil.h>
 #include <wpi/fs.h>
@@ -16,4 +17,5 @@ class SimpleAuto : public frc2::CommandHelper<frc2::SequentialCommandGroup, Simp
 
     private:
         frc::Trajectory m_simpleAutoTrajectory;
+        frc::Trajectory m_trajectory;
 };
