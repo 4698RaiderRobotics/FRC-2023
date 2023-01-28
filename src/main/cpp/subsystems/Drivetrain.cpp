@@ -1,7 +1,7 @@
 #include "subsystems/Drivetrain.h"
 Drivetrain::Drivetrain() {
     ResetGyro( 0 );
-    //frc::SmartDashboard::PutData("Field", &m_field);
+    frc::SmartDashboard::PutData("Field", &m_field);
 
 }
 
@@ -43,13 +43,6 @@ void Drivetrain::Drive( frc::ChassisSpeeds speeds, bool fieldRelative ) {
         m_frontLeft.GetPosition(), m_frontRight.GetPosition(), 
         m_backLeft.GetPosition(), m_backRight.GetPosition() 
     });
-    frc::Pose2d o_Pose = m_odometry.GetPose();
-    double oo_Pose[]  {
-        o_Pose.X().value(),
-        o_Pose.Y().value(),
-        o_Pose.Rotation().Degrees().value()
-    };
-    frc::SmartDashboard::PutNumberArray("oo_Pose", oo_Pose);
 }
 
 // Drives a path given a trajectory state
@@ -61,6 +54,7 @@ void Drivetrain::DriveTrajectory( frc::Trajectory::State trajectoryState ) {
 }
 
 void Drivetrain::Periodic( ) {
+    m_field.SetRobotPose(m_odometry.GetPose());
     // Updates the odometry of the robot given the SwerveModules' states
     m_odometry.Update( frc::Rotation2d{ units::degree_t{ m_gyro.GetYaw() } },
     {

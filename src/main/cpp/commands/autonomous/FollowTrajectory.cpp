@@ -12,6 +12,7 @@ FollowTrajectory::FollowTrajectory( Drivetrain *drive, frc::Trajectory trajector
 
 // Called when the command is initially scheduled.
 void FollowTrajectory::Initialize() {
+  m_drive->m_field.GetObject("trajectory")->SetTrajectory(m_trajectory);
   m_autoElapsed = 0_ms;
   frc::Trajectory::State start = m_trajectory.Sample( 0_s );
   m_drive->ResetPose( start.pose );

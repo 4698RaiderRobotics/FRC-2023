@@ -6,6 +6,7 @@
 #include <frc/Filesystem.h>
 #include <frc/trajectory/TrajectoryUtil.h>
 #include <wpi/fs.h>
+#include <frc/smartdashboard/SmartDashboard.h>
 
 #include "subsystems/Drivetrain.h"
 #include "commands/autonomous/FollowTrajectory.h"
