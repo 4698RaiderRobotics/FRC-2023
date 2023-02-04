@@ -5,8 +5,9 @@
 #include <units/velocity.h>
 #include <units/acceleration.h>
 #include <units/angular_velocity.h>
+#include <units/time.h>
+#include <units/base.h>
 #include <units/length.h>
-
 namespace pidf {
     constexpr double kTurnP = 0.005;
     constexpr double kTurnI = 0;
@@ -16,9 +17,11 @@ namespace pidf {
     constexpr double kDriveI = 0.000001;
     constexpr double kDriveD = 0;
     constexpr double kDriveFF = 0.000015;
-
+    // To-Do FIX THIS:
+    //using meter_per_sec_rad = units::compound_unit<units::length::meter, units::inverse<units::compound_unit<units::time::second, units::angle::radian>>>;
+    //using meter_per_sec_rad_t = units::unit_t<meter_per_sec_rad>;
+    //constexpr meter_per_sec_rad_t kGyroBalanceP = 0.005;
     constexpr double kGyroBalanceP = 0.005;
-
     constexpr double kXTargetP = 0.05;
     constexpr double kYTargetP = 0.5;
     constexpr double kOmegaTargetP = 0.01;

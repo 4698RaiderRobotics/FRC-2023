@@ -29,8 +29,8 @@ class Drivetrain : public frc2::SubsystemBase {
 
     void ResetGyro( int angle );
 
-    double GetPitch( void );
-
+    units::angle::degree_t GetPitch( void );
+    units::angle::degree_t GetRoll ( void );
     frc::Pose2d GetPose( void );
     void ResetPose( frc::Pose2d position );
     frc::Field2d m_field;

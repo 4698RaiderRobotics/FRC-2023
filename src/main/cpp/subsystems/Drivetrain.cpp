@@ -70,10 +70,13 @@ void Drivetrain::ResetGyro( int angle ) {
 
 // Returns the current pitch in degrees
 // Front down on the robot is positive pitch
-double Drivetrain::GetPitch( void ) {
-    return m_gyro.GetPitch();
+units::angle::degree_t Drivetrain::GetPitch( void ) {
+    return units::degree_t{m_gyro.GetPitch()};
 }
 
+units::angle::degree_t Drivetrain::GetRoll( void ) {
+    return units::degree_t{m_gyro.GetYaw()};
+}
 // Returns the pose2d of the robot
 frc::Pose2d Drivetrain::GetPose( void ) {
     return m_odometry.GetPose();
