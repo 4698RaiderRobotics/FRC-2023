@@ -25,21 +25,25 @@ namespace pidf {
 }
 
 namespace deviceIDs {
-    const int kFrontLeftTurnMotorID = 1;
-    const int kFrontLeftDriveMotorID = 2;
-    const int kBackLeftTurnMotorID = 3;
-    const int kBackLeftDriveMotorID = 4;
-    const int kBackRightTurnMotorID = 5;
-    const int kBackRightDriveMotorID = 6;
-    const int kFrontRightTurnMotorID = 7;
-    const int kFrontRightDriveMotorID = 8;
+    constexpr int kFrontLeftTurnMotorID = 1;
+    constexpr int kFrontLeftDriveMotorID = 2;
+    constexpr int kBackLeftTurnMotorID = 3;
+    constexpr int kBackLeftDriveMotorID = 4;
+    constexpr int kBackRightTurnMotorID = 5;
+    constexpr int kBackRightDriveMotorID = 6;
+    constexpr int kFrontRightTurnMotorID = 7;
+    constexpr int kFrontRightDriveMotorID = 8;
 
-    const int kFrontLeftAbsoluteEncoderID = 0;
-    const int kFrontRightAbsoluteEncoderID = 1;
-    const int kBackLeftAbsoluteEncoderID = 2;
-    const int kBackRightAbsoluteEncoderID = 3;
+    constexpr int kLeftArmMotorID = 9;
+    constexpr int kRightArmMotorID = 10;
 
-    const int kPigeonIMUID = 50;
+    constexpr int kFrontLeftAbsoluteEncoderID = 0;
+    constexpr int kFrontRightAbsoluteEncoderID = 1;
+    constexpr int kBackLeftAbsoluteEncoderID = 2;
+    constexpr int kBackRightAbsoluteEncoderID = 3;
+    constexpr int kArmEncoderID = 4;
+
+    constexpr int kPigeonIMUID = 50;
 }
 
 namespace physical {
