@@ -39,7 +39,7 @@ namespace deviceIDs {
     const int kBackLeftAbsoluteEncoderID = 2;
     const int kBackRightAbsoluteEncoderID = 3;
 
-    const int kPigeonIMUID = 50;
+    const int kPigeonIMUID = 13;
 }
 
 namespace physical {
