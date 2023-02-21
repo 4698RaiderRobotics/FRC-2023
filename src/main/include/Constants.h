@@ -34,8 +34,8 @@ namespace deviceIDs {
     constexpr int kFrontRightTurnMotorID = 7;
     constexpr int kFrontRightDriveMotorID = 8;
 
-    constexpr int kLeftArmMotorID = 9;
-    constexpr int kRightArmMotorID = 10;
+    constexpr int kLeftArmMotorID = 11;
+    constexpr int kRightArmMotorID = 12;
 
     constexpr int kFrontLeftAbsoluteEncoderID = 0;
     constexpr int kFrontRightAbsoluteEncoderID = 1;
@@ -43,7 +43,7 @@ namespace deviceIDs {
     constexpr int kBackRightAbsoluteEncoderID = 3;
     constexpr int kArmEncoderID = 4;
 
-    constexpr int kPigeonIMUID = 50;
+    constexpr int kPigeonIMUID = 13;
 }
 
 namespace physical {
