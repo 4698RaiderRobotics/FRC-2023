@@ -34,7 +34,7 @@ class ArmSubsystem : public frc2::SubsystemBase {
   ctre::phoenix::motorcontrol::can::TalonFX m_left{ deviceIDs::kLeftArmMotorID };
   ctre::phoenix::motorcontrol::can::TalonFX m_right{ deviceIDs::kRightArmMotorID }; 
 
-  AbsoluteEncoder m_enc{ deviceIDs::kArmEncoderID };
+  AbsoluteEncoder m_enc{ deviceIDs::kArmEncoderID, physical::kArmAbsoluteOffset };
 
   double kS = 0.0;
   double kG = 0.0;

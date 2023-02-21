@@ -76,4 +76,6 @@ namespace physical {
     constexpr double kFrontRightAbsoluteOffset = 0.3902;
     constexpr double kBackLeftAbsoluteOffset = 0.7013; 
     constexpr double kBackRightAbsoluteOffset = 0.5409;
+
+    constexpr double kArmAbsoluteOffset = 0.0;
 }
