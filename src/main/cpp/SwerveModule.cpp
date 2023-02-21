@@ -15,10 +15,10 @@ SwerveModule::SwerveModule( const int turnMotorChannel,
                            : m_driveMotor{ driveMotorChannel, rev::CANSparkMaxLowLevel::MotorType::kBrushless },
                            m_turnMotor{ turnMotorChannel, rev::CANSparkMaxLowLevel::MotorType::kBrushless },
                            m_turnEncoder{ absoluteEncoderChannel, absoluteEncoderOffset } {
-    m_drivePIDController.SetP(pidf::kDriveP);
-    m_drivePIDController.SetI(pidf::kDriveI);
-    m_drivePIDController.SetD(pidf::kDriveD);
-    m_drivePIDController.SetFF(pidf::kDriveFF);
+    m_drivePIDController.SetP(kDriveP);
+    m_drivePIDController.SetI(kDriveI);
+    m_drivePIDController.SetD(kDriveD);
+    m_drivePIDController.SetFF(kDriveFF);
     m_turnPIDController.EnableContinuousInput(-180, 180);
 }
 
@@ -52,7 +52,32 @@ frc::SwerveModulePosition SwerveModule::GetPosition( void ) {
     return { units::turn_t{ m_driveEncoder.GetPosition() } * physical::kDriveMetersPerRotation, m_turnEncoder.GetPosition()  };
 }
 
+void SwerveModule::ModuleSetup() {
+    frc::SmartDashboard::PutNumber( "kTurnP", kTurnP );
+    frc::SmartDashboard::PutNumber( "kTurnD", kTurnD );
+    frc::SmartDashboard::PutNumber( "kDriveP", kDriveP );
+    frc::SmartDashboard::PutNumber( "kDriveD", kDriveD );
+    frc::SmartDashboard::PutNumber( "kDriveFF", kDriveFF );
+}
+
 void SwerveModule::ModuleTest( std::string name) {
-    fmt::print( "Encoder {}, {}\n", name, m_turnEncoder.GetRawPosition() );
+    double tP = frc::SmartDashboard::GetNumber( "kTurnP", 0.0 );
+    double tD = frc::SmartDashboard::GetNumber( "kTurnD", 0.0 );
+    double dP = frc::SmartDashboard::GetNumber( "kDriveP", 0.0 );
+    double dD = frc::SmartDashboard::GetNumber( "kDriveD", 0.0 );
+    double dFF = frc::SmartDashboard::GetNumber( "kDriveFF", 0.0 );
+
+    if(tP != kTurnP) { kTurnP = tP; }
+    if(tD != kTurnD) { kTurnD = tD; }
+    if(dP != kDriveP) { kDriveP = dP; }
+    if(dD != kDriveD) { kDriveD = dD; }
+    if(dFF != kDriveFF) { kDriveFF = dFF; }
+
+    m_drivePIDController.SetP( kDriveP );
+    m_drivePIDController.SetD( kDriveD );
+    m_drivePIDController.SetFF( kDriveFF );
+    m_turnPIDController.SetP( kTurnP );   
+    m_turnPIDController.SetD( kTurnD );
+
     frc::SmartDashboard::PutNumber( name, m_turnEncoder.GetRawPosition() );
 }

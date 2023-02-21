@@ -8,6 +8,7 @@
 #include <units/length.h>
 
 namespace pidf {
+    /*
     constexpr double kTurnP = 0.005;
     constexpr double kTurnI = 0;
     constexpr double kTurnD = 0;
@@ -16,6 +17,7 @@ namespace pidf {
     constexpr double kDriveI = 0.000001;
     constexpr double kDriveD = 0;
     constexpr double kDriveFF = 0.000015;
+    */
 
     constexpr double kGyroBalanceP = 0.005;
 

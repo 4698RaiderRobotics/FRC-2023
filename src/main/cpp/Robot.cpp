@@ -57,6 +57,10 @@ void Robot::TeleopInit() {
  */
 void Robot::TeleopPeriodic() {}
 
+void Robot::TestInit() {
+  m_container.TestSetup();
+}
+
 /**
  * This function is called periodically during test mode.
  */

@@ -32,6 +32,10 @@ frc2::Command* RobotContainer::GetAutonomousCommand() {
   return &m_autonomousCommand;
 }
 
+void RobotContainer::TestSetup() {
+  m_drive.DrivetrainSetup();
+}
+
 void RobotContainer::TestMode() {
   m_drive.DrivetrainTest();
 }
