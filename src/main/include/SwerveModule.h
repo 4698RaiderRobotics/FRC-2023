@@ -27,6 +27,8 @@ class SwerveModule {
 
         frc::SwerveModuleState GetState( void );
         frc::SwerveModulePosition GetPosition ( void );
+
+        void ModuleTest( std::string name );
     private:
         rev::CANSparkMax m_driveMotor;
         rev::CANSparkMax m_turnMotor;

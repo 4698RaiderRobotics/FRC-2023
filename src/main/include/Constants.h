@@ -25,21 +25,21 @@ namespace pidf {
 }
 
 namespace deviceIDs {
-    const int kFrontLeftTurnMotorID = 1;
-    const int kFrontLeftDriveMotorID = 2;
-    const int kBackLeftTurnMotorID = 3;
-    const int kBackLeftDriveMotorID = 4;
-    const int kBackRightTurnMotorID = 5;
-    const int kBackRightDriveMotorID = 6;
-    const int kFrontRightTurnMotorID = 7;
-    const int kFrontRightDriveMotorID = 8;
+    const int kFrontLeftTurnMotorID = 7;
+    const int kFrontLeftDriveMotorID = 8;
+    const int kBackLeftTurnMotorID = 5;
+    const int kBackLeftDriveMotorID = 6;
+    const int kBackRightTurnMotorID = 3;
+    const int kBackRightDriveMotorID = 4;
+    const int kFrontRightTurnMotorID = 1;
+    const int kFrontRightDriveMotorID = 2;
 
-    const int kFrontLeftAbsoluteEncoderID = 0;
-    const int kFrontRightAbsoluteEncoderID = 1;
-    const int kBackLeftAbsoluteEncoderID = 2;
-    const int kBackRightAbsoluteEncoderID = 3;
+    const int kFrontLeftAbsoluteEncoderID = 1;
+    const int kFrontRightAbsoluteEncoderID = 0;
+    const int kBackLeftAbsoluteEncoderID = 3;
+    const int kBackRightAbsoluteEncoderID = 2;
 
-    const int kPigeonIMUID = 50;
+    const int kPigeonIMUID = 13;
 }
 
 namespace physical {
@@ -68,8 +68,8 @@ namespace physical {
 
     constexpr units::meter_t kDriveBaseLength = 22.5_in;
 
-    constexpr double kFrontLeftAbsoluteOffset = 0.1244;
-    constexpr double kFrontRightAbsoluteOffset = 0.3902;
-    constexpr double kBackLeftAbsoluteOffset = 0.7013; 
-    constexpr double kBackRightAbsoluteOffset = 0.5409;
+    constexpr double kFrontLeftAbsoluteOffset = 0.1372;
+    constexpr double kFrontRightAbsoluteOffset = 0.3699;
+    constexpr double kBackLeftAbsoluteOffset = 0.7882;
+    constexpr double kBackRightAbsoluteOffset = 0.4485;
 }

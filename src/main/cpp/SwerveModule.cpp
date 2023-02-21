@@ -51,3 +51,8 @@ frc::SwerveModuleState SwerveModule::GetState( void ) {
 frc::SwerveModulePosition SwerveModule::GetPosition( void ) {
     return { units::turn_t{ m_driveEncoder.GetPosition() } * physical::kDriveMetersPerRotation, m_turnEncoder.GetPosition()  };
 }
+
+void SwerveModule::ModuleTest( std::string name) {
+    fmt::print( "Encoder {}, {}\n", name, m_turnEncoder.GetRawPosition() );
+    frc::SmartDashboard::PutNumber( name, m_turnEncoder.GetRawPosition() );
+}

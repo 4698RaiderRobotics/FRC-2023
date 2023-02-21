@@ -60,7 +60,9 @@ void Robot::TeleopPeriodic() {}
 /**
  * This function is called periodically during test mode.
  */
-void Robot::TestPeriodic() {}
+void Robot::TestPeriodic() {
+  m_container.TestMode();
+}
 
 /**
  * This function is called once when the robot is first started up.

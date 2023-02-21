@@ -31,3 +31,7 @@ frc2::Command* RobotContainer::GetAutonomousCommand() {
   // An example command will be run in autonomous
   return &m_autonomousCommand;
 }
+
+void RobotContainer::TestMode() {
+  m_drive.DrivetrainTest();
+}

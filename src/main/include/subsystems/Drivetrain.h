@@ -34,6 +34,8 @@ class Drivetrain : public frc2::SubsystemBase {
     frc::Pose2d GetPose( void );
     void ResetPose( frc::Pose2d position );
 
+    void DrivetrainTest();
+
   private:
     //frc::Field2d m_field;
 
