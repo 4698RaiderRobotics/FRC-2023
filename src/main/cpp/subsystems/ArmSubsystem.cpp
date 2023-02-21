@@ -51,4 +51,11 @@ void ArmSubsystem::ArmTest() {
     if((d != kD)) { kD = d; }
     if((v != kV)) { kV = v; }
     if((s != kS)) { kS = s; }
+
+    frc::SmartDashboard::PutNumber( "Arm Position", m_enc.GetPosition().value() );
+    frc::SmartDashboard::PutNumber( "Arm Velocity", m_left.GetMotorOutputPercent() );
+    frc::SmartDashboard::PutNumber( "Arm Setpoint Position", m_setpoint.position.value() );
+    frc::SmartDashboard::PutNumber( "Arm Setpoint Velocity", m_setpoint.velocity.value() );
+
+    frc::SmartDashboard::PutNumber( "Arm Raw Pos", m_enc.GetRawPosition() );
 }
