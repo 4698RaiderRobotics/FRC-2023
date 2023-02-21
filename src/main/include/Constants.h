@@ -64,7 +64,7 @@ namespace physical {
     constexpr double kTurnGearRatio = 12.8;
 
     // The width of the drive base from the center of one module to another adjacent one.
-    constexpr units::meter_t kDriveBaseWidth = 22.5_in;
+    constexpr units::meter_t kDriveBaseWidth = 23.25_in;
 
     constexpr units::meter_t kDriveBaseLength = 22.5_in;
 
