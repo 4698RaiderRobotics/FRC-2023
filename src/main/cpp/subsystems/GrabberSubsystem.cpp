@@ -20,3 +20,8 @@ void GrabberSubsystem::Close( ) {
 void GrabberSubsystem::Spin( double speed ) {
     m_roller.Set( ctre::phoenix::motorcontrol::ControlMode::PercentOutput, speed );
 }
+
+void GrabberSubsystem::GrabberTest() {
+    frc::SmartDashboard::PutData( &m_grab );
+    frc::SmartDashboard::PutNumber( "Roller Speed", m_roller.GetMotorOutputPercent() );
+}

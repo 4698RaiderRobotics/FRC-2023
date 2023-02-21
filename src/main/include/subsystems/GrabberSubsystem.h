@@ -7,6 +7,7 @@
 #include <frc2/command/SubsystemBase.h>
 #include <ctre/phoenix/motorcontrol/can/TalonFX.h>
 #include <frc/DoubleSolenoid.h>
+#include <frc/smartdashboard/SmartDashboard.h>
 
 class GrabberSubsystem : public frc2::SubsystemBase {
  public:
@@ -19,6 +20,8 @@ class GrabberSubsystem : public frc2::SubsystemBase {
   void Close();
 
   void Spin( double speed );
+
+  void GrabberTest();
 
  private:
   

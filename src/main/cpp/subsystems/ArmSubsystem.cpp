@@ -30,3 +30,25 @@ void ArmSubsystem::Arm( units::degree_t angle ) {
 
     m_left.Set( ctre::phoenix::motorcontrol::ControlMode::PercentOutput, output  + feedforwardOut / 12 );
 }
+
+void ArmSubsystem::ArmTestSetup() {
+    frc::SmartDashboard::PutNumber("kG", kG);
+    frc::SmartDashboard::PutNumber("kP", kP);
+    frc::SmartDashboard::PutNumber("kD", kD);
+    frc::SmartDashboard::PutNumber("kV", kV);
+    frc::SmartDashboard::PutNumber("kS", kS);
+}
+
+void ArmSubsystem::ArmTest() {
+    double g = frc::SmartDashboard::GetNumber( "kG", 0.0 );
+    double p = frc::SmartDashboard::GetNumber( "kP", 0.0 );
+    double d = frc::SmartDashboard::GetNumber( "kD", 0.0 );
+    double v = frc::SmartDashboard::GetNumber( "kV", 0.0 );
+    double s = frc::SmartDashboard::GetNumber( "kS", 0.0 );
+
+    if((g != kG)) { kG = g; }
+    if((p != kP)) { kP = p; }
+    if((d != kD)) { kD = d; }
+    if((v != kV)) { kV = v; }
+    if((s != kS)) { kS = s; }
+}

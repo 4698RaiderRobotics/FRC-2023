@@ -12,6 +12,7 @@
 #include <frc/trajectory/TrapezoidProfile.h>
 #include <units/angle.h>
 #include <units/angular_acceleration.h>
+#include <frc/smartdashboard/SmartDashboard.h>
 
 #include "Constants.h"
 #include "AbsoluteEncoder.h"
@@ -23,6 +24,10 @@ class ArmSubsystem : public frc2::SubsystemBase {
   void Periodic() override;
 
   void Arm( units::degree_t angle );
+
+  void ArmTestSetup();
+
+  void ArmTest();
 
  private:
 
