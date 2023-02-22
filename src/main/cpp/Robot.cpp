@@ -3,7 +3,14 @@
 #include <frc/smartdashboard/SmartDashboard.h>
 #include <frc2/command/CommandScheduler.h>
 
+#include "frc/DataLogManager.h"
+#include "frc/DriverStation.h"
+
 void Robot::RobotInit() {
+  // Starts recording to data log
+  frc::DataLogManager::Start();
+  // Record both DS control and joystick data
+  frc::DriverStation::StartDataLog(frc::DataLogManager::GetLog());
 }
 
 /**
