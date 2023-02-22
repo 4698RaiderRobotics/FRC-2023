@@ -34,6 +34,8 @@ frc2::Command* RobotContainer::GetAutonomousCommand() {
 
 void RobotContainer::TestSetup() {
   m_drive.DrivetrainSetup();
+  frc::SmartDashboard::PutData(&PDP);
+  frc::SmartDashboard::PutData(&Compressor);
 }
 
 void RobotContainer::TestMode() {

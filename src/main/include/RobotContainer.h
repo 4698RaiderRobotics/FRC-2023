@@ -6,6 +6,9 @@
 #include <frc2/command/button/JoystickButton.h>
 #include <frc/XboxController.h>
 
+#include <frc/PowerDistribution.h>
+#include <frc/Compressor.h>
+
 #include "commands/ExampleCommand.h"
 #include "commands/TargetLimelight.h"
 #include "commands/GyroBalance.h"
@@ -39,6 +42,9 @@ class RobotContainer {
 
   ExampleSubsystem m_subsystem;
   ExampleCommand m_autonomousCommand;
+
+  frc::PowerDistribution PDP{0, frc::PowerDistribution::ModuleType::kCTRE};
+  frc::Compressor Compressor{9, frc::PneumaticsModuleType::REVPH}; 
 
   frc::XboxController m_driverController{ 0 };
   ControllerAxis vx_axis{ m_driverController, frc::XboxController::Axis::kLeftY, true };
