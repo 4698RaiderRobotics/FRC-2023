@@ -26,6 +26,8 @@ class ArmSubsystem : public frc2::SubsystemBase {
 
   void Arm( units::degree_t angle );
 
+  bool Finished( units::degree_t angle );
+
   void BrakeOn();
 
   void BrakeOff();

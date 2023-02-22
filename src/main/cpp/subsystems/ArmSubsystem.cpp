@@ -31,6 +31,10 @@ void ArmSubsystem::Arm( units::degree_t angle ) {
     m_left.Set( ctre::phoenix::motorcontrol::ControlMode::PercentOutput, output  + feedforwardOut / 12 );
 }
 
+bool ArmSubsystem::Finished( units::degree_t angle ) {
+    return units::math::abs( angle - m_enc.GetPosition() ) < physical::kArmAngleError;
+}
+
 void ArmSubsystem::BrakeOn() {
     m_brake.Set( frc::DoubleSolenoid::Value::kForward );
 }

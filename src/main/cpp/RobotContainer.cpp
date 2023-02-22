@@ -49,6 +49,7 @@ void RobotContainer::ConfigureButtonBindings() {
 
   frc2::JoystickButton( &m_operatorController, frc::XboxController::Button::kLeftBumper )
   .WhileTrue( CloseGrabber( &m_grabber ).ToPtr() );
+  (m_operatorController.B() && m_operatorController.A()).OnTrue( PlaceGamePiece( &m_drive, &m_arm, &m_grabber, &m_limelight, 2_m, 90_deg ).ToPtr() );
 }
 
 frc2::Command* RobotContainer::GetAutonomousCommand() {

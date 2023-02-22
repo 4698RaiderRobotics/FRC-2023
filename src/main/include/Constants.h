@@ -42,6 +42,7 @@ namespace deviceIDs {
     const int kFrontRightAbsoluteEncoderID = 0;
     const int kBackLeftAbsoluteEncoderID = 3;
     const int kBackRightAbsoluteEncoderID = 2;
+    constexpr int kArmEncoderID = 4;
 
     constexpr int kPigeonIMUID = 13;
 
@@ -83,4 +84,7 @@ namespace physical {
     constexpr double kBackRightAbsoluteOffset = 0.4485;
 
     constexpr double kArmAbsoluteOffset = 0.0;
+
+    constexpr units::degree_t kArmAngleError = 1_deg;
+    constexpr double kLimelightTargetError = 0.1;
 }

@@ -6,6 +6,7 @@
 #include <frc2/command/RepeatCommand.h>
 #include <frc2/command/button/JoystickButton.h>
 #include <frc/XboxController.h>
+#include <frc2/command/button/CommandXboxController.h>
 
 #include <frc/PowerDistribution.h>
 #include <frc/Compressor.h>
@@ -16,6 +17,7 @@
 #include "commands/UpdateOdom.h"
 #include "commands/ArmSet.h"
 #include "commands/CloseGrabber.h"
+#include "commands/PlaceGamePiece.h"
 #include "subsystems/ExampleSubsystem.h"
 #include "subsystems/Drivetrain.h"
 #include "subsystems/Limelight.h"
@@ -54,7 +56,7 @@ class RobotContainer {
   frc::Compressor Compressor{9, frc::PneumaticsModuleType::REVPH}; 
 
   frc::XboxController m_driverController{ 0 };
-  frc::XboxController m_operatorController{ 1 };
+  frc2::CommandXboxController m_operatorController{ 1 };
 
   ControllerAxis vx_axis{ m_driverController, frc::XboxController::Axis::kLeftY, true };
   ControllerAxis vy_axis{ m_driverController, frc::XboxController::Axis::kLeftX, true };
