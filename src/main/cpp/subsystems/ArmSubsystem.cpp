@@ -31,6 +31,14 @@ void ArmSubsystem::Arm( units::degree_t angle ) {
     m_left.Set( ctre::phoenix::motorcontrol::ControlMode::PercentOutput, output  + feedforwardOut / 12 );
 }
 
+void ArmSubsystem::BrakeOn() {
+    m_brake.Set( frc::DoubleSolenoid::Value::kForward );
+}
+
+void ArmSubsystem::BrakeOff() {
+    m_brake.Set( frc::DoubleSolenoid::Value::kReverse );
+}
+
 void ArmSubsystem::ArmTestSetup() {
     frc::SmartDashboard::PutNumber("kG", kG);
     frc::SmartDashboard::PutNumber("kP", kP);

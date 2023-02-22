@@ -9,6 +9,8 @@
 #include <frc/DoubleSolenoid.h>
 #include <frc/smartdashboard/SmartDashboard.h>
 
+#include "Constants.h"
+
 class GrabberSubsystem : public frc2::SubsystemBase {
  public:
   GrabberSubsystem();
@@ -26,5 +28,5 @@ class GrabberSubsystem : public frc2::SubsystemBase {
  private:
   
   ctre::phoenix::motorcontrol::can::TalonFX m_roller{ 11 };
-  frc::DoubleSolenoid m_grab{ frc::PneumaticsModuleType::REVPH, 1, 2 };
+  frc::DoubleSolenoid m_grab{ frc::PneumaticsModuleType::REVPH, deviceIDs::kGrabberSolenoidForwardChannel, deviceIDs::kGrabberSolenoidReverseChannel };
 };

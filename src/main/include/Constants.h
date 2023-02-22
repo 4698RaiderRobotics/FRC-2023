@@ -44,6 +44,11 @@ namespace deviceIDs {
     constexpr int kArmEncoderID = 4;
 
     constexpr int kPigeonIMUID = 13;
+
+    constexpr int kGrabberSolenoidForwardChannel = 1;
+    constexpr int kGrabberSolenoidReverseChannel = 2;
+    constexpr int kBrakeSolenoidForwardChannel = 3;
+    constexpr int kBrakeSolenoidReverseChannel = 4;
 }
 
 namespace physical {

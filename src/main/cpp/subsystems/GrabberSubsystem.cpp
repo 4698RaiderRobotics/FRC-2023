@@ -17,6 +17,7 @@ void GrabberSubsystem::Close( ) {
     m_grab.Set( frc::DoubleSolenoid::Value::kForward );
 }
 
+// Speed is value from -1 to 1
 void GrabberSubsystem::Spin( double speed ) {
     m_roller.Set( ctre::phoenix::motorcontrol::ControlMode::PercentOutput, speed );
 }

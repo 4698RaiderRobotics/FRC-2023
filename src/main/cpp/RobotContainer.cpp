@@ -36,16 +36,19 @@ void RobotContainer::ConfigureButtonBindings() {
   .WhileTrue( ArmSet( 90_deg, &m_arm ).ToPtr() );
 
   frc2::JoystickButton( &m_operatorController, frc::XboxController::Button::kA )
-  .WhenPressed( frc2::InstantCommand( [this] { m_grabber.Close(); }, { &m_grabber } ) );
+  .WhileTrue( frc2::InstantCommand( [this] { m_grabber.Close(); }, { &m_grabber } ).ToPtr() );
 
   frc2::JoystickButton( &m_operatorController, frc::XboxController::Button::kB )
-  .WhenPressed( frc2::InstantCommand( [this] { m_grabber.Open(); }, { &m_grabber } ) );
+  .WhileTrue( frc2::InstantCommand( [this] { m_grabber.Open(); }, { &m_grabber } ).ToPtr() );
 
   frc2::JoystickButton( &m_operatorController, frc::XboxController::Button::kY )
-  .WhenPressed( frc2::RunCommand( [this] { m_grabber.Spin( 1.0 ); }, { &m_grabber } ) );
+  .WhileTrue( frc2::RunCommand( [this] { m_grabber.Spin( 1.0 ); }, { &m_grabber } ).ToPtr() );
 
   frc2::JoystickButton( &m_operatorController, frc::XboxController::Button::kX )
-  .WhenPressed( frc2::RunCommand( [this] { m_grabber.Spin( 0.0 ); }, { &m_grabber } ) );
+  .WhileTrue( frc2::RunCommand( [this] { m_grabber.Spin( 0.0 ); }, { &m_grabber } ).ToPtr() );
+
+  frc2::JoystickButton( &m_operatorController, frc::XboxController::Button::kLeftBumper )
+  .WhileTrue( CloseGrabber( &m_grabber ).ToPtr() );
 }
 
 frc2::Command* RobotContainer::GetAutonomousCommand() {

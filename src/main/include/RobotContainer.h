@@ -12,6 +12,7 @@
 #include "commands/GyroBalance.h"
 #include "commands/UpdateOdom.h"
 #include "commands/ArmSet.h"
+#include "commands/CloseGrabber.h"
 #include "subsystems/ExampleSubsystem.h"
 #include "subsystems/Drivetrain.h"
 #include "subsystems/Limelight.h"
