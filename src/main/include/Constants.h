@@ -36,12 +36,20 @@ namespace deviceIDs {
     const int kFrontRightTurnMotorID = 1;
     const int kFrontRightDriveMotorID = 2;
 
+    constexpr int kLeftArmMotorID = 11;
+    constexpr int kRightArmMotorID = 12;
     const int kFrontLeftAbsoluteEncoderID = 1;
     const int kFrontRightAbsoluteEncoderID = 0;
     const int kBackLeftAbsoluteEncoderID = 3;
     const int kBackRightAbsoluteEncoderID = 2;
+    constexpr int kArmEncoderID = 4;
 
-    const int kPigeonIMUID = 13;
+    constexpr int kPigeonIMUID = 13;
+
+    constexpr int kGrabberSolenoidForwardChannel = 1;
+    constexpr int kGrabberSolenoidReverseChannel = 2;
+    constexpr int kBrakeSolenoidForwardChannel = 3;
+    constexpr int kBrakeSolenoidReverseChannel = 4;
 }
 
 namespace physical {
@@ -74,4 +82,6 @@ namespace physical {
     constexpr double kFrontRightAbsoluteOffset = 0.3699;
     constexpr double kBackLeftAbsoluteOffset = 0.7882;
     constexpr double kBackRightAbsoluteOffset = 0.4485;
+
+    constexpr double kArmAbsoluteOffset = 0.0;
 }
