@@ -2,6 +2,7 @@
 
 #include <frc2/command/Command.h>
 #include <frc2/command/RunCommand.h>
+#include <frc2/command/InstantCommand.h>
 #include <frc2/command/RepeatCommand.h>
 #include <frc2/command/button/JoystickButton.h>
 #include <frc/XboxController.h>
@@ -13,9 +14,13 @@
 #include "commands/TargetLimelight.h"
 #include "commands/GyroBalance.h"
 #include "commands/UpdateOdom.h"
+#include "commands/ArmSet.h"
+#include "commands/CloseGrabber.h"
 #include "subsystems/ExampleSubsystem.h"
 #include "subsystems/Drivetrain.h"
 #include "subsystems/Limelight.h"
+#include "subsystems/ArmSubsystem.h"
+#include "subsystems/GrabberSubsystem.h"
 #include "ControllerAxis.h"
 
 /**
@@ -39,6 +44,8 @@ class RobotContainer {
   // The robot's subsystems and commands are defined here...
   Drivetrain m_drive;
   Limelight m_limelight;
+  ArmSubsystem m_arm;
+  GrabberSubsystem m_grabber;
 
   ExampleSubsystem m_subsystem;
   ExampleCommand m_autonomousCommand;
@@ -47,6 +54,8 @@ class RobotContainer {
   frc::Compressor Compressor{9, frc::PneumaticsModuleType::REVPH}; 
 
   frc::XboxController m_driverController{ 0 };
+  frc::XboxController m_operatorController{ 1 };
+
   ControllerAxis vx_axis{ m_driverController, frc::XboxController::Axis::kLeftY, true };
   ControllerAxis vy_axis{ m_driverController, frc::XboxController::Axis::kLeftX, true };
   ControllerAxis omega_axis{ m_driverController, frc::XboxController::Axis::kRightX, true };
