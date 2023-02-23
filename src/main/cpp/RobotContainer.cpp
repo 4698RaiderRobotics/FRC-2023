@@ -15,24 +15,24 @@ void RobotContainer::ConfigureButtonBindings() {
   // Configure your button bindings here
 
   // Press the B button to balance the robot on the Charge Station
-  frc2::JoystickButton( &m_driverController, frc::XboxController::Button::kB )
+  frc2::JoystickButton( &m_driverController, frc::PS4Controller::Button::kCircle )
   .WhileTrue( GyroBalance( &m_drive ).ToPtr() );
 
   // Press the X button to do Limelight targeting w/ Apriltags
-  frc2::JoystickButton( &m_driverController, frc::XboxController::Button::kX )
+  frc2::JoystickButton( &m_driverController, frc::PS4Controller::Button::kCross )
   .WhileTrue( TargetLimelight( &m_drive, &m_limelight ).ToPtr());
 
   // Press the Y button to update the odometry with Apriltags
-  frc2::JoystickButton( &m_driverController, frc::XboxController::Button::kY )
+  frc2::JoystickButton( &m_driverController, frc::PS4Controller::Button::kSquare )
   .WhileTrue( UpdateOdom( &m_drive, &m_limelight).ToPtr());
 
-  frc2::JoystickButton( &m_driverController, frc::XboxController::Button::kLeftBumper )
+  frc2::JoystickButton( &m_driverController, frc::PS4Controller::Button::kR1 )
   .WhileTrue( ArmSet( 0_deg, &m_arm ).ToPtr() );
 
-  frc2::JoystickButton( &m_driverController, frc::XboxController::Button::kRightBumper )
+  frc2::JoystickButton( &m_driverController, frc::PS4Controller::Button::kL1 )
   .WhileTrue( ArmSet( 45_deg, &m_arm ).ToPtr() );
 
-  frc2::JoystickButton( &m_driverController, frc::XboxController::Button::kA )
+  frc2::JoystickButton( &m_driverController, frc::PS4Controller::Button::kTriangle )
   .WhileTrue( ArmSet( 90_deg, &m_arm ).ToPtr() );
 
   frc2::JoystickButton( &m_operatorController, frc::XboxController::Button::kA )

@@ -27,27 +27,28 @@ namespace pidf {
 }
 
 namespace deviceIDs {
-    const int kFrontLeftTurnMotorID = 7;
-    const int kFrontLeftDriveMotorID = 8;
-    const int kBackLeftTurnMotorID = 5;
-    const int kBackLeftDriveMotorID = 6;
-    const int kBackRightTurnMotorID = 3;
-    const int kBackRightDriveMotorID = 4;
-    const int kFrontRightTurnMotorID = 1;
-    const int kFrontRightDriveMotorID = 2;
+    constexpr int kFrontLeftTurnMotorID = 7;
+    constexpr int kFrontLeftDriveMotorID = 8;
+    constexpr int kBackLeftTurnMotorID = 5;
+    constexpr int kBackLeftDriveMotorID = 6;
+    constexpr int kBackRightTurnMotorID = 3;
+    constexpr int kBackRightDriveMotorID = 4;
+    constexpr int kFrontRightTurnMotorID = 1;
+    constexpr int kFrontRightDriveMotorID = 2;
 
     constexpr int kLeftArmMotorID = 11;
     constexpr int kRightArmMotorID = 12;
-    const int kFrontLeftAbsoluteEncoderID = 1;
-    const int kFrontRightAbsoluteEncoderID = 0;
-    const int kBackLeftAbsoluteEncoderID = 3;
-    const int kBackRightAbsoluteEncoderID = 2;
+
+    constexpr int kFrontLeftAbsoluteEncoderID = 1;
+    constexpr int kFrontRightAbsoluteEncoderID = 0;
+    constexpr int kBackLeftAbsoluteEncoderID = 3;
+    constexpr int kBackRightAbsoluteEncoderID = 2;
     constexpr int kArmEncoderID = 4;
 
     constexpr int kPigeonIMUID = 13;
 
-    constexpr int kGrabberSolenoidForwardChannel = 1;
-    constexpr int kGrabberSolenoidReverseChannel = 2;
+    constexpr int kGrabberSolenoidForwardChannel = 0;
+    constexpr int kGrabberSolenoidReverseChannel = 1;
     constexpr int kBrakeSolenoidForwardChannel = 3;
     constexpr int kBrakeSolenoidReverseChannel = 4;
 }

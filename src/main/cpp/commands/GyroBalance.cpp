@@ -7,6 +7,7 @@ GyroBalance::GyroBalance( Drivetrain* drive )
 
 void GyroBalance::Execute( ) {
     currentAngle = m_drive->GetPitch();
+    frc::SmartDashboard::PutNumber( "Pitch", currentAngle );
 
     error = 0 - currentAngle;
 
@@ -19,5 +20,5 @@ void GyroBalance::Execute( ) {
 }
 
 bool GyroBalance::IsFinished() {
-    return abs( error ) < 10;
+    return abs( error ) < 5;
 }

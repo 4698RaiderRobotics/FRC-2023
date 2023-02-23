@@ -20,6 +20,8 @@ SwerveModule::SwerveModule( const int turnMotorChannel,
     m_drivePIDController.SetD(kDriveD);
     m_drivePIDController.SetFF(kDriveFF);
     m_turnPIDController.EnableContinuousInput(-180, 180);
+    m_turnPIDController.SetP( kTurnP );   
+    m_turnPIDController.SetD( kTurnD );
 }
 
 // Sets each individual SwerveModule to an optimized SwerveModuleState
@@ -45,7 +47,8 @@ void SwerveModule::SetDesiredState( const frc::SwerveModuleState& referenceState
 
 // Returns the current state of the SwerveModule
 frc::SwerveModuleState SwerveModule::GetState( void ) {
-    return { units::meters_per_second_t{ m_driveEncoder.GetVelocity() }, units::radian_t{ m_turnEncoder.GetPosition() } };
+    //undo this for odometry
+    return { units::meters_per_second_t{ round(m_driveEncoder.GetVelocity() * physical::kDriveMetersPerRotation.value() / 60.0 )}, units::radian_t{ m_turnEncoder.GetPosition() } };
 }
 
 frc::SwerveModulePosition SwerveModule::GetPosition( void ) {

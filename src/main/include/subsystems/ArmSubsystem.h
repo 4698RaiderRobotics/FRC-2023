@@ -39,7 +39,7 @@ class ArmSubsystem : public frc2::SubsystemBase {
   ctre::phoenix::motorcontrol::can::TalonFX m_left{ deviceIDs::kLeftArmMotorID };
   ctre::phoenix::motorcontrol::can::TalonFX m_right{ deviceIDs::kRightArmMotorID }; 
 
-  AbsoluteEncoder m_enc{ deviceIDs::kArmEncoderID, physical::kArmAbsoluteOffset };
+  AbsoluteEncoder m_enc{ deviceIDs::kArmEncoderID, physical::kArmAbsoluteOffset, -1 };
 
   frc::DoubleSolenoid m_brake{ frc::PneumaticsModuleType::REVPH, deviceIDs::kBrakeSolenoidForwardChannel, deviceIDs::kBrakeSolenoidReverseChannel };
 
@@ -57,4 +57,5 @@ class ArmSubsystem : public frc2::SubsystemBase {
   frc::TrapezoidProfile<units::degrees>::State m_setpoint{ 0_deg, 0_deg_per_s };
 
   units::second_t dt = 20_ms;
+  units::degree_t m_angle;
 };

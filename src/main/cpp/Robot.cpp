@@ -11,6 +11,8 @@ void Robot::RobotInit() {
   frc::DataLogManager::Start();
   // Record both DS control and joystick data
   frc::DriverStation::StartDataLog(frc::DataLogManager::GetLog());
+  // Log in Telelop:
+  m_container.TestSetup();
 }
 
 /**

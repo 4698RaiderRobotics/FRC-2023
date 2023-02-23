@@ -6,6 +6,7 @@
 #include <frc2/command/RepeatCommand.h>
 #include <frc2/command/button/JoystickButton.h>
 #include <frc/XboxController.h>
+#include <frc/PS4Controller.h>
 
 #include <frc/PowerDistribution.h>
 #include <frc/Compressor.h>
@@ -53,12 +54,12 @@ class RobotContainer {
   frc::PowerDistribution PDP{0, frc::PowerDistribution::ModuleType::kCTRE};
   frc::Compressor Compressor{9, frc::PneumaticsModuleType::REVPH}; 
 
-  frc::XboxController m_driverController{ 0 };
+  frc::PS4Controller m_driverController{ 0 };
   frc::XboxController m_operatorController{ 1 };
 
-  ControllerAxis vx_axis{ m_driverController, frc::XboxController::Axis::kLeftY, true };
-  ControllerAxis vy_axis{ m_driverController, frc::XboxController::Axis::kLeftX, true };
-  ControllerAxis omega_axis{ m_driverController, frc::XboxController::Axis::kRightX, true };
+  ControllerAxis vx_axis{ m_driverController, frc::PS4Controller::Axis::kLeftY, true };
+  ControllerAxis vy_axis{ m_driverController, frc::PS4Controller::Axis::kLeftX, true };
+  ControllerAxis omega_axis{ m_driverController, frc::PS4Controller::Axis::kRightX, true };
 
   void ConfigureButtonBindings();
 };
