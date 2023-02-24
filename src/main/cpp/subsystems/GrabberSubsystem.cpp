@@ -10,11 +10,11 @@ GrabberSubsystem::GrabberSubsystem() = default;
 void GrabberSubsystem::Periodic() {}
 
 void GrabberSubsystem::Open( ) {
-    m_grab.Set( frc::DoubleSolenoid::Value::kReverse );
+    m_grab.Set( frc::DoubleSolenoid::Value::kForward );
 }
 
 void GrabberSubsystem::Close( ) {
-    m_grab.Set( frc::DoubleSolenoid::Value::kForward );
+    m_grab.Set( frc::DoubleSolenoid::Value::kReverse );
 }
 
 // Speed is value from -1 to 1

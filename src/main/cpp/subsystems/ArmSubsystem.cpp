@@ -33,14 +33,6 @@ void ArmSubsystem::Arm( units::degree_t angle ) {
     m_angle = angle;
 }
 
-void ArmSubsystem::BrakeOn() {
-    m_brake.Set( frc::DoubleSolenoid::Value::kForward );
-}
-
-void ArmSubsystem::BrakeOff() {
-    m_brake.Set( frc::DoubleSolenoid::Value::kReverse );
-}
-
 void ArmSubsystem::ArmTestSetup() {
     frc::SmartDashboard::PutNumber("kG", kG);
     frc::SmartDashboard::PutNumber("kP", kP);

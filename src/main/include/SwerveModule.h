@@ -50,8 +50,8 @@ class SwerveModule {
         double kTurnI = 0;
         double kTurnD = 0;
 
-        double kDriveP = 0.00006;
+        double kDriveP = 0.0001;
         double kDriveI = 0;
         double kDriveD = 0;
-        double kDriveFF = 0.000015;
+        double kDriveFF = 0.0002;
 };

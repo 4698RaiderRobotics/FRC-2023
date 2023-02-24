@@ -11,7 +11,7 @@ ArmSet::ArmSet( units::degree_t angle, ArmSubsystem *arm )
 
 // Called when the command is initially scheduled.
 void ArmSet::Initialize() {
-  m_arm->BrakeOff();
+  
 }
 
 // Called repeatedly when this Command is scheduled to run
@@ -21,7 +21,7 @@ void ArmSet::Execute() {
 
 // Called once the command ends or is interrupted.
 void ArmSet::End(bool interrupted) {
-  m_arm->BrakeOn();
+  
 }
 
 // Returns true when the command should end.

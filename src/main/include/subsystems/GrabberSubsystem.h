@@ -28,5 +28,5 @@ class GrabberSubsystem : public frc2::SubsystemBase {
  private:
   
   ctre::phoenix::motorcontrol::can::TalonFX m_roller{ 14 };
-  frc::DoubleSolenoid m_grab{ frc::PneumaticsModuleType::REVPH, deviceIDs::kGrabberSolenoidForwardChannel, deviceIDs::kGrabberSolenoidReverseChannel };
+  frc::DoubleSolenoid m_grab{ 9, frc::PneumaticsModuleType::REVPH, deviceIDs::kGrabberSolenoidForwardChannel, deviceIDs::kGrabberSolenoidReverseChannel };
 };

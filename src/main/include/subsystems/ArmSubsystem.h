@@ -26,10 +26,6 @@ class ArmSubsystem : public frc2::SubsystemBase {
 
   void Arm( units::degree_t angle );
 
-  void BrakeOn();
-
-  void BrakeOff();
-
   void ArmTestSetup();
 
   void ArmTest();
@@ -40,8 +36,6 @@ class ArmSubsystem : public frc2::SubsystemBase {
   ctre::phoenix::motorcontrol::can::TalonFX m_right{ deviceIDs::kRightArmMotorID }; 
 
   AbsoluteEncoder m_enc{ deviceIDs::kArmEncoderID, physical::kArmAbsoluteOffset, -1 };
-
-  frc::DoubleSolenoid m_brake{ frc::PneumaticsModuleType::REVPH, deviceIDs::kBrakeSolenoidForwardChannel, deviceIDs::kBrakeSolenoidReverseChannel };
 
   double kS = 0.0;
   double kG = 0.0;

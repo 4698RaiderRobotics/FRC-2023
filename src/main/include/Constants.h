@@ -55,7 +55,7 @@ namespace deviceIDs {
 
 namespace physical {
     // Max drive speed of Mk3 swerve modules * a scalar value
-    constexpr units::meters_per_second_t kMaxDriveSpeed = 14.4_fps * 0.5;
+    constexpr units::meters_per_second_t kMaxDriveSpeed = 14.4_fps * 0.85;
 
     // The max speed of the turn motors
     constexpr auto kMaxTurnSpeed =  5_rad_per_s;

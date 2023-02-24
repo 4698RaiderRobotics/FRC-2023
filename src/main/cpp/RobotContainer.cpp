@@ -64,7 +64,8 @@ void RobotContainer::TestSetup() {
 }
 
 void RobotContainer::TestMode() {
-  m_arm.ArmTest();
-  m_grabber.GrabberTest();
+  //m_arm.ArmTest();
+  //m_grabber.GrabberTest();
   m_drive.DrivetrainTest();
+  frc::SmartDashboard::PutNumber( "Joystick", m_driverController.GetLeftX() );
 }
