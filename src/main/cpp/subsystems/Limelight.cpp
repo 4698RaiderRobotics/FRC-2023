@@ -24,7 +24,7 @@ frc::ChassisSpeeds Limelight::TargetRobot_AT(void)
 
 bool Limelight::Targeted(void)
 {
-    return (targetX && targetY && camtran[0]) < 0.1;
+    return (targetX < physical::kLimelightTargetError && targetY < physical::kLimelightTargetError && camtran[0] < physical::kLimelightTargetError);
 }
 
 // Sets the limelight to new targeting settings

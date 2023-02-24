@@ -2,29 +2,25 @@
 // Open Source Software; you can modify and/or share it under the terms of
 // the WPILib BSD license file in the root directory of this project.
 
-#include "commands/ArmSet.h"
+#include "commands/OpenGrabber.h"
 
-ArmSet::ArmSet( units::degree_t angle, ArmSubsystem *arm )
-        : m_angle{ angle }, m_arm{ arm } {
-  AddRequirements( { arm } );
+OpenGrabber::OpenGrabber( GrabberSubsystem *grabber ) 
+        : m_grabber{ grabber } {
+  AddRequirements( { grabber } );
 }
 
 // Called when the command is initially scheduled.
-void ArmSet::Initialize() {
-  
+void OpenGrabber::Initialize() {
+  m_grabber->Open();
 }
 
 // Called repeatedly when this Command is scheduled to run
-void ArmSet::Execute() {
-  m_arm->Arm( m_angle );
-}
+void OpenGrabber::Execute() {}
 
 // Called once the command ends or is interrupted.
-void ArmSet::End(bool interrupted) {
-  
-}
+void OpenGrabber::End(bool interrupted) {}
 
 // Returns true when the command should end.
-bool ArmSet::IsFinished() {
-  return m_arm->Finished( m_angle );
+bool OpenGrabber::IsFinished() {
+  return true;
 }

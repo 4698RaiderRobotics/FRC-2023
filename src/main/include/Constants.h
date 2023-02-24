@@ -95,4 +95,7 @@ namespace physical {
     constexpr double kBackRightAbsoluteOffset = 0.4485 + 0.5;
 
     constexpr double kArmAbsoluteOffset = 0.5802;
+
+    constexpr units::degree_t kArmAngleError = 1_deg;
+    constexpr double kLimelightTargetError = 0.1;
 }
