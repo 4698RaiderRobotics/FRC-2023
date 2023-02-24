@@ -54,7 +54,7 @@ class RobotContainer {
   ExampleCommand m_autonomousCommand;
 
   frc::PowerDistribution PDP{0, frc::PowerDistribution::ModuleType::kCTRE};
-  frc::Compressor Compressor{9, frc::PneumaticsModuleType::REVPH}; 
+  frc::Compressor Compressor{9, frc::PneumaticsModuleType::CTREPCM}; 
 
   frc::PS4Controller m_driverController{ 0 };
   frc2::CommandXboxController m_operatorController{ 1 };

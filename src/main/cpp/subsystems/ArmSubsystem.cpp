@@ -37,12 +37,20 @@ void ArmSubsystem::Arm( units::degree_t angle ) {
     m_angle = angle;
 }
 
+bool ArmSubsystem::Finished( units::degree_t angle ) {
+    return units::math::abs( angle - m_angle ) < physical::kArmAngleError;
+}
+
 void ArmSubsystem::ArmTestSetup() {
     frc::SmartDashboard::PutNumber("kG", kG);
     frc::SmartDashboard::PutNumber("kP", kP);
     frc::SmartDashboard::PutNumber("kD", kD);
     frc::SmartDashboard::PutNumber("kV", kV);
     frc::SmartDashboard::PutNumber("kS", kS);
+
+    frc::SmartDashboard::PutNumber( "Arm Position", m_enc.GetPosition().value() );
+    frc::SmartDashboard::PutNumber( "Arm Velocity", m_left.GetSensorCollection().GetIntegratedSensorVelocity() * physical::tics_per_100ms_to_deg_per_s * physical::kArmGearRatio );
+
 }
 
 void ArmSubsystem::ArmTest() {

@@ -26,32 +26,29 @@ void RobotContainer::ConfigureButtonBindings() {
   frc2::JoystickButton( &m_driverController, frc::PS4Controller::Button::kSquare )
   .WhileTrue( UpdateOdom( &m_drive, &m_limelight).ToPtr());
 
-  frc2::JoystickButton( &m_driverController, frc::PS4Controller::Button::kR1 )
-  .WhileTrue( ArmSet( 30_deg, &m_arm ).ToPtr() );
-
-  frc2::JoystickButton( &m_driverController, frc::PS4Controller::Button::kL1 )
-  .WhileTrue( ArmSet( -75_deg, &m_arm ).ToPtr() );
-
-  frc2::JoystickButton( &m_driverController, frc::PS4Controller::Button::kTriangle )
-  .WhileTrue( ArmSet( -90_deg, &m_arm ).ToPtr() );
-
-  frc2::JoystickButton( &m_operatorController, frc::XboxController::Button::kA )
-  .WhileTrue( frc2::InstantCommand( [this] { m_grabber.Close(); }, { &m_grabber } ).ToPtr() );
-
-  frc2::JoystickButton( &m_operatorController, frc::XboxController::Button::kB )
+  frc2::JoystickButton( &m_operatorController, frc::XboxController::Button::kRightBumper )
   .WhileTrue( frc2::InstantCommand( [this] { m_grabber.Open(); }, { &m_grabber } ).ToPtr() );
 
-  frc2::JoystickButton( &m_operatorController, frc::XboxController::Button::kY )
-  .WhileTrue( frc2::RunCommand( [this] { m_grabber.Spin( 0.25 ); }, { &m_grabber } ).ToPtr() );
+  m_operatorController.RightTrigger().WhileTrue( frc2::RunCommand( [this] { m_grabber.Spin( -0.25 ); }, { &m_grabber } ).ToPtr() );
 
-  frc2::JoystickButton( &m_operatorController, frc::XboxController::Button::kX )
-  .WhileTrue( frc2::RunCommand( [this] { m_grabber.Spin( 0.0 ); }, { &m_grabber } ).ToPtr() );
-
-  frc2::JoystickButton( &m_operatorController, frc::XboxController::Button::kRightBumper )
-  .WhileTrue( frc2::RunCommand( [this] { m_grabber.Spin( -0.25 ); }, { &m_grabber } ).ToPtr() );
+  m_operatorController.LeftTrigger().OnTrue( frc2::InstantCommand( [this] { m_grabber.Spin( 0.25 ); }, { &m_grabber } ). ToPtr() )
+  .OnFalse( frc2::InstantCommand( [this] { m_grabber.Spin( 0 ); }, { &m_grabber } ). ToPtr() );
 
   frc2::JoystickButton( &m_operatorController, frc::XboxController::Button::kLeftBumper )
   .WhileTrue( CloseGrabber( &m_grabber ).ToPtr() );
+
+  frc2::JoystickButton( &m_operatorController, frc::XboxController::Button::kY )
+  .WhileTrue( ArmSet( 30_deg, &m_arm ).ToPtr() );
+
+  frc2::JoystickButton( &m_operatorController, frc::XboxController::Button::kB )
+  .WhileTrue( ArmSet( 45_deg, &m_arm ).ToPtr() );
+
+  frc2::JoystickButton( &m_operatorController, frc::XboxController::Button::kA )
+  .WhileTrue( ArmSet( -90_deg, &m_arm ).ToPtr() );
+
+  frc2::JoystickButton( &m_operatorController, frc::XboxController::Button::kX )
+  .WhileTrue( ArmSet( -35_deg, &m_arm ).ToPtr() );
+
   (m_operatorController.B() && m_operatorController.A()).OnTrue( PlaceGamePiece( &m_drive, &m_arm, &m_grabber, &m_limelight, 2_m, 90_deg ).ToPtr() );
 }
 
@@ -62,13 +59,13 @@ frc2::Command* RobotContainer::GetAutonomousCommand() {
 
 void RobotContainer::TestSetup() {
   m_arm.ArmTestSetup();
-  m_drive.DrivetrainSetup();
+  //m_drive.DrivetrainSetup();
   frc::SmartDashboard::PutData(&PDP);
   frc::SmartDashboard::PutData(&Compressor);
 }
 
 void RobotContainer::TestMode() {
-  m_arm.ArmTest();
+  //m_arm.ArmTest();
   //m_grabber.GrabberTest();
   //m_drive.DrivetrainTest();
   frc::SmartDashboard::PutNumber( "Joystick", m_driverController.GetLeftX() );

@@ -47,8 +47,8 @@ namespace deviceIDs {
 
     constexpr int kPigeonIMUID = 13;
 
-    constexpr int kGrabberSolenoidForwardChannel = 0;
-    constexpr int kGrabberSolenoidReverseChannel = 1;
+    constexpr int kGrabberSolenoidForwardChannel = 1;
+    constexpr int kGrabberSolenoidReverseChannel = 0;
     constexpr int kBrakeSolenoidForwardChannel = 3;
     constexpr int kBrakeSolenoidReverseChannel = 4;
 }

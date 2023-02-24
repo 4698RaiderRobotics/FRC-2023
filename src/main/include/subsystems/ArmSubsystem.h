@@ -40,7 +40,7 @@ class ArmSubsystem : public frc2::SubsystemBase {
   AbsoluteEncoder m_enc{ deviceIDs::kArmEncoderID, physical::kArmAbsoluteOffset, true };
 
   double kS = 0.4;
-  double kG = 1.5;
+  double kG = 1.6;
   double kV = 0.4;
   double kA = 0.0;
 

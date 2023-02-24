@@ -11,13 +11,13 @@ CloseGrabber::CloseGrabber( GrabberSubsystem *grabber )
 
 // Called when the command is initially scheduled.
 void CloseGrabber::Initialize() {
-  m_grabber->Spin( 0.25 );
-  m_grabber->Close();
+  m_grabber->Spin( 0.2 );
+  
 }
 
 // Called repeatedly when this Command is scheduled to run
 void CloseGrabber::Execute() {
-  m_grabber->Spin( 0.1 );
+  m_grabber->Close();
 }
 
 // Called once the command ends or is interrupted.
