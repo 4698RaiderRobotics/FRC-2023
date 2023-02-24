@@ -27,13 +27,13 @@ void RobotContainer::ConfigureButtonBindings() {
   .WhileTrue( UpdateOdom( &m_drive, &m_limelight).ToPtr());
 
   frc2::JoystickButton( &m_driverController, frc::PS4Controller::Button::kR1 )
-  .WhileTrue( ArmSet( 0_deg, &m_arm ).ToPtr() );
+  .WhileTrue( ArmSet( 30_deg, &m_arm ).ToPtr() );
 
   frc2::JoystickButton( &m_driverController, frc::PS4Controller::Button::kL1 )
-  .WhileTrue( ArmSet( 45_deg, &m_arm ).ToPtr() );
+  .WhileTrue( ArmSet( -75_deg, &m_arm ).ToPtr() );
 
   frc2::JoystickButton( &m_driverController, frc::PS4Controller::Button::kTriangle )
-  .WhileTrue( ArmSet( 90_deg, &m_arm ).ToPtr() );
+  .WhileTrue( ArmSet( -90_deg, &m_arm ).ToPtr() );
 
   frc2::JoystickButton( &m_operatorController, frc::XboxController::Button::kA )
   .WhileTrue( frc2::InstantCommand( [this] { m_grabber.Close(); }, { &m_grabber } ).ToPtr() );
@@ -42,10 +42,13 @@ void RobotContainer::ConfigureButtonBindings() {
   .WhileTrue( frc2::InstantCommand( [this] { m_grabber.Open(); }, { &m_grabber } ).ToPtr() );
 
   frc2::JoystickButton( &m_operatorController, frc::XboxController::Button::kY )
-  .WhileTrue( frc2::RunCommand( [this] { m_grabber.Spin( 1.0 ); }, { &m_grabber } ).ToPtr() );
+  .WhileTrue( frc2::RunCommand( [this] { m_grabber.Spin( 0.25 ); }, { &m_grabber } ).ToPtr() );
 
   frc2::JoystickButton( &m_operatorController, frc::XboxController::Button::kX )
   .WhileTrue( frc2::RunCommand( [this] { m_grabber.Spin( 0.0 ); }, { &m_grabber } ).ToPtr() );
+
+  frc2::JoystickButton( &m_operatorController, frc::XboxController::Button::kRightBumper )
+  .WhileTrue( frc2::RunCommand( [this] { m_grabber.Spin( -0.25 ); }, { &m_grabber } ).ToPtr() );
 
   frc2::JoystickButton( &m_operatorController, frc::XboxController::Button::kLeftBumper )
   .WhileTrue( CloseGrabber( &m_grabber ).ToPtr() );
@@ -64,8 +67,8 @@ void RobotContainer::TestSetup() {
 }
 
 void RobotContainer::TestMode() {
-  //m_arm.ArmTest();
+  m_arm.ArmTest();
   //m_grabber.GrabberTest();
-  m_drive.DrivetrainTest();
+  //m_drive.DrivetrainTest();
   frc::SmartDashboard::PutNumber( "Joystick", m_driverController.GetLeftX() );
 }

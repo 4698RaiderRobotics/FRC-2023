@@ -10,14 +10,19 @@ class AbsoluteEncoder{
          * @param absoluteEncoderOffset Must be a value from 0 to 1
          * @param inverted -1 for inverted encoder, defaults to 1
         */
-        AbsoluteEncoder( const int absoluteEncoderChannel, const double absoluteEncoderOffset = 0.0, int inverted = 1 ) : 
+        AbsoluteEncoder( const int absoluteEncoderChannel, const double absoluteEncoderOffset = 0.0, bool inverted = false ) : 
                         m_absoluteEncoder{absoluteEncoderChannel}, 
                         m_absoluteEncoderOffset{absoluteEncoderOffset},
-                        m_inverted{ inverted } { }
+                        m_invertFactor{ 1 }
+         { 
+            if ( inverted ) {
+                m_invertFactor = -1;
+            }
+        }
 
         // Returns the angle in degrees
         units::degree_t GetPosition( void ) {
-            return ( m_absoluteEncoder.GetAbsolutePosition() - m_absoluteEncoderOffset ) * 360_deg * m_inverted - 180_deg ;
+            return ( m_absoluteEncoder.GetAbsolutePosition() - m_absoluteEncoderOffset ) * 360_deg * m_invertFactor;
         }
 
         double GetRawPosition() {
@@ -28,5 +33,5 @@ class AbsoluteEncoder{
 
         const double m_absoluteEncoderOffset;
 
-        int m_inverted;
+        int m_invertFactor;
 };

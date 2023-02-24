@@ -7,8 +7,10 @@
 ArmSubsystem::ArmSubsystem() {
     m_right.SetInverted( true );
     m_right.Follow( m_left );
-    m_left.SetNeutralMode( ctre::phoenix::motorcontrol::Brake);
-    m_right.SetNeutralMode( ctre::phoenix::motorcontrol::Brake);
+    m_left.SetNeutralMode( ctre::phoenix::motorcontrol::Brake );
+    m_right.SetNeutralMode( ctre::phoenix::motorcontrol::Brake );
+
+    m_setpoint.position = m_enc.GetPosition();
 };
 
 void ArmSubsystem::Periodic() {
@@ -17,16 +19,18 @@ void ArmSubsystem::Periodic() {
     frc::TrapezoidProfile<units::degrees> m_profile{ m_constraints, m_goal, m_setpoint };
     m_setpoint = m_profile.Calculate( dt );
 
+    frc::SmartDashboard::PutNumber( "Arm Setpoint Position", m_setpoint.position.value() );
+    frc::SmartDashboard::PutNumber( "Arm Setpoint Velocity", m_setpoint.velocity.value() );
+
     units::degree_t measurement = m_enc.GetPosition();
 
-    frc::ArmFeedforward feedforward{ units::volt_t{ kS }, units::volt_t{ kG },  units::unit_t<frc::ArmFeedforward::kv_unit> { kV }  };
-
-    frc2::PIDController pid{ kP, kI, kD };
 
     double output = pid.Calculate( measurement.value(), m_setpoint.position.value());
-    double feedforwardOut = feedforward.Calculate( units::radian_t{ measurement }, units::radians_per_second_t{ m_setpoint.velocity() } ).value();
+    double feedforwardOut = feedforward.Calculate( m_setpoint.position, m_setpoint.velocity ).value();
+    frc::SmartDashboard::PutNumber( "Arm Voltage", output * 12 + feedforwardOut );
 
-    m_left.Set( ctre::phoenix::motorcontrol::ControlMode::PercentOutput, output  + feedforwardOut / 12 );
+    m_left.Set( ctre::phoenix::motorcontrol::ControlMode::PercentOutput, output + feedforwardOut / 12 );
+
 }
 
 void ArmSubsystem::Arm( units::degree_t angle ) {
@@ -48,16 +52,16 @@ void ArmSubsystem::ArmTest() {
     double v = frc::SmartDashboard::GetNumber( "kV", 0.0 );
     double s = frc::SmartDashboard::GetNumber( "kS", 0.0 );
 
-    if( g != kG ) { kG = g; }
-    if( p != kP ) { kP = p; }
-    if( d != kD ) { kD = d; }
-    if( v != kV ) { kV = v; }
-    if( s != kS ) { kS = s; }
+    if( g != kG ) { kG = g; feedforward.kG = units::volt_t{ kG }; }
+    if( p != kP ) { kP = p; pid.SetP( kP ); }
+    if( d != kD ) { kD = d; pid.SetD( kD ); }
+    if( v != kV ) { kV = v; feedforward.kV = units::unit_t<frc::ArmFeedforward::kv_unit>{ kV }; }
+    if( s != kS ) { kS = s; feedforward.kS = units::volt_t{ kS }; }
 
     frc::SmartDashboard::PutNumber( "Arm Position", m_enc.GetPosition().value() );
-    frc::SmartDashboard::PutNumber( "Arm Velocity", m_left.GetSensorCollection().GetIntegratedSensorVelocity() * 2048.0 / 600.0 * 360.0 / 60.0 );
-    frc::SmartDashboard::PutNumber( "Arm Setpoint Position", m_setpoint.position.value() );
-    frc::SmartDashboard::PutNumber( "Arm Setpoint Velocity", m_setpoint.velocity.value() );
+    frc::SmartDashboard::PutNumber( "Arm Velocity", m_left.GetSensorCollection().GetIntegratedSensorVelocity() * physical::tics_per_100ms_to_deg_per_s * physical::kArmGearRatio );
+    
 
     frc::SmartDashboard::PutNumber( "Arm Raw Pos", m_enc.GetRawPosition() );
+    
 }

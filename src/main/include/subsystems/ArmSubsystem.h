@@ -35,21 +35,25 @@ class ArmSubsystem : public frc2::SubsystemBase {
   ctre::phoenix::motorcontrol::can::TalonFX m_left{ deviceIDs::kLeftArmMotorID };
   ctre::phoenix::motorcontrol::can::TalonFX m_right{ deviceIDs::kRightArmMotorID }; 
 
-  AbsoluteEncoder m_enc{ deviceIDs::kArmEncoderID, physical::kArmAbsoluteOffset, -1 };
+  AbsoluteEncoder m_enc{ deviceIDs::kArmEncoderID, physical::kArmAbsoluteOffset, true };
 
-  double kS = 0.0;
-  double kG = 0.0;
-  double kV = 0.0;
+  double kS = 0.4;
+  double kG = 1.5;
+  double kV = 0.4;
   double kA = 0.0;
 
-  double kP = 0.0;
+  double kP = 0.0015;
   double kI = 0.0;
-  double kD = 0.0;
+  double kD = 0.001;
+
+  frc2::PIDController pid{ kP, kI, kD };
+  
+  frc::ArmFeedforward feedforward{ units::volt_t{ kS }, units::volt_t{ kG },  units::unit_t<frc::ArmFeedforward::kv_unit> { kV }  };
 
   frc::TrapezoidProfile<units::degrees>::Constraints m_constraints{ 360_deg_per_s, 360_deg_per_s_sq };
   frc::TrapezoidProfile<units::degrees>::State m_goal;
-  frc::TrapezoidProfile<units::degrees>::State m_setpoint{ 0_deg, 0_deg_per_s };
+  frc::TrapezoidProfile<units::degrees>::State m_setpoint;
 
   units::second_t dt = 20_ms;
-  units::degree_t m_angle;
+  units::degree_t m_angle = -90_deg;
 };

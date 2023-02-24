@@ -71,6 +71,11 @@ namespace physical {
     // wheel circumference / gear ratio
     constexpr meters_per_rev_t kDriveMetersPerRotation = std::numbers::pi * 4_in / (kDriveGearRatio *  1_tr );
 
+    // 
+    constexpr double kArmGearRatio = 12.0 / 58.0 * 18.0 / 58.0 * 15.0 / 26.0;
+
+    constexpr double tics_per_100ms_to_deg_per_s = 3600.0 / 2048.0;
+
     // Gear ratio of the turn motors. 12.8 rotations of the turning motor is one rotation of the swerve module.
     constexpr double kTurnGearRatio = 12.8;
 
@@ -78,11 +83,16 @@ namespace physical {
     constexpr units::meter_t kDriveBaseWidth = 23.25_in;
 
     constexpr units::meter_t kDriveBaseLength = 22.5_in;
-
+/*
     constexpr double kFrontLeftAbsoluteOffset = 0.1372;
     constexpr double kFrontRightAbsoluteOffset = 0.3699;
     constexpr double kBackLeftAbsoluteOffset = 0.7882;
     constexpr double kBackRightAbsoluteOffset = 0.4485;
+*/
+    constexpr double kFrontLeftAbsoluteOffset = 0.1372 + 0.5;
+    constexpr double kFrontRightAbsoluteOffset = 0.3699 + 0.5;
+    constexpr double kBackLeftAbsoluteOffset = 0.7882 - 0.5;
+    constexpr double kBackRightAbsoluteOffset = 0.4485 + 0.5;
 
-    constexpr double kArmAbsoluteOffset = 0.0;
+    constexpr double kArmAbsoluteOffset = 0.5802;
 }
