@@ -12,6 +12,9 @@ frc::ChassisSpeeds Limelight::TargetRobot_AT(void)
     // [x,y,z,pitch,yaw,roll]
 
     camtran = table->GetNumberArray("camtran", defaultValue);
+    if ( camtran.size() == 0 ) {
+        return t_speeds = { 0_mps, 0_mps, 0_rad_per_s };
+    }
     // Back up if the target is high
     t_speeds.vx = -targetY * pidf::kXTargetP * physical::kMaxDriveSpeed;
     // Go left if off center to the right
@@ -22,8 +25,11 @@ frc::ChassisSpeeds Limelight::TargetRobot_AT(void)
     return t_speeds;
 }
 
-bool Limelight::Targeted(void)
+bool Limelight::Finished(void)
 {
+    if ( camtran.size() == 0 ) {
+        return true;
+    }
     return (targetX < physical::kLimelightTargetError && targetY < physical::kLimelightTargetError && camtran[0] < physical::kLimelightTargetError);
 }
 
@@ -52,4 +58,12 @@ bool Limelight::VisionPose(frc::Pose2d* AP_Pose)
         AP_Pose->Rotation().Degrees().value()};
     frc::SmartDashboard::PutNumberArray("l_Pose", ll_Pose);
     return true;
+}
+
+void Limelight::LimelightTest( ) {
+    frc::SmartDashboard::PutNumber( "tx", targetX );
+    frc::SmartDashboard::PutNumber( "ty", targetY );
+    if ( camtran.size() > 0 ) {
+        frc::SmartDashboard::PutNumber( "Yaw", camtran[0]);
+    }
 }

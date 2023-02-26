@@ -22,11 +22,13 @@ class Limelight : public frc2::SubsystemBase {
         
         frc::ChassisSpeeds TargetRobot_AT ( void );
 
-        bool Targeted( void );
+        bool Finished( void );
 
         bool VisionPose( frc::Pose2d* );
         
         void SetPipeline( int pipelineId );
+        
+        void LimelightTest();
 
     private:
         std::shared_ptr<nt::NetworkTable> table = nt::NetworkTableInstance::GetDefault().GetTable("limelight");

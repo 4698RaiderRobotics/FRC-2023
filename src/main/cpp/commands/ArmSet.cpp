@@ -26,5 +26,5 @@ void ArmSet::End(bool interrupted) {
 
 // Returns true when the command should end.
 bool ArmSet::IsFinished() {
-  return m_arm->Finished( m_angle );
+  return m_arm->Finished( );
 }

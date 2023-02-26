@@ -37,8 +37,8 @@ void ArmSubsystem::Arm( units::degree_t angle ) {
     m_angle = angle;
 }
 
-bool ArmSubsystem::Finished( units::degree_t angle ) {
-    return units::math::abs( angle - m_angle ) < physical::kArmAngleError;
+bool ArmSubsystem::Finished( ) {
+    return units::math::abs( m_enc.GetPosition() - m_angle ) < physical::kArmAngleError;
 }
 
 void ArmSubsystem::ArmTestSetup() {
@@ -49,7 +49,8 @@ void ArmSubsystem::ArmTestSetup() {
     frc::SmartDashboard::PutNumber("kS", kS);
 
     frc::SmartDashboard::PutNumber( "Arm Position", m_enc.GetPosition().value() );
-    frc::SmartDashboard::PutNumber( "Arm Velocity", m_left.GetSensorCollection().GetIntegratedSensorVelocity() * physical::tics_per_100ms_to_deg_per_s * physical::kArmGearRatio );
+    frc::SmartDashboard::PutNumber( "Arm Velocity", m_left.GetSensorCollection().GetIntegratedSensorVelocity() 
+                                                    * physical::tics_per_100ms_to_deg_per_s * physical::kArmGearRatio );
 
 }
 
@@ -67,7 +68,8 @@ void ArmSubsystem::ArmTest() {
     if( s != kS ) { kS = s; feedforward.kS = units::volt_t{ kS }; }
 
     frc::SmartDashboard::PutNumber( "Arm Position", m_enc.GetPosition().value() );
-    frc::SmartDashboard::PutNumber( "Arm Velocity", m_left.GetSensorCollection().GetIntegratedSensorVelocity() * physical::tics_per_100ms_to_deg_per_s * physical::kArmGearRatio );
+    frc::SmartDashboard::PutNumber( "Arm Velocity", m_left.GetSensorCollection().GetIntegratedSensorVelocity() 
+                                                    * physical::tics_per_100ms_to_deg_per_s * physical::kArmGearRatio );
     
 
     frc::SmartDashboard::PutNumber( "Arm Raw Pos", m_enc.GetRawPosition() );

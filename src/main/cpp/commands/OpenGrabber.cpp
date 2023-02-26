@@ -4,14 +4,18 @@
 
 #include "commands/OpenGrabber.h"
 
-OpenGrabber::OpenGrabber( GrabberSubsystem *grabber ) 
-        : m_grabber{ grabber } {
+OpenGrabber::OpenGrabber( GrabberSubsystem *grabber, double speed ) 
+        : m_grabber{ grabber }, m_speed{ speed } {
   AddRequirements( { grabber } );
 }
 
 // Called when the command is initially scheduled.
 void OpenGrabber::Initialize() {
-  m_grabber->Open();
+  if ( m_speed != 0.0 ) {
+    m_grabber->Spin( -m_speed );
+  } else {
+    m_grabber->Open();
+  }
 }
 
 // Called repeatedly when this Command is scheduled to run

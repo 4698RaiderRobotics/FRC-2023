@@ -19,7 +19,7 @@
 class OpenGrabber
     : public frc2::CommandHelper<frc2::CommandBase, OpenGrabber> {
  public:
-  OpenGrabber( GrabberSubsystem *grabber );
+  OpenGrabber( GrabberSubsystem *grabber, double speed = 0 );
 
   void Initialize() override;
 
@@ -30,4 +30,5 @@ class OpenGrabber
   bool IsFinished() override;
  private:
   GrabberSubsystem *m_grabber;
+  double m_speed;
 };

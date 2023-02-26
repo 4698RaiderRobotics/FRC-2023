@@ -8,12 +8,12 @@
 // For more information, see:
 // https://docs.wpilib.org/en/stable/docs/software/commandbased/convenience-features.html
 PlaceGamePiece::PlaceGamePiece( Drivetrain *drive, ArmSubsystem *arm, GrabberSubsystem *grabber, Limelight *limelight, 
-                                units::meter_t distance, units::degree_t angle ) 
-    : m_drive{ drive }, m_arm{ arm }, m_grabber{ grabber }, m_limelight{ limelight } {
+                                units::meter_t distance, units::degree_t angle ) {
   // Add your commands here, e.g.
   // AddCommands(FooCommand{}, BarCommand{});
   AddCommands(
-    TargetLimelight{ m_drive, m_limelight },
+    ArmSet( angle, arm ),
+    TargetLimelight{ drive, limelight },
     frc2::TrapezoidProfileCommand<units::meters>{
           frc::TrapezoidProfile<units::meters>(
               { 3_mps, 3_mps_sq },
@@ -21,12 +21,10 @@ PlaceGamePiece::PlaceGamePiece( Drivetrain *drive, ArmSubsystem *arm, GrabberSub
           [this]( auto setpointState ) {
             frc::ChassisSpeeds speeds;
             speeds.vy = setpointState.velocity;
-            m_drive->Drive( speeds );
+            m_drive->Drive( speeds, false );
           },
-     
-          {m_drive}},
-    ArmSet( angle, m_arm ),
-    OpenGrabber( m_grabber ),
-    ArmSet( 0_deg, m_arm )
+    
+          {drive}},
+    OpenGrabber( grabber )
   );
 }
