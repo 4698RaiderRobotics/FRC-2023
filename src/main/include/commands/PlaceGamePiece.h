@@ -24,9 +24,13 @@ class PlaceGamePiece
  public:
   PlaceGamePiece( Drivetrain *drive, ArmSubsystem *arm, GrabberSubsystem *grabber, Limelight *limelight, units::meter_t distance, units::degree_t angle );
 
+  Command::InterruptionBehavior GetInterruptionBehavior() const override;
+
  private:
   Drivetrain *m_drive;
   ArmSubsystem *m_arm;
   GrabberSubsystem *m_grabber;
   Limelight *m_limelight;
+
+  frc::Timer m_timer;
 };

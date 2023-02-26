@@ -21,9 +21,9 @@ namespace pidf {
 
     constexpr double kGyroBalanceP = 0.005;
 
-    constexpr double kXTargetP = 0.05;
-    constexpr double kYTargetP = 0.5;
-    constexpr double kOmegaTargetP = 0.01;
+    //constexpr double kXTargetP = 0.005;
+    //constexpr double kYTargetP = 0.1;
+    //constexpr double kOmegaTargetP = 0.001;
 }
 
 namespace deviceIDs {
@@ -97,5 +97,5 @@ namespace physical {
     constexpr double kArmAbsoluteOffset = 0.5802;
 
     constexpr units::degree_t kArmAngleError = 1_deg;
-    constexpr double kLimelightTargetError = 0.1;
+    constexpr double kLimelightTargetError = 1;
 }

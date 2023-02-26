@@ -27,4 +27,13 @@ PlaceGamePiece::PlaceGamePiece( Drivetrain *drive, ArmSubsystem *arm, GrabberSub
           {drive}},
     OpenGrabber( grabber )
   );
+  m_timer.Restart();
+}
+
+frc2::Command::InterruptionBehavior PlaceGamePiece::GetInterruptionBehavior() const {
+  if ( m_timer.HasElapsed( 0.5_s ) ) {
+    return frc2::Command::InterruptionBehavior::kCancelSelf;
+  } else {
+    return frc2::Command::InterruptionBehavior::kCancelIncoming;
+  }
 }

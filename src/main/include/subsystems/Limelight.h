@@ -46,4 +46,8 @@ class Limelight : public frc2::SubsystemBase {
         frc::Pose2d l_Pose;
         units::degree_t rZ;
         frc::ChassisSpeeds t_speeds;
+
+        double kXTargetP = 0.005;
+        double kYTargetP = 0.1;
+        double kOmegaTargetP = 0.001;
 };
