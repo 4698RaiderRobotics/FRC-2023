@@ -16,6 +16,8 @@ PlaceGamePiece::PlaceGamePiece( Drivetrain *drive, ArmSubsystem *arm, GrabberSub
     ArmSet( angle, arm ),
     // Line up with April Tag.
     TargetLimelight{ drive, limelight },
+    // Might as well update Odometry while we are here.
+    UpdateOdom{drive, limelight},
     // Move to desired location relative to current pos
     frc2::TrapezoidProfileCommand<units::meters>{
           frc::TrapezoidProfile<units::meters>(
@@ -26,7 +28,6 @@ PlaceGamePiece::PlaceGamePiece( Drivetrain *drive, ArmSubsystem *arm, GrabberSub
             speeds.vy = setpointState.velocity;
             m_drive->Drive( speeds, false );
           },
-    
           {drive}},
     // Drop GamePiece.
     OpenGrabber( grabber )
