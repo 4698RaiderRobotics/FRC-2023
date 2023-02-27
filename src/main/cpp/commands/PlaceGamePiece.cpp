@@ -12,8 +12,11 @@ PlaceGamePiece::PlaceGamePiece( Drivetrain *drive, ArmSubsystem *arm, GrabberSub
   // Add your commands here, e.g.
   // AddCommands(FooCommand{}, BarCommand{});
   AddCommands(
+    // Move arm to desired angle
     ArmSet( angle, arm ),
+    // Line up with April Tag.
     TargetLimelight{ drive, limelight },
+    // Move to desired location relative to current pos
     frc2::TrapezoidProfileCommand<units::meters>{
           frc::TrapezoidProfile<units::meters>(
               { 3_mps, 3_mps_sq },
@@ -25,6 +28,7 @@ PlaceGamePiece::PlaceGamePiece( Drivetrain *drive, ArmSubsystem *arm, GrabberSub
           },
     
           {drive}},
+    // Drop GamePiece.
     OpenGrabber( grabber )
   );
   m_timer.Restart();
