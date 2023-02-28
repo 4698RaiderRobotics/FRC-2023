@@ -30,11 +30,11 @@ void RobotContainer::ConfigureButtonBindings() {
 
   frc2::JoystickButton( &m_driverController, frc::PS4Controller::Button::kCross )
     .WhileTrue( PlaceGamePiece( &m_drive, &m_arm, &m_grabber, 
-                  &m_limelight, frc::Pose2d{ -42_in, 22_in, 0_deg }, 30_deg, true ).ToPtr());
+                  &m_limelight, frc::Pose2d{ -42_in, 22_in, 0_deg }, 30_deg ).ToPtr());
 
   frc2::JoystickButton( &m_driverController, frc::PS4Controller::Button::kL1 )
     .WhileTrue( PlaceGamePiece( &m_drive, &m_arm, &m_grabber, 
-                  &m_limelight, frc::Pose2d{ -42_in, 0_in, 0_deg }, 30_deg, true ).ToPtr());
+                  &m_limelight, frc::Pose2d{ -42_in, 0_in, 0_deg }, 30_deg ).ToPtr());
 
   // Move a Test distance X or Y
   frc2::JoystickButton( &m_driverController, frc::PS4Controller::Button::kTriangle )
@@ -47,15 +47,15 @@ void RobotContainer::ConfigureButtonBindings() {
   .WhileTrue( UpdateOdom( &m_drive, &m_limelight).ToPtr());
 
   frc2::JoystickButton( &m_operatorController, frc::XboxController::Button::kRightBumper )
-  .WhileTrue( frc2::InstantCommand( [this] { m_grabber.Open(); }, { &m_grabber } ).ToPtr() );
+  .OnTrue( OpenGrabber( &m_grabber, 0.0 ).ToPtr() );
+
+  frc2::JoystickButton( &m_operatorController, frc::XboxController::Button::kLeftBumper )
+  .WhileTrue( CloseGrabber( &m_grabber ).ToPtr() );
 
   m_operatorController.RightTrigger().WhileTrue( frc2::RunCommand( [this] { m_grabber.Spin( -0.25 ); }, { &m_grabber } ).ToPtr() );
 
   m_operatorController.LeftTrigger().ToggleOnTrue( frc2::StartEndCommand( [this] { m_grabber.Spin( 0 ); },
-   [this] { m_grabber.Spin( 0.10 ); }, { &m_grabber } ).ToPtr() );
-
-  frc2::JoystickButton( &m_operatorController, frc::XboxController::Button::kLeftBumper )
-  .WhileTrue( CloseGrabber( &m_grabber ).ToPtr() );
+   [this] { m_grabber.Spin( m_grabber.kRollerGripPercent ); }, { &m_grabber } ).ToPtr() );
 
   frc2::JoystickButton( &m_operatorController, frc::XboxController::Button::kY )
   .WhileTrue( ArmSet( 30_deg, &m_arm ).ToPtr() );

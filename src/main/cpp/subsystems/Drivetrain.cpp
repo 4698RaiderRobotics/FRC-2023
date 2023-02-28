@@ -1,8 +1,14 @@
-#include "subsystems/Drivetrain.h"
-Drivetrain::Drivetrain() {
-    ResetGyro( 0 );
-    //frc::SmartDashboard::PutData("Field", &m_field);
 
+#include "subsystems/Drivetrain.h"
+#include "subsystems/Limelight.h"
+
+Drivetrain::Drivetrain( Limelight *ll ) : m_limelight{ll} {
+//    if( frc::DriverStation::GetAlliance() == frc::DriverStation::kRed ) {
+        ResetGyro( 180_deg );
+//    } else {
+//        ResetGyro( 0_deg );
+//   }
+    frc::SmartDashboard::PutData("Field", &m_field);
 }
 
 // Drives with joystick inputs
@@ -57,28 +63,39 @@ void Drivetrain::Drive( frc::ChassisSpeeds speeds, bool fieldRelative ) {
 // Drives a path given a trajectory state
 void Drivetrain::DriveTrajectory( frc::Trajectory::State trajectoryState ) {
     // A ChassisSpeeds objects based on the current position on the trajectory
-    auto adjustedSpeeds = m_controller.Calculate( m_odometry.GetPose(), trajectoryState, trajectoryState.pose.Rotation().Degrees() );
+    auto adjustedSpeeds = m_controller.Calculate( m_odometry.GetEstimatedPosition(), trajectoryState, trajectoryState.pose.Rotation().Degrees() );
 
     Drive( adjustedSpeeds );
 }
 
 void Drivetrain::Periodic( ) {
-    double pose_vec[3];
     // Updates the odometry of the robot given the SwerveModules' states
     m_odometry.Update( frc::Rotation2d{ units::degree_t{ m_gyro.GetYaw() } },
     {
         m_frontLeft.GetPosition(), m_frontRight.GetPosition(), 
         m_backLeft.GetPosition(), m_backRight.GetPosition() 
     });
-    pose_vec[0] = m_odometry.GetPose().X().value();
-    pose_vec[1] = m_odometry.GetPose().Y().value();
-    pose_vec[2] = m_odometry.GetPose().Rotation().Degrees().value();
-    frc::SmartDashboard::PutNumberArray("robot_Pose", pose_vec );
+
+    frc::Pose2d visionPose;
+    units::second_t timestamp;
+    if( m_limelight->getFieldAprilTagPose( visionPose, timestamp ) ) {
+        if( m_noValidPose ) {
+            m_noValidPose = false;
+            m_odometry.ResetPosition( frc::Rotation2d{ units::degree_t{ m_gyro.GetYaw() } },
+            {
+                m_frontLeft.GetPosition(), m_frontRight.GetPosition(), 
+                m_backLeft.GetPosition(), m_backRight.GetPosition() 
+            }, visionPose );
+        } else {
+            m_odometry.AddVisionMeasurement( visionPose, timestamp );
+        }
+    }
+    m_field.SetRobotPose( m_odometry.GetEstimatedPosition() );
 }
 
 // Resets the gyro to an angle
-void Drivetrain::ResetGyro( int angle ) {
-    m_gyro.SetYaw( angle );
+void Drivetrain::ResetGyro( units::degree_t angle ) {
+    m_gyro.SetYaw( angle.value() );
 }
 
 // Returns the current pitch in degrees
@@ -89,7 +106,7 @@ double Drivetrain::GetPitch( void ) {
 
 // Returns the pose2d of the robot
 frc::Pose2d Drivetrain::GetPose( void ) {
-    return m_odometry.GetPose();
+    return m_odometry.GetEstimatedPosition();
 }
 
 // Resets the pose to a position
@@ -126,7 +143,7 @@ void Drivetrain::DrivetrainTest() {
 }
 
 void Drivetrain::PoseToNetworkTables() {
-    frc::SmartDashboard::PutNumber( "Robot Pose X", m_odometry.GetPose().X().value() );
-    frc::SmartDashboard::PutNumber( "Robot Pose Y", m_odometry.GetPose().Y().value() );
-    frc::SmartDashboard::PutNumber( "Robot Pose Theta", m_odometry.GetPose().Rotation().Degrees().value() );
+    frc::SmartDashboard::PutNumber( "Robot Pose X", m_odometry.GetEstimatedPosition().X().value() );
+    frc::SmartDashboard::PutNumber( "Robot Pose Y", m_odometry.GetEstimatedPosition().Y().value() );
+    frc::SmartDashboard::PutNumber( "Robot Pose Theta", m_odometry.GetEstimatedPosition().Rotation().Degrees().value() );
 }

@@ -5,6 +5,7 @@
 #include "commands/PlaceGamePiece.h"
 
 #include "commands/TargetLimelight.h"
+#include "commands/DriveToPoseCommand.h"
 #include "commands/ArmSet.h"
 #include "commands/TestProfileMove.h"
 #include "commands/OpenGrabber.h"
@@ -13,12 +14,13 @@
 // For more information, see:
 // https://docs.wpilib.org/en/stable/docs/software/commandbased/convenience-features.html
 PlaceGamePiece::PlaceGamePiece( Drivetrain *drive, ArmSubsystem *arm, GrabberSubsystem *grabber, Limelight *limelight, 
-                                frc::Pose2d targetPose, units::degree_t angle, bool isCone ) {
+                                frc::Pose2d targetPose, units::degree_t angle ) {
   // Add your commands here, e.g.
   // AddCommands(FooCommand{}, BarCommand{});
   AddCommands(
-    TargetLimelight{ drive, limelight, targetPose },
-    ArmSet( angle, arm, isCone ),
+//    TargetLimelight{ drive, limelight, targetPose },
+    DriveToPoseCommand{ drive },
+    ArmSet( angle, arm ),
     TestProfileMove( 19_in, TestProfileMove::FORWARD, drive ),
     OpenGrabber( grabber ),
     TestProfileMove( -19_in, TestProfileMove::FORWARD, drive ),

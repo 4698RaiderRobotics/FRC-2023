@@ -4,10 +4,9 @@
 
 #include "commands/ArmSet.h"
 
-ArmSet::ArmSet( units::degree_t angle, ArmSubsystem *arm, bool isCone )
+ArmSet::ArmSet( units::degree_t angle, ArmSubsystem *arm )
         : m_angle{ angle }, m_arm{ arm } {
   AddRequirements( { arm } );
-  m_arm->HoldingCone( isCone );
 }
 
 // Called when the command is initially scheduled.

@@ -43,8 +43,8 @@ class RobotContainer {
 
  private:
   // The robot's subsystems and commands are defined here...
-  Drivetrain m_drive;
   Limelight m_limelight;
+  Drivetrain m_drive{ &m_limelight };
   ArmSubsystem m_arm;
   GrabberSubsystem m_grabber;
 

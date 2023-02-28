@@ -1,7 +1,7 @@
 #pragma once
 
 #include <frc/kinematics/SwerveDriveKinematics.h>
-#include <frc/kinematics/SwerveDriveOdometry.h>
+#include <frc/estimator/SwerveDrivePoseEstimator.h>
 #include <frc/controller/HolonomicDriveController.h>
 #include <ctre/phoenix/sensors/PigeonIMU.h>
 #include <frc/geometry/Pose2d.h>
@@ -14,10 +14,11 @@
 #include "SwerveModule.h"
 // #include "SwerveModuleDisplay.h"
 
+class Limelight;
 
 class Drivetrain : public frc2::SubsystemBase {
   public:
-    Drivetrain( void );
+    Drivetrain( Limelight * );
 
     void Drive( double xSpeed, double ySpeed, double omegaSpeed, bool fieldRelative = true );
 
@@ -27,7 +28,7 @@ class Drivetrain : public frc2::SubsystemBase {
 
     void Periodic() override;
 
-    void ResetGyro( int angle );
+    void ResetGyro( units::degree_t angle );
 
     double GetPitch( void );
 
@@ -41,7 +42,9 @@ class Drivetrain : public frc2::SubsystemBase {
     void PoseToNetworkTables();
 
   private:
-    //frc::Field2d m_field;
+    frc::Field2d m_field;
+    Limelight *m_limelight;
+    bool m_noValidPose = true;
 
 //    SwerveStatusDisplay swerve_display{ "Swerve Drive", "Robot Wheel Status" };
 
@@ -64,12 +67,13 @@ class Drivetrain : public frc2::SubsystemBase {
 
     frc::SwerveDriveKinematics<4> m_kinematics{ m_frontLeftLocation, m_frontRightLocation, 
                                               m_backLeftLocation,m_backRightLocation};
-    frc::SwerveDriveOdometry<4> m_odometry{m_kinematics, frc::Rotation2d{ 0_deg },
+    frc::SwerveDrivePoseEstimator<4> m_odometry{m_kinematics, frc::Rotation2d{ 0_deg },
       {
         m_frontLeft.GetPosition(), m_frontRight.GetPosition(),
         m_backLeft.GetPosition(), m_backRight.GetPosition()
       },
-      frc::Pose2d{ 0_ft, 0_ft, 0_deg } 
+ //     frc::Pose2d{ 610.77_in, 42.19_in, 0_deg } 
+      frc::Pose2d{0.0_in, 0.0_in, 0_deg } 
     };
     // Drive controller for driving a trajectory
     frc::HolonomicDriveController m_controller{ 
