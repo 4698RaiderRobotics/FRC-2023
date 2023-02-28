@@ -14,6 +14,10 @@
 #include "subsystems/ArmSubsystem.h"
 #include "subsystems/GrabberSubsystem.h"
 #include "subsystems/Limelight.h"
+#include "commands/TargetLimelight.h"
+#include "commands/ArmSet.h"
+#include "commands/OpenGrabber.h"
+#include "commands/UpdateOdom.h"
 
 class PlaceGamePiece
     : public frc2::CommandHelper<frc2::SequentialCommandGroup, PlaceGamePiece> {
