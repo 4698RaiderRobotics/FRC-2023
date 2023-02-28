@@ -27,6 +27,10 @@ class SwerveModule {
 
         frc::SwerveModuleState GetState( void );
         frc::SwerveModulePosition GetPosition ( void );
+
+        void ModuleSetup();
+
+        void ModuleTest( std::string name );
     private:
         rev::CANSparkMax m_driveMotor;
         rev::CANSparkMax m_turnMotor;
@@ -40,5 +44,14 @@ class SwerveModule {
 
         // The turn motor uses the software PID controller (frc2::PIDController). 
         // The motor needs to be set with the Set() function with the PID controller's output.
-        frc2::PIDController m_turnPIDController{ pidf::kTurnP, pidf::kTurnI, pidf::kTurnD };
+        frc2::PIDController m_turnPIDController{ kTurnP, kTurnI, kTurnD };
+
+        double kTurnP = 0.005;
+        double kTurnI = 0;
+        double kTurnD = 0;
+
+        double kDriveP = 0.0001;
+        double kDriveI = 0;
+        double kDriveD = 0;
+        double kDriveFF = 0.0002;
 };

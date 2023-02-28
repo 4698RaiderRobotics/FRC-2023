@@ -15,11 +15,13 @@ SwerveModule::SwerveModule( const int turnMotorChannel,
                            : m_driveMotor{ driveMotorChannel, rev::CANSparkMaxLowLevel::MotorType::kBrushless },
                            m_turnMotor{ turnMotorChannel, rev::CANSparkMaxLowLevel::MotorType::kBrushless },
                            m_turnEncoder{ absoluteEncoderChannel, absoluteEncoderOffset } {
-    m_drivePIDController.SetP(pidf::kDriveP);
-    m_drivePIDController.SetI(pidf::kDriveI);
-    m_drivePIDController.SetD(pidf::kDriveD);
-    m_drivePIDController.SetFF(pidf::kDriveFF);
+    m_drivePIDController.SetP(kDriveP);
+    m_drivePIDController.SetI(kDriveI);
+    m_drivePIDController.SetD(kDriveD);
+    m_drivePIDController.SetFF(kDriveFF);
     m_turnPIDController.EnableContinuousInput(-180, 180);
+    m_turnPIDController.SetP( kTurnP );   
+    m_turnPIDController.SetD( kTurnD );
 }
 
 // Sets each individual SwerveModule to an optimized SwerveModuleState
@@ -41,13 +43,43 @@ void SwerveModule::SetDesiredState( const frc::SwerveModuleState& referenceState
 
     // The software PID controller outputs a value 0 to 1 which must be set using the Set() function of the motor.
     m_turnMotor.Set( m_turnPIDController.Calculate( m_turnEncoder.GetPosition().value(), state.angle.Degrees().value() ) );
+
+    frc::SmartDashboard::PutNumber( "Drive Velocity", m_driveEncoder.GetVelocity() * physical::kDriveMetersPerRotation.value() / 60.0 );
+    frc::SmartDashboard::PutNumber( "Setpoint Drive Velocity", (opRPM * physical::kDriveMetersPerRotation / 60.0).value() );
 }
 
 // Returns the current state of the SwerveModule
 frc::SwerveModuleState SwerveModule::GetState( void ) {
-    return { units::meters_per_second_t{ m_driveEncoder.GetVelocity() }, units::radian_t{ m_turnEncoder.GetPosition() } };
+    //undo this for odometry
+    return { units::meters_per_second_t{ round(m_driveEncoder.GetVelocity() * physical::kDriveMetersPerRotation.value() / 60.0 )}, units::radian_t{ m_turnEncoder.GetPosition() } };
 }
 
 frc::SwerveModulePosition SwerveModule::GetPosition( void ) {
     return { units::turn_t{ m_driveEncoder.GetPosition() } * physical::kDriveMetersPerRotation, m_turnEncoder.GetPosition()  };
+}
+
+void SwerveModule::ModuleSetup() {
+    
+    frc::SmartDashboard::PutNumber( "kDriveP", kDriveP );
+    frc::SmartDashboard::PutNumber( "kDriveD", kDriveD );
+    frc::SmartDashboard::PutNumber( "kDriveFF", kDriveFF );
+    frc::SmartDashboard::PutNumber( "kTurnP", kTurnP );
+    frc::SmartDashboard::PutNumber( "kTurnD", kTurnD );
+
+}
+
+void SwerveModule::ModuleTest( std::string name) {
+    double tP = frc::SmartDashboard::GetNumber( "kTurnP", 0.0 );
+    double tD = frc::SmartDashboard::GetNumber( "kTurnD", 0.0 );
+    double dP = frc::SmartDashboard::GetNumber( "kDriveP", 0.0 );
+    double dD = frc::SmartDashboard::GetNumber( "kDriveD", 0.0 );
+    double dFF = frc::SmartDashboard::GetNumber( "kDriveFF", 0.0 );
+
+    if(tP != kTurnP) { kTurnP = tP; m_turnPIDController.SetP( kTurnP ); }
+    if(tD != kTurnD) { kTurnD = tD; m_turnPIDController.SetD( kTurnD ); }
+    if(dP != kDriveP) { kDriveP = dP; m_drivePIDController.SetP( kDriveP ); }
+    if(dD != kDriveD) { kDriveD = dD; m_drivePIDController.SetD( kDriveD ); }
+    if(dFF != kDriveFF) { kDriveFF = dFF; m_drivePIDController.SetFF( kDriveFF ); }
+    
+    frc::SmartDashboard::PutNumber( name, m_turnEncoder.GetRawPosition() );
 }

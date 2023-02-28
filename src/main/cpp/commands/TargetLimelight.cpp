@@ -12,5 +12,5 @@ void TargetLimelight::Execute() {
 }
 
 bool TargetLimelight::IsFinished() {
-    return m_limelight->Targeted();
+    return m_limelight->Finished();
 }

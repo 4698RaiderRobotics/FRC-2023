@@ -91,3 +91,17 @@ void Drivetrain::ResetPose( frc::Pose2d position ) {
             position
         );
 }
+
+void Drivetrain::DrivetrainSetup() {
+    m_frontLeft.ModuleSetup();
+    m_frontRight.ModuleSetup();
+    m_backLeft.ModuleSetup();
+    m_backRight.ModuleSetup();
+}
+
+void Drivetrain::DrivetrainTest() {
+    m_frontLeft.ModuleTest( "Front Left" );
+    m_frontRight.ModuleTest( "Front Right" );
+    m_backLeft.ModuleTest( "Back Left" );
+    m_backRight.ModuleTest( "Back Right" );
+}

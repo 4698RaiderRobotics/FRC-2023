@@ -35,6 +35,10 @@ class Drivetrain : public frc2::SubsystemBase {
     void ResetPose( frc::Pose2d position );
     frc::Field2d m_field;
 
+    void DrivetrainSetup();
+
+    void DrivetrainTest();
+
   private:
 
     SwerveStatusDisplay swerve_display{ "Swerve Drive", "Robot Wheel Status" };
@@ -51,10 +55,10 @@ class Drivetrain : public frc2::SubsystemBase {
     frc::Trajectory m_trajectory;
     ctre::phoenix::sensors::PigeonIMU m_gyro{deviceIDs::kPigeonIMUID};
 
-    frc::Translation2d m_frontLeftLocation{ +( physical::kDriveBaseWidth / 2 ), +( physical::kDriveBaseWidth / 2 ) };
-    frc::Translation2d m_frontRightLocation{ +( physical::kDriveBaseWidth / 2 ), -( physical::kDriveBaseWidth / 2 ) };
-    frc::Translation2d m_backLeftLocation{ -( physical::kDriveBaseWidth / 2 ), +( physical::kDriveBaseWidth / 2 ) };
-    frc::Translation2d m_backRightLocation{ -( physical::kDriveBaseWidth / 2 ), -( physical::kDriveBaseWidth / 2 ) };
+    frc::Translation2d m_frontLeftLocation{ +( physical::kDriveBaseLength / 2 ), +( physical::kDriveBaseWidth / 2 ) };
+    frc::Translation2d m_frontRightLocation{ +( physical::kDriveBaseLength / 2 ), -( physical::kDriveBaseWidth / 2 ) };
+    frc::Translation2d m_backLeftLocation{ -( physical::kDriveBaseLength / 2 ), +( physical::kDriveBaseWidth / 2 ) };
+    frc::Translation2d m_backRightLocation{ -( physical::kDriveBaseLength / 2 ), -( physical::kDriveBaseWidth / 2 ) };
 
     frc::SwerveDriveKinematics<4> m_kinematics{ m_frontLeftLocation, m_frontRightLocation, 
                                               m_backLeftLocation,m_backRightLocation};

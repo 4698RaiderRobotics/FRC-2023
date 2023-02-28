@@ -8,6 +8,7 @@
 #include <units/length.h>
 
 namespace pidf {
+    /*
     constexpr double kTurnP = 0.005;
     constexpr double kTurnI = 0;
     constexpr double kTurnD = 0;
@@ -16,35 +17,45 @@ namespace pidf {
     constexpr double kDriveI = 0.000001;
     constexpr double kDriveD = 0;
     constexpr double kDriveFF = 0.000015;
+    */
 
     constexpr double kGyroBalanceP = 0.005;
 
-    constexpr double kXTargetP = 0.05;
-    constexpr double kYTargetP = 0.5;
-    constexpr double kOmegaTargetP = 0.01;
+    //constexpr double kXTargetP = 0.005;
+    //constexpr double kYTargetP = 0.1;
+    //constexpr double kOmegaTargetP = 0.001;
 }
 
 namespace deviceIDs {
-    const int kFrontLeftTurnMotorID = 1;
-    const int kFrontLeftDriveMotorID = 2;
-    const int kBackLeftTurnMotorID = 3;
-    const int kBackLeftDriveMotorID = 4;
-    const int kBackRightTurnMotorID = 5;
-    const int kBackRightDriveMotorID = 6;
-    const int kFrontRightTurnMotorID = 7;
-    const int kFrontRightDriveMotorID = 8;
+    constexpr int kFrontLeftTurnMotorID = 7;
+    constexpr int kFrontLeftDriveMotorID = 8;
+    constexpr int kBackLeftTurnMotorID = 5;
+    constexpr int kBackLeftDriveMotorID = 6;
+    constexpr int kBackRightTurnMotorID = 3;
+    constexpr int kBackRightDriveMotorID = 4;
+    constexpr int kFrontRightTurnMotorID = 1;
+    constexpr int kFrontRightDriveMotorID = 2;
 
-    const int kFrontLeftAbsoluteEncoderID = 0;
-    const int kFrontRightAbsoluteEncoderID = 1;
-    const int kBackLeftAbsoluteEncoderID = 2;
-    const int kBackRightAbsoluteEncoderID = 3;
+    constexpr int kLeftArmMotorID = 11;
+    constexpr int kRightArmMotorID = 12;
 
-    const int kPigeonIMUID = 50;
+    constexpr int kFrontLeftAbsoluteEncoderID = 1;
+    constexpr int kFrontRightAbsoluteEncoderID = 0;
+    constexpr int kBackLeftAbsoluteEncoderID = 3;
+    constexpr int kBackRightAbsoluteEncoderID = 2;
+    constexpr int kArmEncoderID = 4;
+
+    constexpr int kPigeonIMUID = 13;
+
+    constexpr int kGrabberSolenoidForwardChannel = 1;
+    constexpr int kGrabberSolenoidReverseChannel = 0;
+    constexpr int kBrakeSolenoidForwardChannel = 3;
+    constexpr int kBrakeSolenoidReverseChannel = 4;
 }
 
 namespace physical {
     // Max drive speed of Mk3 swerve modules * a scalar value
-    constexpr units::meters_per_second_t kMaxDriveSpeed = 14.4_fps * 0.5;
+    constexpr units::meters_per_second_t kMaxDriveSpeed = 14.4_fps * 0.85;
 
     // The max speed of the turn motors
     constexpr auto kMaxTurnSpeed =  5_rad_per_s;
@@ -60,16 +71,31 @@ namespace physical {
     // wheel circumference / gear ratio
     constexpr meters_per_rev_t kDriveMetersPerRotation = std::numbers::pi * 4_in / (kDriveGearRatio *  1_tr );
 
+    // 
+    constexpr double kArmGearRatio = 12.0 / 58.0 * 18.0 / 58.0 * 15.0 / 26.0;
+
+    constexpr double tics_per_100ms_to_deg_per_s = 3600.0 / 2048.0;
+
     // Gear ratio of the turn motors. 12.8 rotations of the turning motor is one rotation of the swerve module.
     constexpr double kTurnGearRatio = 12.8;
 
     // The width of the drive base from the center of one module to another adjacent one.
-    constexpr units::meter_t kDriveBaseWidth = 22.5_in;
+    constexpr units::meter_t kDriveBaseWidth = 23.25_in;
 
     constexpr units::meter_t kDriveBaseLength = 22.5_in;
+/*
+    constexpr double kFrontLeftAbsoluteOffset = 0.1372;
+    constexpr double kFrontRightAbsoluteOffset = 0.3699;
+    constexpr double kBackLeftAbsoluteOffset = 0.7882;
+    constexpr double kBackRightAbsoluteOffset = 0.4485;
+*/
+    constexpr double kFrontLeftAbsoluteOffset = 0.1372 + 0.5;
+    constexpr double kFrontRightAbsoluteOffset = 0.3699 + 0.5;
+    constexpr double kBackLeftAbsoluteOffset = 0.7882 - 0.5;
+    constexpr double kBackRightAbsoluteOffset = 0.4485 + 0.5;
 
-    constexpr double kFrontLeftAbsoluteOffset = 0.1244;
-    constexpr double kFrontRightAbsoluteOffset = 0.3902;
-    constexpr double kBackLeftAbsoluteOffset = 0.7013; 
-    constexpr double kBackRightAbsoluteOffset = 0.5409;
+    constexpr double kArmAbsoluteOffset = 0.5802;
+
+    constexpr units::degree_t kArmAngleError = 1_deg;
+    constexpr double kLimelightTargetError = 1;
 }
