@@ -4,9 +4,10 @@
 
 #include "commands/ArmSet.h"
 
-ArmSet::ArmSet( units::degree_t angle, ArmSubsystem *arm )
+ArmSet::ArmSet( units::degree_t angle, ArmSubsystem *arm, bool isCone )
         : m_angle{ angle }, m_arm{ arm } {
   AddRequirements( { arm } );
+  m_arm->HoldingCone( isCone );
 }
 
 // Called when the command is initially scheduled.
@@ -16,7 +17,7 @@ void ArmSet::Initialize() {
 
 // Called repeatedly when this Command is scheduled to run
 void ArmSet::Execute() {
-  m_arm->Arm( m_angle );
+  m_arm->GotoAngle( m_angle );
 }
 
 // Called once the command ends or is interrupted.

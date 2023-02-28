@@ -1,9 +1,7 @@
 #pragma once
 
 #include <frc2/command/Command.h>
-#include <frc2/command/RunCommand.h>
-#include <frc2/command/InstantCommand.h>
-#include <frc2/command/RepeatCommand.h>
+
 #include <frc2/command/button/JoystickButton.h>
 #include <frc/XboxController.h>
 #include <frc/PS4Controller.h>

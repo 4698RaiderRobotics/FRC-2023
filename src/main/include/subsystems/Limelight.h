@@ -19,10 +19,10 @@
 class Limelight : public frc2::SubsystemBase {
     public:
         Limelight(void);
-        
-        frc::ChassisSpeeds TargetRobot_AT ( void );
 
-        bool Finished( void );
+        void Periodic( void ) override;
+        
+        bool TargetRobot_AT ( frc::Pose2d& );
 
         bool VisionPose( frc::Pose2d* );
         
@@ -45,9 +45,5 @@ class Limelight : public frc2::SubsystemBase {
         double ll_Pose[3];
         frc::Pose2d l_Pose;
         units::degree_t rZ;
-        frc::ChassisSpeeds t_speeds;
-
-        double kXTargetP = 0.005;
-        double kYTargetP = 0.1;
-        double kOmegaTargetP = 0.001;
+        frc::Pose2d t_speeds;
 };

@@ -33,16 +33,25 @@ void ArmSubsystem::Periodic() {
 
 }
 
-void ArmSubsystem::Arm( units::degree_t angle ) {
+void ArmSubsystem::GotoAngle( units::degree_t angle ) {
     m_angle = angle;
 }
+
+void ArmSubsystem::HoldingCone( bool isCone ) {
+    if( isCone ) {
+        feedforward.kG = units::volt_t{ kG_cone };
+    } else {
+//        feedforward.kG = units::volt_t{ kG };
+    }
+}
+
 
 bool ArmSubsystem::Finished( ) {
     return units::math::abs( m_enc.GetPosition() - m_angle ) < physical::kArmAngleError;
 }
 
 void ArmSubsystem::ArmTestSetup() {
-    frc::SmartDashboard::PutNumber("kG", kG);
+    frc::SmartDashboard::PutNumber("kG", feedforward.kG.value() );
     frc::SmartDashboard::PutNumber("kP", kP);
     frc::SmartDashboard::PutNumber("kD", kD);
     frc::SmartDashboard::PutNumber("kV", kV);
@@ -61,7 +70,7 @@ void ArmSubsystem::ArmTest() {
     double v = frc::SmartDashboard::GetNumber( "kV", 0.0 );
     double s = frc::SmartDashboard::GetNumber( "kS", 0.0 );
 
-    if( g != kG ) { kG = g; feedforward.kG = units::volt_t{ kG }; }
+    if( g != feedforward.kG.value() ) { feedforward.kG = units::volt_t{ g }; }
     if( p != kP ) { kP = p; pid.SetP( kP ); }
     if( d != kD ) { kD = d; pid.SetD( kD ); }
     if( v != kV ) { kV = v; feedforward.kV = units::unit_t<frc::ArmFeedforward::kv_unit>{ kV }; }

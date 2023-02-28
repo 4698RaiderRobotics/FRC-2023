@@ -69,7 +69,7 @@ namespace physical {
 
     // The number of meters traveled per rotation of the drive motor
     // wheel circumference / gear ratio
-    constexpr meters_per_rev_t kDriveMetersPerRotation = std::numbers::pi * 4_in / (kDriveGearRatio *  1_tr );
+    constexpr meters_per_rev_t kDriveMetersPerRotation = std::numbers::pi * 4.1368_in / (kDriveGearRatio *  1_tr );
 
     // 
     constexpr double kArmGearRatio = 12.0 / 58.0 * 18.0 / 58.0 * 15.0 / 26.0;
@@ -96,6 +96,6 @@ namespace physical {
 
     constexpr double kArmAbsoluteOffset = 0.5802;
 
-    constexpr units::degree_t kArmAngleError = 1_deg;
+    constexpr units::degree_t kArmAngleError = 3_deg;
     constexpr double kLimelightTargetError = 1;
 }

@@ -14,15 +14,12 @@
 #include "subsystems/ArmSubsystem.h"
 #include "subsystems/GrabberSubsystem.h"
 #include "subsystems/Limelight.h"
-#include "commands/TargetLimelight.h"
-#include "commands/ArmSet.h"
-#include "commands/OpenGrabber.h"
 
 class PlaceGamePiece
-    : public frc2::CommandHelper<frc2::SequentialCommandGroup,
-                                 PlaceGamePiece> {
+    : public frc2::CommandHelper<frc2::SequentialCommandGroup, PlaceGamePiece> {
  public:
-  PlaceGamePiece( Drivetrain *drive, ArmSubsystem *arm, GrabberSubsystem *grabber, Limelight *limelight, units::meter_t distance, units::degree_t angle );
+  PlaceGamePiece( Drivetrain *drive, ArmSubsystem *arm, GrabberSubsystem *grabber, Limelight *limelight, 
+                  frc::Pose2d targetPose, units::degree_t angle, bool isCone );
 
   Command::InterruptionBehavior GetInterruptionBehavior() const override;
 

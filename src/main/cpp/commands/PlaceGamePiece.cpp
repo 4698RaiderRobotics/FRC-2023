@@ -4,29 +4,26 @@
 
 #include "commands/PlaceGamePiece.h"
 
+#include "commands/TargetLimelight.h"
+#include "commands/ArmSet.h"
+#include "commands/TestProfileMove.h"
+#include "commands/OpenGrabber.h"
+
 // NOTE:  Consider using this command inline, rather than writing a subclass.
 // For more information, see:
 // https://docs.wpilib.org/en/stable/docs/software/commandbased/convenience-features.html
 PlaceGamePiece::PlaceGamePiece( Drivetrain *drive, ArmSubsystem *arm, GrabberSubsystem *grabber, Limelight *limelight, 
-                                units::meter_t distance, units::degree_t angle ) {
+                                frc::Pose2d targetPose, units::degree_t angle, bool isCone ) {
   // Add your commands here, e.g.
   // AddCommands(FooCommand{}, BarCommand{});
   AddCommands(
-    ArmSet( angle, arm ),
-    TargetLimelight{ drive, limelight },
-    frc2::TrapezoidProfileCommand<units::meters>{
-          frc::TrapezoidProfile<units::meters>(
-              { 3_mps, 3_mps_sq },
-              { distance, 0_mps } ),
-          [this]( auto setpointState ) {
-            frc::ChassisSpeeds speeds;
-            speeds.vy = setpointState.velocity;
-            m_drive->Drive( speeds, false );
-          },
-    
-          {drive}},
-    OpenGrabber( grabber )
-  );
+    TargetLimelight{ drive, limelight, targetPose },
+    ArmSet( angle, arm, isCone ),
+    TestProfileMove( 19_in, TestProfileMove::FORWARD, drive ),
+    OpenGrabber( grabber ),
+    TestProfileMove( -19_in, TestProfileMove::FORWARD, drive ),
+    ArmSet( -90_deg, arm )
+);
   m_timer.Restart();
 }
 

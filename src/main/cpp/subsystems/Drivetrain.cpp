@@ -33,11 +33,12 @@ void Drivetrain::Drive( frc::ChassisSpeeds speeds, bool fieldRelative ) {
     m_backLeft.SetDesiredState( bl );
     m_backRight.SetDesiredState( br );
 
-    wpi::array opStates = { m_frontLeft.GetState(), m_frontRight.GetState(), m_backLeft.GetState(), m_backRight.GetState() };
+ //   wpi::array opStates = { m_frontLeft.GetState(), m_frontRight.GetState(), m_backLeft.GetState(), m_backRight.GetState() };
     // Displays the SwerveModules current position
-    swerve_display.SetState( opStates );
+//    swerve_display.SetState( opStates );
 
     // Updates the odometry of the robot given the SwerveModules' states
+/**
     m_odometry.Update( frc::Rotation2d{ units::degree_t{ m_gyro.GetYaw() } },
     {
         m_frontLeft.GetPosition(), m_frontRight.GetPosition(), 
@@ -50,6 +51,7 @@ void Drivetrain::Drive( frc::ChassisSpeeds speeds, bool fieldRelative ) {
         o_Pose.Rotation().Degrees().value()
     };
     frc::SmartDashboard::PutNumberArray("oo_Pose", oo_Pose);
+*/
 }
 
 // Drives a path given a trajectory state
@@ -61,12 +63,17 @@ void Drivetrain::DriveTrajectory( frc::Trajectory::State trajectoryState ) {
 }
 
 void Drivetrain::Periodic( ) {
+    double pose_vec[3];
     // Updates the odometry of the robot given the SwerveModules' states
     m_odometry.Update( frc::Rotation2d{ units::degree_t{ m_gyro.GetYaw() } },
     {
         m_frontLeft.GetPosition(), m_frontRight.GetPosition(), 
         m_backLeft.GetPosition(), m_backRight.GetPosition() 
     });
+    pose_vec[0] = m_odometry.GetPose().X().value();
+    pose_vec[1] = m_odometry.GetPose().Y().value();
+    pose_vec[2] = m_odometry.GetPose().Rotation().Degrees().value();
+    frc::SmartDashboard::PutNumberArray("robot_Pose", pose_vec );
 }
 
 // Resets the gyro to an angle
@@ -110,4 +117,16 @@ void Drivetrain::DrivetrainTest() {
     m_frontRight.ModuleTest( "Front Right" );
     m_backLeft.ModuleTest( "Back Left" );
     m_backRight.ModuleTest( "Back Right" );
+
+    wpi::array opStates = { m_frontLeft.GetState(), m_frontRight.GetState(), m_backLeft.GetState(), m_backRight.GetState() };
+    frc::ChassisSpeeds speed = m_kinematics.ToChassisSpeeds(opStates);
+    frc::SmartDashboard::PutNumber("robot vx", speed.vx.value() );
+    frc::SmartDashboard::PutNumber("robot vy", speed.vy.value() );
+    frc::SmartDashboard::PutNumber("robot Omega", speed.omega.value() );
+}
+
+void Drivetrain::PoseToNetworkTables() {
+    frc::SmartDashboard::PutNumber( "Robot Pose X", m_odometry.GetPose().X().value() );
+    frc::SmartDashboard::PutNumber( "Robot Pose Y", m_odometry.GetPose().Y().value() );
+    frc::SmartDashboard::PutNumber( "Robot Pose Theta", m_odometry.GetPose().Rotation().Degrees().value() );
 }

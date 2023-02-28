@@ -13,7 +13,7 @@
 class ArmSet
     : public frc2::CommandHelper<frc2::CommandBase, ArmSet> {
  public:
-  ArmSet( units::degree_t angle, ArmSubsystem *arm );
+  ArmSet( units::degree_t angle, ArmSubsystem *arm, bool isCone = false );
 
   void Initialize() override;
 

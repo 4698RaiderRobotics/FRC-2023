@@ -52,6 +52,6 @@ class SwerveModule {
 
         double kDriveP = 0.0001;
         double kDriveI = 0;
-        double kDriveD = 0;
+        double kDriveD = 0.001;
         double kDriveFF = 0.0002;
 };

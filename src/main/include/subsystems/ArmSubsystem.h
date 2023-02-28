@@ -24,7 +24,9 @@ class ArmSubsystem : public frc2::SubsystemBase {
 
   void Periodic() override;
 
-  void Arm( units::degree_t angle );
+  void GotoAngle( units::degree_t angle );
+
+  void HoldingCone( bool isCone = false );
 
   bool Finished( );
 
@@ -41,6 +43,7 @@ class ArmSubsystem : public frc2::SubsystemBase {
 
   double kS = 0.4;
   double kG = 1.6;
+  double kG_cone = 1.6;
   double kV = 0.4;
   double kA = 0.0;
 
@@ -50,7 +53,7 @@ class ArmSubsystem : public frc2::SubsystemBase {
 
   frc2::PIDController pid{ kP, kI, kD };
   
-  frc::ArmFeedforward feedforward{ units::volt_t{ kS }, units::volt_t{ kG },  units::unit_t<frc::ArmFeedforward::kv_unit> { kV }  };
+  frc::ArmFeedforward feedforward{ units::volt_t{ kS }, units::volt_t{ kG_cone },  units::unit_t<frc::ArmFeedforward::kv_unit> { kV }  };
 
   frc::TrapezoidProfile<units::degrees>::Constraints m_constraints{ 360_deg_per_s, 360_deg_per_s_sq };
   frc::TrapezoidProfile<units::degrees>::State m_goal;

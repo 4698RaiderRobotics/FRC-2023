@@ -11,7 +11,7 @@ CloseGrabber::CloseGrabber( GrabberSubsystem *grabber )
 
 // Called when the command is initially scheduled.
 void CloseGrabber::Initialize() {
-  m_grabber->Spin( 0.2 );
+  m_grabber->Spin( 0.10 );
   
 }
 

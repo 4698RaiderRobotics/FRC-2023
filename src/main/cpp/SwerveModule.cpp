@@ -36,7 +36,7 @@ void SwerveModule::SetDesiredState( const frc::SwerveModuleState& referenceState
 
     // Optimizes the rpm based on how far away the wheel is from pointed the correct direction
     // cos^2 of (the error angle) * the rpm
-    units::revolutions_per_minute_t opRPM = rpm * std::pow( units::math::cos( dTheta ).value(), 2 ); 
+    units::revolutions_per_minute_t opRPM = rpm * std::pow( units::math::cos( dTheta ).value(), 6 ); 
     
     // The onboard PID controller has a SetReference() function that automatically sets the motor to the correct speed.
     m_drivePIDController.SetReference( opRPM.value(), rev::CANSparkMaxLowLevel::ControlType::kVelocity );
@@ -82,4 +82,5 @@ void SwerveModule::ModuleTest( std::string name) {
     if(dFF != kDriveFF) { kDriveFF = dFF; m_drivePIDController.SetFF( kDriveFF ); }
     
     frc::SmartDashboard::PutNumber( name, m_turnEncoder.GetRawPosition() );
+    frc::SmartDashboard::PutNumber( name + " Velocity", m_driveEncoder.GetVelocity() * physical::kDriveMetersPerRotation.value() / 60.0 );
 }

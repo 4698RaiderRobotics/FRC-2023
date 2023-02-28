@@ -11,11 +11,11 @@ OpenGrabber::OpenGrabber( GrabberSubsystem *grabber, double speed )
 
 // Called when the command is initially scheduled.
 void OpenGrabber::Initialize() {
-  if ( m_speed != 0.0 ) {
+  
     m_grabber->Spin( -m_speed );
-  } else {
+  
     m_grabber->Open();
-  }
+  
 }
 
 // Called repeatedly when this Command is scheduled to run

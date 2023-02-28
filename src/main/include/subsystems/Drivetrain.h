@@ -12,7 +12,7 @@
 #include <frc2/command/SubsystemBase.h>
 
 #include "SwerveModule.h"
-#include "SwerveModuleDisplay.h"
+// #include "SwerveModuleDisplay.h"
 
 
 class Drivetrain : public frc2::SubsystemBase {
@@ -38,10 +38,12 @@ class Drivetrain : public frc2::SubsystemBase {
 
     void DrivetrainTest();
 
+    void PoseToNetworkTables();
+
   private:
     //frc::Field2d m_field;
 
-    SwerveStatusDisplay swerve_display{ "Swerve Drive", "Robot Wheel Status" };
+//    SwerveStatusDisplay swerve_display{ "Swerve Drive", "Robot Wheel Status" };
 
     SwerveModule m_frontLeft{ deviceIDs::kFrontLeftTurnMotorID, deviceIDs::kFrontLeftDriveMotorID, 
                             deviceIDs::kFrontLeftAbsoluteEncoderID, physical::kFrontLeftAbsoluteOffset };
