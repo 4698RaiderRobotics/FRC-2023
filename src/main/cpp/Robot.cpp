@@ -7,6 +7,9 @@
 #include "frc/DataLogManager.h"
 #include "frc/DriverStation.h"
 
+#include "frc/DataLogManager.h"
+#include "frc/DriverStation.h"
+
 void Robot::RobotInit() {
   // Starts recording to data log
   //frc::DataLogManager::Start();

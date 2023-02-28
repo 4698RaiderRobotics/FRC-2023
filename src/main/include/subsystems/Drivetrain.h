@@ -39,6 +39,10 @@ class Drivetrain : public frc2::SubsystemBase {
 
     void DrivetrainTest();
 
+    void DrivetrainSetup();
+
+    void DrivetrainTest();
+
   private:
 
     SwerveStatusDisplay swerve_display{ "Swerve Drive", "Robot Wheel Status" };
