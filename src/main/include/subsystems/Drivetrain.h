@@ -33,13 +33,13 @@ class Drivetrain : public frc2::SubsystemBase {
 
     frc::Pose2d GetPose( void );
     void ResetPose( frc::Pose2d position );
+    frc::Field2d m_field;
 
     void DrivetrainSetup();
 
     void DrivetrainTest();
 
   private:
-    //frc::Field2d m_field;
 
     SwerveStatusDisplay swerve_display{ "Swerve Drive", "Robot Wheel Status" };
 

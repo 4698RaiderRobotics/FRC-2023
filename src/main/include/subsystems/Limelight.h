@@ -2,8 +2,6 @@
 
 #include <frc/kinematics/ChassisSpeeds.h>
 #include <vector>
-#include <frc/smartdashboard/Field2d.h>
-
 #include "frc/smartdashboard/SmartDashboard.h"
 #include "frc/shuffleboard/Shuffleboard.h"
 #include "networktables/NetworkTable.h"
@@ -32,8 +30,6 @@ class Limelight : public frc2::SubsystemBase {
 
     private:
         std::shared_ptr<nt::NetworkTable> table = nt::NetworkTableInstance::GetDefault().GetTable("limelight");
-        frc::Field2d m_field;
-
         // The X position of the target in the limelight's view
         double targetX;
         // The Y position of the target in the limelight's view
