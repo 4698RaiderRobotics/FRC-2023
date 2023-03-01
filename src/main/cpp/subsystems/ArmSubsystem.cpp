@@ -30,21 +30,20 @@ void ArmSubsystem::Periodic() {
     frc::SmartDashboard::PutNumber( "Arm Voltage", output * 12 + feedforwardOut );
 
     m_left.Set( ctre::phoenix::motorcontrol::ControlMode::PercentOutput, output + feedforwardOut / 12 );
-
 }
 
 void ArmSubsystem::GotoAngle( units::degree_t angle ) {
     m_angle = angle;
 }
 
-void ArmSubsystem::HoldingCone( bool isCone ) {
-    if( isCone ) {
-        feedforward.kG = units::volt_t{ kG_cone };
-    } else {
-//        feedforward.kG = units::volt_t{ kG };
-    }
-}
+void ArmSubsystem::AdjustAngle( units::degree_t delta_angle ) {
+    
+    m_angle += delta_angle;
 
+        // Range check angle
+    if( m_angle > max_angle ) m_angle = max_angle;
+    if( m_angle < min_angle ) m_angle = min_angle;
+}
 
 bool ArmSubsystem::Finished( ) {
     return units::math::abs( m_enc.GetPosition() - m_angle ) < physical::kArmAngleError;

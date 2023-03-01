@@ -4,7 +4,6 @@
 
 #include "commands/PlaceGamePiece.h"
 
-#include "commands/TargetLimelight.h"
 #include "commands/DriveToPoseCommand.h"
 #include "commands/ArmSet.h"
 #include "commands/TestProfileMove.h"
@@ -13,12 +12,9 @@
 // NOTE:  Consider using this command inline, rather than writing a subclass.
 // For more information, see:
 // https://docs.wpilib.org/en/stable/docs/software/commandbased/convenience-features.html
-PlaceGamePiece::PlaceGamePiece( Drivetrain *drive, ArmSubsystem *arm, GrabberSubsystem *grabber, Limelight *limelight, 
+PlaceGamePiece::PlaceGamePiece( Drivetrain *drive, ArmSubsystem *arm, GrabberSubsystem *grabber, 
                                 frc::Pose2d targetPose, units::degree_t angle ) {
-  // Add your commands here, e.g.
-  // AddCommands(FooCommand{}, BarCommand{});
   AddCommands(
-//    TargetLimelight{ drive, limelight, targetPose },
     DriveToPoseCommand{ drive },
     ArmSet( angle, arm ),
     TestProfileMove( 18_in, TestProfileMove::FORWARD, drive ),

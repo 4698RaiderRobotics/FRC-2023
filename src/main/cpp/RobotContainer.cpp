@@ -5,8 +5,15 @@
 #include <frc2/command/StartEndCommand.h>
 
 #include "commands/TestProfileMove.h"
+#include "commands/OpenGrabber.h"
+#include "commands/TargetLimelight.h"
+#include "commands/GyroBalance.h"
+#include "commands/UpdateOdom.h"
+#include "commands/ArmSet.h"
+#include "commands/CloseGrabber.h"
+#include "commands/PlaceGamePiece.h"
 
-RobotContainer::RobotContainer() : m_autonomousCommand(&m_subsystem) {
+RobotContainer::RobotContainer() {
   // Initialize all of your commands and subsystems here
   
 
@@ -30,11 +37,11 @@ void RobotContainer::ConfigureButtonBindings() {
 
   frc2::JoystickButton( &m_driverController, frc::PS4Controller::Button::kCross )
     .WhileTrue( PlaceGamePiece( &m_drive, &m_arm, &m_grabber, 
-                  &m_limelight, frc::Pose2d{ -42_in, 22_in, 0_deg }, 30_deg ).ToPtr());
+                  frc::Pose2d{ -42_in, 22_in, 0_deg }, 30_deg ).ToPtr());
 
   frc2::JoystickButton( &m_driverController, frc::PS4Controller::Button::kL1 )
     .WhileTrue( PlaceGamePiece( &m_drive, &m_arm, &m_grabber, 
-                  &m_limelight, frc::Pose2d{ -42_in, 0_in, 0_deg }, 30_deg ).ToPtr());
+                  frc::Pose2d{ -42_in, 0_in, 0_deg }, 30_deg ).ToPtr());
 
   // Press the Y button to update the odometry with Apriltags
   frc2::JoystickButton( &m_driverController, frc::PS4Controller::Button::kSquare )
@@ -69,17 +76,31 @@ frc2::Command* RobotContainer::GetAutonomousCommand() {
   return &m_autonomousCommand;
 }
 
-void RobotContainer::TestSetup() {
+void RobotContainer::TeleopDataSetup() {
+//  m_arm.ArmTestSetup();
+//  m_drive.DrivetrainSetup();
+//  frc::SmartDashboard::PutData(&PDP);
+//  frc::SmartDashboard::PutData(&Compressor);
+}
+
+void RobotContainer::TeleopDataUpdate() {
 //  m_arm.ArmTestSetup();
 //  m_drive.DrivetrainSetup();
 //  frc::SmartDashboard::PutData(&PDP);
   frc::SmartDashboard::PutData(&Compressor);
 }
 
-void RobotContainer::TestMode() {
-//  m_arm.ArmTest();
-  //m_grabber.GrabberTest();
-//  m_drive.DrivetrainTest();
-//  m_limelight.LimelightTest();
-//  frc::SmartDashboard::PutNumber( "Joystick", m_driverController.GetLeftX() );
+
+void RobotContainer::TestDataSetup() {
+  m_arm.ArmTestSetup();
+  m_drive.DrivetrainSetup();
+  frc::SmartDashboard::PutData(&PDP);
+  frc::SmartDashboard::PutData(&Compressor);
+}
+
+void RobotContainer::TestDataUpdate() {
+  m_arm.ArmTest();
+  m_grabber.GrabberTest();
+  m_drive.DrivetrainTest();
+  m_limelight.LimelightTest();
 }
