@@ -43,9 +43,6 @@ void SwerveModule::SetDesiredState( const frc::SwerveModuleState& referenceState
 
     // The software PID controller outputs a value 0 to 1 which must be set using the Set() function of the motor.
     m_turnMotor.Set( m_turnPIDController.Calculate( m_turnEncoder.GetPosition().value(), state.angle.Degrees().value() ) );
-
-    frc::SmartDashboard::PutNumber( "Drive Velocity", m_driveEncoder.GetVelocity() * physical::kDriveMetersPerRotation.value() / 60.0 );
-    frc::SmartDashboard::PutNumber( "Setpoint Drive Velocity", (opRPM * physical::kDriveMetersPerRotation / 60.0).value() );
 }
 
 // Returns the current state of the SwerveModule

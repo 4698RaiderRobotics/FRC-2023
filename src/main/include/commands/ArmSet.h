@@ -7,13 +7,14 @@
 #include <frc2/command/CommandBase.h>
 #include <frc2/command/CommandHelper.h>
 #include <units/angle.h>
+#include <units/time.h>
 
 #include "subsystems/ArmSubsystem.h"
 
 class ArmSet
     : public frc2::CommandHelper<frc2::CommandBase, ArmSet> {
  public:
-  ArmSet( units::degree_t angle, ArmSubsystem *arm, bool isCone = false );
+  ArmSet( units::degree_t angle, ArmSubsystem *arm );
 
   void Initialize() override;
 
@@ -25,4 +26,6 @@ class ArmSet
  private:
   units::degree_t m_angle;
   ArmSubsystem *m_arm; 
+
+  units::second_t m_startTime;
 };

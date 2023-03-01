@@ -1,46 +1,62 @@
-#include "subsystems/Limelight.h"
+
 #include <iostream>
+
+#include <frc/Timer.h>
+
+#include "subsystems/Limelight.h"
 
 Limelight::Limelight()
 {
-    frc::SmartDashboard::PutData("Field2", &m_field);
+//    frc::SmartDashboard::PutData("Field2", &m_field);
 }
 
 void Limelight::Periodic( void  ) {
-    frc::Pose2d pose;
+    // frc::Pose2d pose;
 
-    TargetRobot_AT( pose );
-    frc::SmartDashboard::PutNumber( "Current X Pose", pose.X().value() );
-    frc::SmartDashboard::PutNumber( "Current Y Pose", -pose.Y().value() );
-    frc::SmartDashboard::PutNumber( "Current Omega Pose", -pose.Rotation().Degrees().value() );
+    // TargetRobot_AT( pose );
+    // frc::SmartDashboard::PutNumber( "Current X Pose", pose.X().value() );
+    // frc::SmartDashboard::PutNumber( "Current Y Pose", -pose.Y().value() );
+    // frc::SmartDashboard::PutNumber( "Current Omega Pose", -pose.Rotation().Degrees().value() );
 
 }
 
 bool Limelight::TargetRobot_AT( frc::Pose2d &april_tag_pose)
 {
+    if ( !haveValidAprilTag() ) {
+        return false;
+    }
+
+    std::vector<double> camtran{};
+
     camtran = table->GetNumberArray("camerapose_targetspace", defaultValue);
-    if ( camtran.size() == 0 ) {
-        return false;
-    }
-
-    if( table->GetNumber("tv", 0.0 ) < 1.0 ) {
-        return false;
-    }
-    
-    double x_val{0}, y_val{0}, o_val{0};
-
-    for( int i=0; i<5; ++i ) {
-        camtran = table->GetNumberArray("camerapose_targetspace", defaultValue);
-        x_val += camtran[2];
-        y_val += camtran[0];
-        o_val += camtran[4];
-    }
-    april_tag_pose = frc::Pose2d( units::meter_t{ x_val / 5.0 },
-                                  units::meter_t{ y_val / 5.0 },
-                                  frc::Rotation2d{ units::degree_t{ o_val / 5.0 } } );
+    if( camtran.size() < 6 ) return false;
+ 
+    april_tag_pose = frc::Pose2d( units::meter_t{ camtran[2] },
+                                  units::meter_t{ camtran[0] },
+                                  frc::Rotation2d{ units::degree_t{ camtran[4] } } );
 
     return true;
 }
+
+bool Limelight::getFieldAprilTagPose( frc::Pose2d&april_tag_pose, units::second_t &timestamp ) {
+    if ( !haveValidAprilTag() ) {
+        return false;
+    }
+
+    std::vector<double> botpose{};
+    botpose = table->GetNumberArray("botpose", defaultValue);
+    if( botpose.size() < 6 ) return false;
+
+    april_tag_pose = frc::Pose2d( units::meter_t{ botpose[0] } + physical::kLimelightXAxisOffset,
+                                  units::meter_t{ botpose[1] } + physical::kLimelightYAxisOffset,
+                                  frc::Rotation2d{ units::degree_t{ botpose[5] } } );
+
+    // See https://docs.limelightvision.io/en/latest/apriltags_in_3d.html#using-wpilib-s-pose-estimator
+    timestamp = frc::Timer::GetFPGATimestamp() - units::second_t{ botpose[6]/1000.0 };
+
+    return true;
+}
+
 
 // Sets the limelight to new targeting settings
 void Limelight::SetPipeline(int pipelineId)
@@ -70,9 +86,25 @@ bool Limelight::VisionPose(frc::Pose2d* AP_Pose)
 }
 
 void Limelight::LimelightTest( ) {
-    frc::SmartDashboard::PutNumber( "tx", targetX );
-    frc::SmartDashboard::PutNumber( "ty", targetY );
-    if ( camtran.size() > 0 ) {
-        frc::SmartDashboard::PutNumber( "Yaw", camtran[0]);
+    // frc::SmartDashboard::PutNumber( "tx", targetX );
+    // frc::SmartDashboard::PutNumber( "ty", targetY );
+    // frc::SmartDashboard::PutNumber( "tv", table->GetNumber("tv", 0.0 ) );
+    // if ( camtran.size() > 0 ) {
+    //     frc::SmartDashboard::PutNumber( "Yaw", camtran[0]);
+    // }
+}
+
+bool Limelight::haveValidAprilTag( void ) {
+    std::vector<double> bpose{};
+    
+    bpose = table->GetNumberArray("botpose", defaultValue);
+    if ( bpose.size() < 6 ) {
+        return false;
     }
+
+    if( table->GetNumber("tv", 0.0 ) < 1.0 ) {
+        return false;
+    }
+
+    return true;
 }

@@ -25,6 +25,8 @@ class GrabberSubsystem : public frc2::SubsystemBase {
 
   void GrabberTest();
 
+  const double kRollerGripPercent = 0.10;
+
  private:
   
   ctre::phoenix::motorcontrol::can::TalonFX m_roller{ 14 };

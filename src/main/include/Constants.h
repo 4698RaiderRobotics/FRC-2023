@@ -1,6 +1,8 @@
 #pragma once
 
 #include <numbers>
+#include <vector>
+
 #include <units/angle.h>
 #include <units/velocity.h>
 #include <units/acceleration.h>
@@ -98,4 +100,8 @@ namespace physical {
 
     constexpr units::degree_t kArmAngleError = 3_deg;
     constexpr double kLimelightTargetError = 1;
+
+    const units::inch_t kLimelightXAxisOffset = 325.61_in;
+    const units::inch_t kLimelightYAxisOffset = 157.8_in;
+
 }

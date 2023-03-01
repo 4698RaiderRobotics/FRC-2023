@@ -16,7 +16,6 @@ void Robot::RobotInit() {
   // Record both DS control and joystick data
   //frc::DriverStation::StartDataLog(frc::DataLogManager::GetLog());
   // Log in Telelop:
-  m_container.TestSetup();
 }
 
 /**
@@ -63,25 +62,25 @@ void Robot::TeleopInit() {
     m_autonomousCommand->Cancel();
     m_autonomousCommand = nullptr;
   }
-  //m_container.TestSetup();
+  m_container.TeleopDataSetup();
 }
 
 /**
  * This function is called periodically during operator control.
  */
 void Robot::TeleopPeriodic() {
-  m_container.TestMode();
+  m_container.TeleopDataUpdate();
 }
 
 void Robot::TestInit() {
-  m_container.TestSetup();
+  m_container.TestDataSetup();
 }
 
 /**
  * This function is called periodically during test mode.
  */
 void Robot::TestPeriodic() {
-  m_container.TestMode();
+  m_container.TestDataUpdate();
 }
 
 /**

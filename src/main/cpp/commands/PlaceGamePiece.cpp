@@ -4,7 +4,7 @@
 
 #include "commands/PlaceGamePiece.h"
 
-#include "commands/TargetLimelight.h"
+#include "commands/DriveToPoseCommand.h"
 #include "commands/ArmSet.h"
 #include "commands/TestProfileMove.h"
 #include "commands/OpenGrabber.h"
@@ -12,16 +12,14 @@
 // NOTE:  Consider using this command inline, rather than writing a subclass.
 // For more information, see:
 // https://docs.wpilib.org/en/stable/docs/software/commandbased/convenience-features.html
-PlaceGamePiece::PlaceGamePiece( Drivetrain *drive, ArmSubsystem *arm, GrabberSubsystem *grabber, Limelight *limelight, 
-                                frc::Pose2d targetPose, units::degree_t angle, bool isCone ) {
-  // Add your commands here, e.g.
-  // AddCommands(FooCommand{}, BarCommand{});
+PlaceGamePiece::PlaceGamePiece( Drivetrain *drive, ArmSubsystem *arm, GrabberSubsystem *grabber, 
+                                frc::Pose2d targetPose, units::degree_t angle ) {
   AddCommands(
-    TargetLimelight{ drive, limelight, targetPose },
-    ArmSet( angle, arm, isCone ),
-    TestProfileMove( 19_in, TestProfileMove::FORWARD, drive ),
+    DriveToPoseCommand{ drive },
+    ArmSet( angle, arm ),
+    TestProfileMove( 18_in, TestProfileMove::FORWARD, drive ),
     OpenGrabber( grabber ),
-    TestProfileMove( -19_in, TestProfileMove::FORWARD, drive ),
+    TestProfileMove( -18_in, TestProfileMove::FORWARD, drive ),
     ArmSet( -90_deg, arm )
 );
   m_timer.Restart();
