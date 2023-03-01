@@ -10,14 +10,19 @@
 #include <frc/PowerDistribution.h>
 #include <frc/Compressor.h>
 
-#include "commands/ExampleCommand.h"
+#include <frc/trajectory/Trajectory.h>
+
 #include "commands/TargetLimelight.h"
 #include "commands/GyroBalance.h"
 #include "commands/UpdateOdom.h"
+
 #include "commands/ArmSet.h"
 #include "commands/CloseGrabber.h"
 #include "commands/PlaceGamePiece.h"
 #include "subsystems/ExampleSubsystem.h"
+
+#include "commands/autonomous/SimpleAuto.h"
+
 #include "subsystems/Drivetrain.h"
 #include "subsystems/Limelight.h"
 #include "subsystems/ArmSubsystem.h"
@@ -48,8 +53,15 @@ class RobotContainer {
   ArmSubsystem m_arm;
   GrabberSubsystem m_grabber;
 
-  ExampleSubsystem m_subsystem;
-  ExampleCommand m_autonomousCommand;
+  SimpleAuto m_simpleAuto{ &m_drive };
+  
+
+  frc::PowerDistribution PDP{0, frc::PowerDistribution::ModuleType::kCTRE};
+  frc::Compressor Compressor{9, frc::PneumaticsModuleType::CTREPCM}; 
+
+
+  frc::PS4Controller m_driverController{ 0 };
+  frc2::CommandXboxController m_operatorController{ 1 };
 
   frc::PowerDistribution PDP{0, frc::PowerDistribution::ModuleType::kCTRE};
   frc::Compressor Compressor{9, frc::PneumaticsModuleType::CTREPCM}; 

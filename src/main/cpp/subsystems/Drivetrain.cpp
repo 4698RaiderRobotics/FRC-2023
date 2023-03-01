@@ -1,7 +1,7 @@
 #include "subsystems/Drivetrain.h"
 Drivetrain::Drivetrain() {
     ResetGyro( 0 );
-    //frc::SmartDashboard::PutData("Field", &m_field);
+    frc::SmartDashboard::PutData("Field", &m_field);
 
 }
 
