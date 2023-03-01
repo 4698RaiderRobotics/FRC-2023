@@ -40,9 +40,6 @@ private:
   Drivetrain *m_drive;
   frc::Pose2d m_targetpose;
 
-  frc::Pose2d redAllianceGridPoints[9];
-  frc::Pose2d blueAllianceGridPoints[9];
-
   frc::TrapezoidProfile<units::meters>::Constraints m_linearConstraints{ 3_mps, 0.5_mps_sq };
   frc::TrapezoidProfile<units::degrees>::Constraints m_omegaConstraints{ 360_deg_per_s, 90_deg_per_s_sq };
   

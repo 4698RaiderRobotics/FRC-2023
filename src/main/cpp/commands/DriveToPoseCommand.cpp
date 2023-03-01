@@ -10,11 +10,6 @@
 
 DriveToPoseCommand::DriveToPoseCommand( Drivetrain *d ) : m_drive{d} {
   AddRequirements( { m_drive } );
-
-  for( int n=0; n<9; ++n ) {
-    redAllianceGridPoints[n] = { 14.1_m, 20_in + 22_in*n, 0_deg };
-    blueAllianceGridPoints[n] = { 1.95_m, 20_in + 22_in*n, 180_deg };
-  }
 }
 
 DriveToPoseCommand::DriveToPoseCommand(  Drivetrain *d, frc::Pose2d targetPose ) 
@@ -33,9 +28,9 @@ void DriveToPoseCommand::Initialize() {
   frc::Pose2d botpose = m_drive->GetPose();
 
   if( frc::DriverStation::GetAlliance() == frc::DriverStation::kRed ) {
-    m_targetpose = botpose.Nearest( std::span<frc::Pose2d> ( redAllianceGridPoints, 9 ) );
+    m_targetpose = botpose.Nearest( std::span<frc::Pose2d> ( m_drive->redAllianceGridPoints, 9 ) );
   } else {
-    m_targetpose = botpose.Nearest( std::span<frc::Pose2d> ( blueAllianceGridPoints, 9 ) );
+    m_targetpose = botpose.Nearest( std::span<frc::Pose2d> ( m_drive->blueAllianceGridPoints, 9 ) );
   }
 }
 

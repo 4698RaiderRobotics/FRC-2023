@@ -4,8 +4,8 @@
 
 #include "commands/autonomous/FollowTrajectory.h"
 
-FollowTrajectory::FollowTrajectory( Drivetrain *drive, frc::Trajectory trajectory )
-          : m_drive{ drive }, m_trajectory{ trajectory } {
+FollowTrajectory::FollowTrajectory( Drivetrain *drive, frc::Trajectory trajectory, frc::Rotation2d robotHeading )
+          : m_drive{ drive }, m_trajectory{ trajectory }, m_heading{robotHeading} {
   // Use addRequirements() here to declare subsystem dependencies.
   AddRequirements( { drive } );
 }
@@ -21,12 +21,9 @@ void FollowTrajectory::Initialize() {
 // Called repeatedly when this Command is scheduled to run
 void FollowTrajectory::Execute() {
   auto goal = m_trajectory.Sample( m_autoElapsed );
-  m_drive->DriveTrajectory( goal );
+  m_drive->DriveTrajectory( goal, m_heading );
   m_autoElapsed += 20_ms;
 }
-
-// Called once the command ends or is interrupted.
-void FollowTrajectory::End(bool interrupted) {}
 
 // Returns true when the command should end.
 bool FollowTrajectory::IsFinished() {

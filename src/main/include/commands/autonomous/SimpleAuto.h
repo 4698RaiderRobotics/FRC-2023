@@ -9,14 +9,15 @@
 #include <frc/smartdashboard/SmartDashboard.h>
 
 #include "subsystems/Drivetrain.h"
-#include "commands/autonomous/FollowTrajectory.h"
-
+#include "subsystems/ArmSubsystem.h"
+#include "subsystems/GrabberSubsystem.h"
 
 class SimpleAuto : public frc2::CommandHelper<frc2::SequentialCommandGroup, SimpleAuto> {
-    public:
-        SimpleAuto( Drivetrain *drive );
+  public:
+    SimpleAuto( Drivetrain *drive, ArmSubsystem *arm, GrabberSubsystem *grabber, 
+                units::degree_t angle );
 
-    private:
-        frc::Trajectory m_simpleAutoTrajectory;
-        frc::Trajectory m_trajectory;
+  private:
+    frc::Trajectory m_simpleAutoTrajectory;
+    frc::Trajectory m_trajectory;
 };

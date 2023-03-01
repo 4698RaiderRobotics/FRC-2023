@@ -21,19 +21,18 @@
 class FollowTrajectory
     : public frc2::CommandHelper<frc2::CommandBase, FollowTrajectory> {
  public:
-  FollowTrajectory( Drivetrain *drive, frc::Trajectory trajectory );
+  FollowTrajectory( Drivetrain *drive, frc::Trajectory trajectory, frc::Rotation2d heading );
 
   void Initialize() override;
 
   void Execute() override;
-
-  void End(bool interrupted) override;
 
   bool IsFinished() override;
 
   private:
     Drivetrain *m_drive;
     frc::Trajectory m_trajectory;
+    frc::Rotation2d m_heading;
     
 
     units::second_t m_autoElapsed;

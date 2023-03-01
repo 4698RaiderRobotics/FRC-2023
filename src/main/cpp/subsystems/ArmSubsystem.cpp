@@ -34,6 +34,10 @@ void ArmSubsystem::Periodic() {
 
 void ArmSubsystem::GotoAngle( units::degree_t angle ) {
     m_angle = angle;
+
+        // Range check angle
+    if( m_angle > max_angle ) m_angle = max_angle;
+    if( m_angle < min_angle ) m_angle = min_angle;
 }
 
 void ArmSubsystem::AdjustAngle( units::degree_t delta_angle ) {

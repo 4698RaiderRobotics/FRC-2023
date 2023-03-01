@@ -14,6 +14,9 @@
 #include "subsystems/Limelight.h"
 #include "subsystems/ArmSubsystem.h"
 #include "subsystems/GrabberSubsystem.h"
+
+#include "commands/autonomous/SimpleAuto.h"
+
 #include "ControllerAxis.h"
 
 /**
@@ -41,7 +44,7 @@ class RobotContainer {
   ArmSubsystem m_arm;
   GrabberSubsystem m_grabber;
 
-  SimpleAuto m_simpleAuto{ &m_drive };
+  SimpleAuto m_simpleAuto{ &m_drive, &m_arm, &m_grabber, 30_deg };
 
   frc::PowerDistribution PDP{0, frc::PowerDistribution::ModuleType::kCTRE};
   frc::Compressor Compressor{9, frc::PneumaticsModuleType::CTREPCM}; 

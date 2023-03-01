@@ -24,7 +24,7 @@ class Drivetrain : public frc2::SubsystemBase {
 
     void Drive( frc::ChassisSpeeds speeds, bool fieldRelative = true );
 
-    void DriveTrajectory( frc::Trajectory::State trajectoryState );
+    void DriveTrajectory( frc::Trajectory::State trajectoryState, const frc::Rotation2d &robotHeading );
 
     void Periodic() override;
 
@@ -33,12 +33,8 @@ class Drivetrain : public frc2::SubsystemBase {
     double GetPitch( void );
 
     frc::Pose2d GetPose( void );
+
     void ResetPose( frc::Pose2d position );
-    frc::Field2d m_field;
-
-    void DrivetrainSetup();
-
-    void DrivetrainTest();
 
     void DrivetrainSetup();
 
@@ -47,7 +43,6 @@ class Drivetrain : public frc2::SubsystemBase {
     void PoseToNetworkTables();
 
   private:
-    frc::Field2d m_field;
     Limelight *m_limelight;
     bool m_noValidPose = true;
     bool m_averagingPose = false;
@@ -89,4 +84,9 @@ class Drivetrain : public frc2::SubsystemBase {
           frc::ProfiledPIDController<units::radian> {
             1, 0, 0, frc::TrapezoidProfile<units::radian>::Constraints{
               6.28_rad_per_s, 3.14_rad_per_s / 1_s}}};
+
+  public:
+    frc::Field2d m_field;
+    frc::Pose2d redAllianceGridPoints[9];
+    frc::Pose2d blueAllianceGridPoints[9];
 };

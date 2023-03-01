@@ -3,12 +3,14 @@
 #include "subsystems/Limelight.h"
 
 Drivetrain::Drivetrain( Limelight *ll ) : m_limelight{ll} {
-//    if( frc::DriverStation::GetAlliance() == frc::DriverStation::kRed ) {
-        ResetGyro( 180_deg );
-//    } else {
-//        ResetGyro( 0_deg );
-//   }
-    frc::SmartDashboard::PutData("Field", &m_field);
+  ResetGyro( 180_deg );
+
+  for( int n=0; n<9; ++n ) {
+    redAllianceGridPoints[n] = { 14.1_m, 20_in + 22_in*n, 0_deg };
+    blueAllianceGridPoints[n] = { 1.95_m, 20_in + 22_in*n, 180_deg };
+  }
+
+  frc::SmartDashboard::PutData("Field", &m_field);
 }
 
 // Drives with joystick inputs
@@ -61,9 +63,9 @@ void Drivetrain::Drive( frc::ChassisSpeeds speeds, bool fieldRelative ) {
 }
 
 // Drives a path given a trajectory state
-void Drivetrain::DriveTrajectory( frc::Trajectory::State trajectoryState ) {
+void Drivetrain::DriveTrajectory( frc::Trajectory::State trajectoryState, const frc::Rotation2d &robotHeading ) {
     // A ChassisSpeeds objects based on the current position on the trajectory
-    auto adjustedSpeeds = m_controller.Calculate( m_odometry.GetEstimatedPosition(), trajectoryState, trajectoryState.pose.Rotation().Degrees() );
+    auto adjustedSpeeds = m_controller.Calculate( m_odometry.GetEstimatedPosition(), trajectoryState, robotHeading );
 
     Drive( adjustedSpeeds );
 }
