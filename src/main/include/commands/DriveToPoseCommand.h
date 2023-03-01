@@ -25,6 +25,7 @@ class DriveToPoseCommand
     : public frc2::CommandHelper<frc2::CommandBase, DriveToPoseCommand> {
  public:
   DriveToPoseCommand(  Drivetrain* );
+  DriveToPoseCommand(  Drivetrain*, frc::Pose2d targetPose );
 
   void Initialize() override;
 

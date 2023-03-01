@@ -17,8 +17,18 @@ DriveToPoseCommand::DriveToPoseCommand( Drivetrain *d ) : m_drive{d} {
   }
 }
 
+DriveToPoseCommand::DriveToPoseCommand(  Drivetrain *d, frc::Pose2d targetPose ) 
+      : m_drive{d}, m_targetpose{targetPose} {
+  AddRequirements( { m_drive } );
+}
+
 // Called when the command is initially scheduled.
 void DriveToPoseCommand::Initialize() {
+  if( m_targetpose.X() > 0.1_cm ) {
+      // We already have a target pose since all poses on the field are positive X
+      return;
+  }
+
   // Determine which grid target location is the closest.
   frc::Pose2d botpose = m_drive->GetPose();
 
@@ -27,24 +37,6 @@ void DriveToPoseCommand::Initialize() {
   } else {
     m_targetpose = botpose.Nearest( std::span<frc::Pose2d> ( blueAllianceGridPoints, 9 ) );
   }
-/*
-  if( frc::DriverStation::GetAlliance() == frc::DriverStation::kRed ) {
-      // We are the Red Alliance
-    if( botpose.Y() < 33.2_in ) {
-        // Target the Cone Grid Right of AT#1
-      m_targetpose = frc::Pose2d{ 14.1_m, 20.13_in, 0_deg };
-    } else if( botpose.Y() > 33.2_in &&  botpose.Y() < 33.2_in + 18.25_in ) {
-        // Target the Cube Grid at AT#1
-      m_targetpose = frc::Pose2d{ 14.1_m, 42.13_in, 0_deg };
-    } else if( botpose.Y() > 33.2_in + 18.25_in &&  botpose.Y() < 33.2_in + 18.25_in + 47.75_in/2 ) {
-        // Target the Cone Grid Left of AT#1
-      m_targetpose = frc::Pose2d{ 14.1_m, 64.13_in, 0_deg };
-    }
-  } else {
-      // We are the Blue Alliance
-
-  }
-*/
 }
 
 // Called repeatedly when this Command is scheduled to run

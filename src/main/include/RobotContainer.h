@@ -10,14 +10,6 @@
 #include <frc/PowerDistribution.h>
 #include <frc/Compressor.h>
 
-#include "commands/ExampleCommand.h"
-#include "commands/TargetLimelight.h"
-#include "commands/GyroBalance.h"
-#include "commands/UpdateOdom.h"
-#include "commands/ArmSet.h"
-#include "commands/CloseGrabber.h"
-#include "commands/PlaceGamePiece.h"
-#include "subsystems/ExampleSubsystem.h"
 #include "subsystems/Drivetrain.h"
 #include "subsystems/Limelight.h"
 #include "subsystems/ArmSubsystem.h"
@@ -37,9 +29,10 @@ class RobotContainer {
 
   frc2::Command* GetAutonomousCommand();
 
-  void TestSetup();
-
-  void TestMode();
+  void TeleopDataSetup();
+  void TeleopDataUpdate();
+  void TestDataSetup();
+  void TestDataUpdate();
 
  private:
   // The robot's subsystems and commands are defined here...
@@ -48,8 +41,7 @@ class RobotContainer {
   ArmSubsystem m_arm;
   GrabberSubsystem m_grabber;
 
-  ExampleSubsystem m_subsystem;
-  ExampleCommand m_autonomousCommand;
+  AutonomousCommand m_autonomousCommand{ &m_drive, &m_arm, &m_grabber };
 
   frc::PowerDistribution PDP{0, frc::PowerDistribution::ModuleType::kCTRE};
   frc::Compressor Compressor{9, frc::PneumaticsModuleType::CTREPCM}; 
