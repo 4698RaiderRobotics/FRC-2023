@@ -11,12 +11,12 @@ Limelight::Limelight()
 }
 
 void Limelight::Periodic( void  ) {
-    frc::Pose2d pose;
+    // frc::Pose2d pose;
 
-    TargetRobot_AT( pose );
-    frc::SmartDashboard::PutNumber( "Current X Pose", pose.X().value() );
-    frc::SmartDashboard::PutNumber( "Current Y Pose", -pose.Y().value() );
-    frc::SmartDashboard::PutNumber( "Current Omega Pose", -pose.Rotation().Degrees().value() );
+    // TargetRobot_AT( pose );
+    // frc::SmartDashboard::PutNumber( "Current X Pose", pose.X().value() );
+    // frc::SmartDashboard::PutNumber( "Current Y Pose", -pose.Y().value() );
+    // frc::SmartDashboard::PutNumber( "Current Omega Pose", -pose.Rotation().Degrees().value() );
 
 }
 
@@ -47,9 +47,9 @@ bool Limelight::getFieldAprilTagPose( frc::Pose2d&april_tag_pose, units::second_
     botpose = table->GetNumberArray("botpose", defaultValue);
     if( botpose.size() < 6 ) return false;
 
-    april_tag_pose = frc::Pose2d( units::meter_t{ botpose[0] },
-                                  units::meter_t{ botpose[1] },
-                                  frc::Rotation2d{ units::degree_t{ botpose[4] } } );
+    april_tag_pose = frc::Pose2d( units::meter_t{ botpose[0] } + physical::kLimelightXAxisOffset,
+                                  units::meter_t{ botpose[1] } + physical::kLimelightYAxisOffset,
+                                  frc::Rotation2d{ units::degree_t{ botpose[5] } } );
 
     // See https://docs.limelightvision.io/en/latest/apriltags_in_3d.html#using-wpilib-s-pose-estimator
     timestamp = frc::Timer::GetFPGATimestamp() - units::second_t{ botpose[6]/1000.0 };

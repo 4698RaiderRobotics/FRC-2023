@@ -18,12 +18,12 @@ TestProfileMove::TestProfileMove( units::meter_t distance, Direction d, Drivetra
     }
 
 void TestProfileMove::Initialize( void ) {
-        m_Setpoint.position = 0_m;
-        m_Setpoint.velocity = 0_mps;
-        m_Goal.position = m_distance;
-        m_Goal.velocity = 0.0_mps;
-        m_profile = frc::TrapezoidProfile<units::meters>{ m_linearConstraints, m_Goal, m_Setpoint };
-        m_elapsed_time = 0_ms;
+  m_Setpoint.position = 0_m;
+  m_Setpoint.velocity = 0_mps;
+  m_Goal.position = m_distance;
+  m_Goal.velocity = 0.0_mps;
+  m_profile = frc::TrapezoidProfile<units::meters>{ m_linearConstraints, m_Goal, m_Setpoint };
+  m_elapsed_time = 0_ms;
 }
 
 void TestProfileMove::Execute( void ) {

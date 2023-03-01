@@ -80,17 +80,50 @@ void Drivetrain::Periodic( ) {
     units::second_t timestamp;
     if( m_limelight->getFieldAprilTagPose( visionPose, timestamp ) ) {
         if( m_noValidPose ) {
-            m_noValidPose = false;
-            m_odometry.ResetPosition( frc::Rotation2d{ units::degree_t{ m_gyro.GetYaw() } },
-            {
-                m_frontLeft.GetPosition(), m_frontRight.GetPosition(), 
-                m_backLeft.GetPosition(), m_backRight.GetPosition() 
-            }, visionPose );
+            if( !m_averagingPose ) {
+                m_avgVisionPose = frc::Pose2d { 0_m, 0_m, 0_deg };
+                m_averagingPose = true;
+                m_avgIteration = 1;
+            }
+
+            m_avgVisionPose = frc::Pose2d{ visionPose.X() + m_avgVisionPose.X(),
+                                           visionPose.Y() + m_avgVisionPose.Y(),
+                                           visionPose.Rotation().Degrees() + m_avgVisionPose.Rotation().Degrees() };
+            fmt::print( "Averaging vision pose ({}, {}, {}) [{}]\n",  m_avgVisionPose.X().value(),
+                        m_avgVisionPose.Y().value(),  m_avgVisionPose.Rotation().Degrees().value(), m_avgIteration );
+
+            if( m_avgIteration == 10 ) {
+                m_odometry.ResetPosition( frc::Rotation2d{ units::degree_t{ m_gyro.GetYaw() } },
+                {
+                    m_frontLeft.GetPosition(), m_frontRight.GetPosition(), 
+                    m_backLeft.GetPosition(), m_backRight.GetPosition() 
+                }, m_avgVisionPose / m_avgIteration );
+                m_noValidPose = false;
+                m_averagingPose = false;
+                fmt::print( "Set vision pose average ({}, {}, {}) [{}]!\n", 
+                            m_avgVisionPose.X().value() / m_avgIteration,
+                            m_avgVisionPose.Y().value() / m_avgIteration,
+                            m_avgVisionPose.Rotation().Degrees().value() / m_avgIteration,
+                            m_avgIteration );
+            }
+            ++m_avgIteration;
         } else {
-            m_odometry.AddVisionMeasurement( visionPose, timestamp );
+            if( m_odometry.GetEstimatedPosition().Translation().Distance( visionPose.Translation() ) < 1_m ) {
+                // Only update if the vision pose is within 1m of the current pose
+                m_odometry.AddVisionMeasurement( visionPose, timestamp );
+            }
         }
     }
-    m_field.SetRobotPose( m_odometry.GetEstimatedPosition() );
+
+    frc::Pose2d estm_pose = m_odometry.GetEstimatedPosition();
+    frc::SmartDashboard::PutNumber( "Vision X", visionPose.X().value() );
+    frc::SmartDashboard::PutNumber( "Vision Y", visionPose.Y().value() );
+    frc::SmartDashboard::PutNumber( "Vision Theta", visionPose.Rotation().Degrees().value() );
+    frc::SmartDashboard::PutNumber( "Estimated X", estm_pose.X().value() );
+    frc::SmartDashboard::PutNumber( "Estimated Y", estm_pose.Y().value() );
+    frc::SmartDashboard::PutNumber( "Estimated Theta", estm_pose.Rotation().Degrees().value() );
+
+    m_field.SetRobotPose( estm_pose );
 }
 
 // Resets the gyro to an angle

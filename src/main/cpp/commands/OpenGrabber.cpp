@@ -15,7 +15,6 @@ void OpenGrabber::Initialize() {
     m_grabber->Spin( -m_speed );
   
     m_grabber->Open();
-  
 }
 
 // Called repeatedly when this Command is scheduled to run

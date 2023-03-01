@@ -46,7 +46,7 @@ class SwerveModule {
         // The motor needs to be set with the Set() function with the PID controller's output.
         frc2::PIDController m_turnPIDController{ kTurnP, kTurnI, kTurnD };
 
-        double kTurnP = 0.005;
+        double kTurnP = 0.0095;
         double kTurnI = 0;
         double kTurnD = 0;
 

@@ -32,15 +32,23 @@ class DriveToPoseCommand
 
   bool IsFinished() override;
 
+  void End(bool interrupted) override;
+
+
 private:
   Drivetrain *m_drive;
   frc::Pose2d m_targetpose;
-  units::second_t m_profile_time;
+
+  frc::Pose2d redAllianceGridPoints[9];
+  frc::Pose2d blueAllianceGridPoints[9];
 
   frc::TrapezoidProfile<units::meters>::Constraints m_linearConstraints{ 3_mps, 0.5_mps_sq };
-  frc::TrapezoidProfile<units::degrees>::Constraints m_omegaConstraints{ 90_deg_per_s, 10_deg_per_s_sq };
+  frc::TrapezoidProfile<units::degrees>::Constraints m_omegaConstraints{ 360_deg_per_s, 90_deg_per_s_sq };
   
   frc::TrapezoidProfile<units::meters> m_xProfile{ m_linearConstraints, {0.0_m}, {0.0_m} };
   frc::TrapezoidProfile<units::meters> m_yProfile{ m_linearConstraints, {0.0_m}, {0.0_m} };
   frc::TrapezoidProfile<units::degrees> m_omegaProfile{ m_omegaConstraints, {0.0_deg}, {0.0_deg} };
+  frc::TrapezoidProfile<units::meters>::State m_xSetpoint;
+  frc::TrapezoidProfile<units::meters>::State m_ySetpoint;
+  frc::TrapezoidProfile<units::degrees>::State m_omegaSetpoint;
 };

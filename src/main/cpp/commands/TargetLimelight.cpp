@@ -7,7 +7,6 @@ TargetLimelight::TargetLimelight( Drivetrain* drive, Limelight* limelight, frc::
     }
 
 void TargetLimelight::Initialize() {
-//    fmt::print("pose iteration = {}\n", poseIteration );
     m_trajFinished = false;
     m_poseFound = m_limelight->TargetRobot_AT( m_pose );
     if( !m_poseFound ) {

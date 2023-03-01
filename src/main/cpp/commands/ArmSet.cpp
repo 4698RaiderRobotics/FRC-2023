@@ -2,7 +2,10 @@
 // Open Source Software; you can modify and/or share it under the terms of
 // the WPILib BSD license file in the root directory of this project.
 
+#include <frc/Timer.h>
+
 #include "commands/ArmSet.h"
+
 
 ArmSet::ArmSet( units::degree_t angle, ArmSubsystem *arm )
         : m_angle{ angle }, m_arm{ arm } {
@@ -11,7 +14,7 @@ ArmSet::ArmSet( units::degree_t angle, ArmSubsystem *arm )
 
 // Called when the command is initially scheduled.
 void ArmSet::Initialize() {
-  
+  m_startTime = frc::Timer::GetFPGATimestamp();
 }
 
 // Called repeatedly when this Command is scheduled to run
@@ -26,5 +29,5 @@ void ArmSet::End(bool interrupted) {
 
 // Returns true when the command should end.
 bool ArmSet::IsFinished() {
-  return m_arm->Finished( );
+  return m_arm->Finished( ) || frc::Timer::GetFPGATimestamp() - m_startTime > 2_s;
 }

@@ -21,9 +21,9 @@ PlaceGamePiece::PlaceGamePiece( Drivetrain *drive, ArmSubsystem *arm, GrabberSub
 //    TargetLimelight{ drive, limelight, targetPose },
     DriveToPoseCommand{ drive },
     ArmSet( angle, arm ),
-    TestProfileMove( 19_in, TestProfileMove::FORWARD, drive ),
+    TestProfileMove( 18_in, TestProfileMove::FORWARD, drive ),
     OpenGrabber( grabber ),
-    TestProfileMove( -19_in, TestProfileMove::FORWARD, drive ),
+    TestProfileMove( -18_in, TestProfileMove::FORWARD, drive ),
     ArmSet( -90_deg, arm )
 );
   m_timer.Restart();

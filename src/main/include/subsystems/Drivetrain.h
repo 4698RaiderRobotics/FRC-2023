@@ -45,6 +45,9 @@ class Drivetrain : public frc2::SubsystemBase {
     frc::Field2d m_field;
     Limelight *m_limelight;
     bool m_noValidPose = true;
+    bool m_averagingPose = false;
+    int m_avgIteration = 0;
+    frc::Pose2d m_avgVisionPose;
 
 //    SwerveStatusDisplay swerve_display{ "Swerve Drive", "Robot Wheel Status" };
 
