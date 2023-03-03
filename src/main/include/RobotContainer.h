@@ -16,6 +16,7 @@
 #include "subsystems/GrabberSubsystem.h"
 
 #include "commands/autonomous/SimpleAuto.h"
+#include "commands/autonomous/WizzyWiggAuto.h"
 
 #include "ControllerAxis.h"
 
@@ -45,6 +46,7 @@ class RobotContainer {
   GrabberSubsystem m_grabber;
 
   SimpleAuto m_simpleAuto{ &m_drive, &m_arm, &m_grabber, 30_deg };
+  WizzyWiggAuto m_wizzyWiggAuto{ &m_drive, &m_arm, &m_grabber, 30_deg };
 
   frc::PowerDistribution PDP{0, frc::PowerDistribution::ModuleType::kCTRE};
   frc::Compressor Compressor{9, frc::PneumaticsModuleType::CTREPCM}; 

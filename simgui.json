@@ -23,7 +23,22 @@
       "/Shuffleboard/Swerve Drive/Robot Wheel Status/Rear Left Wheel Steering Angle": "Gyro",
       "/Shuffleboard/Swerve Drive/Robot Wheel Status/Rear Right Wheel Steering Angle": "Gyro",
       "/SmartDashboard/Field": "Field2d",
-      "/SmartDashboard/Field2": "Field2d"
+      "/SmartDashboard/Field2": "Field2d",
+      "/SmartDashboard/Goto -35": "Command",
+      "/SmartDashboard/Goto -90": "Command",
+      "/SmartDashboard/Goto 30": "Command",
+      "/SmartDashboard/Goto 45": "Command",
+      "/SmartDashboard/Scheduler": "Scheduler"
+    }
+  },
+  "NetworkTables": {
+    "transitory": {
+      "SmartDashboard": {
+        "Goto -90": {
+          "open": true
+        },
+        "open": true
+      }
     }
   },
   "Plot": {

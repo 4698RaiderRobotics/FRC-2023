@@ -1,4 +1,6 @@
+
 #include "RobotContainer.h"
+
 #include <frc2/command/RunCommand.h>
 #include <frc2/command/InstantCommand.h>
 #include <frc2/command/RepeatCommand.h>
@@ -16,7 +18,7 @@
 RobotContainer::RobotContainer() {
   // Initialize all of your commands and subsystems here
   m_drive.SetDefaultCommand(frc2::RunCommand(
-      [this] { m_drive.Drive( vx_axis.GetAxis(), vy_axis.GetAxis(), omega_axis.GetAxis() ); }, { &m_drive } ) );
+      [this] { m_drive.ArcadeDrive( vx_axis.GetAxis(), vy_axis.GetAxis(), omega_axis.GetAxis() ); }, { &m_drive } ) );
 
   // Configure the button bindings
   ConfigureButtonBindings();
@@ -60,7 +62,7 @@ void RobotContainer::ConfigureButtonBindings() {
   .WhileTrue( ArmSet( 30_deg, &m_arm ).ToPtr() );
 
   frc2::JoystickButton( &m_operatorController, frc::XboxController::Button::kB )
-  .WhileTrue( ArmSet( 45_deg, &m_arm ).ToPtr() );
+  .WhileTrue( ArmSet( 0_deg, &m_arm ).ToPtr() );
 
   frc2::JoystickButton( &m_operatorController, frc::XboxController::Button::kA )
   .WhileTrue( ArmSet( -90_deg, &m_arm ).ToPtr() );
@@ -71,7 +73,7 @@ void RobotContainer::ConfigureButtonBindings() {
 
 frc2::Command* RobotContainer::GetAutonomousCommand() {
   // An example command will be run in autonomous
-  return &m_simpleAuto;
+  return &m_wizzyWiggAuto;
 }
 
 void RobotContainer::TeleopDataSetup() {
@@ -90,14 +92,20 @@ void RobotContainer::TeleopDataUpdate() {
 
 
 void RobotContainer::TestDataSetup() {
-  m_arm.ArmTestSetup();
+  // Arm Commands and Setup
+  frc::SmartDashboard::PutData( "Goto -90", new ArmSet( -90_deg, &m_arm ) );
+  frc::SmartDashboard::PutData( "Goto 30", new ArmSet( 30_deg, &m_arm ) );
+  frc::SmartDashboard::PutData( "Goto 45", new ArmSet( 45_deg, &m_arm ) );
+  frc::SmartDashboard::PutData( "Goto -35", new ArmSet( -35_deg, &m_arm ) );
+  m_arm.ArmDataSetup(  );
+
   m_drive.DrivetrainSetup();
   frc::SmartDashboard::PutData(&PDP);
   frc::SmartDashboard::PutData(&Compressor);
 }
 
 void RobotContainer::TestDataUpdate() {
-  m_arm.ArmTest();
+  m_arm.ArmDataUpdate( );
   m_grabber.GrabberTest();
   m_drive.DrivetrainTest();
   m_limelight.LimelightTest();

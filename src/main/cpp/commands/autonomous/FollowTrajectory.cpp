@@ -4,8 +4,9 @@
 
 #include "commands/autonomous/FollowTrajectory.h"
 
-FollowTrajectory::FollowTrajectory( Drivetrain *drive, frc::Trajectory trajectory, frc::Rotation2d robotHeading )
-          : m_drive{ drive }, m_trajectory{ trajectory }, m_heading{robotHeading} {
+FollowTrajectory::FollowTrajectory( Drivetrain *drive, frc::Trajectory trajectory, 
+                                    frc::Rotation2d startHeading, frc::Rotation2d finishHeading )
+          : m_drive{ drive }, m_trajectory{ trajectory }, m_startHeading{startHeading}, m_finishHeading{finishHeading} {
   // Use addRequirements() here to declare subsystem dependencies.
   AddRequirements( { drive } );
 }
@@ -14,14 +15,15 @@ FollowTrajectory::FollowTrajectory( Drivetrain *drive, frc::Trajectory trajector
 void FollowTrajectory::Initialize() {
   m_drive->m_field.GetObject("trajectory")->SetTrajectory(m_trajectory);
   m_autoElapsed = 0_ms;
-  frc::Trajectory::State start = m_trajectory.Sample( 0_s );
-  m_drive->ResetPose( start.pose );
+//  frc::Trajectory::State start = m_trajectory.Sample( 0_s );
+//  m_drive->ResetPose( start.pose );
 }
 
 // Called repeatedly when this Command is scheduled to run
 void FollowTrajectory::Execute() {
+  double percent_done = m_autoElapsed / m_trajectory.TotalTime();
   auto goal = m_trajectory.Sample( m_autoElapsed );
-  m_drive->DriveTrajectory( goal, m_heading );
+  m_drive->DriveTrajectory( goal, (m_finishHeading - m_startHeading) * percent_done  + m_startHeading );
   m_autoElapsed += 20_ms;
 }
 

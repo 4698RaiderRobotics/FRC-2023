@@ -106,5 +106,11 @@ bool Limelight::haveValidAprilTag( void ) {
         return false;
     }
 
+    bpose = table->GetNumberArray("camerapose_targetspace", defaultValue);
+    if ( bpose.size() >= 6 ) {
+            // Seems to give bad data when the April Tag is far away.
+        if( std::fabs(bpose[2]) > 3.0 ) return false;
+    }
+
     return true;
 }

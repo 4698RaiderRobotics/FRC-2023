@@ -30,9 +30,9 @@ class ArmSubsystem : public frc2::SubsystemBase {
 
   bool Finished( );
 
-  void ArmTestSetup();
+  void ArmDataSetup( );
 
-  void ArmTest();
+  void ArmDataUpdate( );
 
  private:
 
@@ -57,7 +57,7 @@ class ArmSubsystem : public frc2::SubsystemBase {
   
   frc::ArmFeedforward feedforward{ units::volt_t{ kS }, units::volt_t{ kG },  units::unit_t<frc::ArmFeedforward::kv_unit> { kV }  };
 
-  frc::TrapezoidProfile<units::degrees>::Constraints m_constraints{ 360_deg_per_s, 360_deg_per_s_sq };
+  frc::TrapezoidProfile<units::degrees>::Constraints m_constraints{ 720_deg_per_s, 360_deg_per_s_sq };
   frc::TrapezoidProfile<units::degrees>::State m_goal;
   frc::TrapezoidProfile<units::degrees>::State m_setpoint;
 

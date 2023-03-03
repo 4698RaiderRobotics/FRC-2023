@@ -5,6 +5,9 @@
 #include "commands/TestProfileMove.h"
 #include "commands/OpenGrabber.h"
 #include "commands/autonomous/FollowTrajectory.h"
+#include "commands/TestProfileMove.h"
+#include "commands/TurnToAngle.h"
+#include "commands/GyroBalance.h"
 
 SimpleAuto::SimpleAuto( Drivetrain *drive, ArmSubsystem *arm, GrabberSubsystem *grabber, 
                         units::degree_t angle ) {
@@ -23,17 +26,20 @@ SimpleAuto::SimpleAuto( Drivetrain *drive, ArmSubsystem *arm, GrabberSubsystem *
       frc::Translation2d{ 11.452_m, 4.9_m }
     };
 
-    frc::TrajectoryConfig config{ 1_mps, 1_mps_sq };
+    frc::TrajectoryConfig config{ 1.5_mps, 1.5_mps_sq };
 
     m_trajectory = frc::TrajectoryGenerator::GenerateTrajectory(startPose, interiorWaypoints, endPose, config);
     
     AddCommands( 
       DriveToPoseCommand( drive, drive->redAllianceGridPoints[8] ),
       ArmSet( angle, arm ),
-      TestProfileMove( 18_in, TestProfileMove::FORWARD, drive ),
+      TestProfileMove( 17_in, TestProfileMove::FORWARD, drive ),
       OpenGrabber( grabber ),
-      TestProfileMove( -18_in, TestProfileMove::FORWARD, drive ),
+      TestProfileMove( -17_in, TestProfileMove::FORWARD, drive ),
       ArmSet( -90_deg, arm ),
-      FollowTrajectory( drive, m_trajectory, 180_deg ) 
+      TurnToAngle( drive, -175_deg ),
+      FollowTrajectory( drive, m_trajectory, 180_deg, 180_deg ),
+      DriveToPoseCommand( drive, { endPose.X() + 1.75_m, endPose.Y(), -179_deg } ),
+      GyroBalance( drive )
     );
 }

@@ -6,12 +6,12 @@ GyroBalance::GyroBalance( Drivetrain* drive )
 }
 
 void GyroBalance::Execute( ) {
-    currentAngle = m_drive->GetPitch();
+    currentAngle = -m_drive->GetPitch();
     frc::SmartDashboard::PutNumber( "Pitch", currentAngle );
 
     error = 0 - currentAngle;
 
-    drivePower = units::meters_per_second_t{pidf::kGyroBalanceP * error};
+    drivePower = pidf::kGyroBalanceP * error * physical::kMaxDriveSpeed;
 
     speeds.vx = drivePower;
 
@@ -20,5 +20,5 @@ void GyroBalance::Execute( ) {
 }
 
 bool GyroBalance::IsFinished() {
-    return abs( error ) < 5;
+    return false;
 }

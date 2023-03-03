@@ -31,7 +31,7 @@ private:
   units::meter_t m_distance;
   units::second_t m_elapsed_time;
 
-  frc::TrapezoidProfile<units::meters>::Constraints m_linearConstraints{ 3_mps, 0.5_mps_sq };
+  frc::TrapezoidProfile<units::meters>::Constraints m_linearConstraints{ 1.5_mps, 1.5_mps_sq };
 
   frc::TrapezoidProfile<units::meters>::State m_Goal;
   frc::TrapezoidProfile<units::meters>::State m_Setpoint;

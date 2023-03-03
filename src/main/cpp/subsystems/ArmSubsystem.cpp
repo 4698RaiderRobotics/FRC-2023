@@ -53,7 +53,8 @@ bool ArmSubsystem::Finished( ) {
     return units::math::abs( m_enc.GetPosition() - m_angle ) < physical::kArmAngleError;
 }
 
-void ArmSubsystem::ArmTestSetup() {
+void ArmSubsystem::ArmDataSetup( ) {
+
     frc::SmartDashboard::PutNumber("kG", feedforward.kG.value() );
     frc::SmartDashboard::PutNumber("kP", kP);
     frc::SmartDashboard::PutNumber("kD", kD);
@@ -66,7 +67,8 @@ void ArmSubsystem::ArmTestSetup() {
 
 }
 
-void ArmSubsystem::ArmTest() {
+void ArmSubsystem::ArmDataUpdate( ) {
+
     double g = frc::SmartDashboard::GetNumber( "kG", 0.0 );
     double p = frc::SmartDashboard::GetNumber( "kP", 0.0 );
     double d = frc::SmartDashboard::GetNumber( "kD", 0.0 );

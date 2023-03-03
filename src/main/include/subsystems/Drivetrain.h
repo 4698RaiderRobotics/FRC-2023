@@ -20,7 +20,7 @@ class Drivetrain : public frc2::SubsystemBase {
   public:
     Drivetrain( Limelight * );
 
-    void Drive( double xSpeed, double ySpeed, double omegaSpeed, bool fieldRelative = true );
+    void ArcadeDrive( double xSpeed, double ySpeed, double omegaSpeed, bool operatorRelative = true );
 
     void Drive( frc::ChassisSpeeds speeds, bool fieldRelative = true );
 
@@ -43,10 +43,14 @@ class Drivetrain : public frc2::SubsystemBase {
     void PoseToNetworkTables();
 
   private:
+    void AverageVisionPose( frc::Pose2d visionPose, units::second_t timestamp );
+    
     Limelight *m_limelight;
     bool m_noValidPose = true;
     bool m_averagingPose = false;
     int m_avgIteration = 0;
+    units::second_t m_averagingDelay = 100_ms;
+    units::second_t m_lastVisionTS = 0_s;
     frc::Pose2d m_avgVisionPose;
 
 //    SwerveStatusDisplay swerve_display{ "Swerve Drive", "Robot Wheel Status" };

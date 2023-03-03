@@ -21,7 +21,7 @@ namespace pidf {
     constexpr double kDriveFF = 0.000015;
     */
 
-    constexpr double kGyroBalanceP = 0.005;
+    constexpr double kGyroBalanceP = 0.004;
 
     //constexpr double kXTargetP = 0.005;
     //constexpr double kYTargetP = 0.1;
@@ -71,7 +71,7 @@ namespace physical {
 
     // The number of meters traveled per rotation of the drive motor
     // wheel circumference / gear ratio
-    constexpr meters_per_rev_t kDriveMetersPerRotation = std::numbers::pi * 4.1368_in / (kDriveGearRatio *  1_tr );
+    constexpr meters_per_rev_t kDriveMetersPerRotation = std::numbers::pi * 4.0_in / (kDriveGearRatio *  1_tr );
 
     // 
     constexpr double kArmGearRatio = 12.0 / 58.0 * 18.0 / 58.0 * 15.0 / 26.0;
