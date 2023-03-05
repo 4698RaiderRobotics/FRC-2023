@@ -17,7 +17,6 @@ void Robot::RobotInit() {
   //frc::DriverStation::StartDataLog(frc::DataLogManager::GetLog());
   // Log in Telelop:
 
-  frc::SmartDashboard::PutData(&frc2::CommandScheduler::GetInstance());
 }
 
 /**
@@ -38,7 +37,10 @@ void Robot::RobotPeriodic() {
  */
 void Robot::DisabledInit() {}
 
-void Robot::DisabledPeriodic() {}
+void Robot::DisabledPeriodic() {
+//    m_container.TestDataUpdate();
+
+}
 
 /**
  * This autonomous runs the autonomous command selected by your {@link
@@ -82,7 +84,6 @@ void Robot::TestInit() {
  * This function is called periodically during test mode.
  */
 void Robot::TestPeriodic() {
-  m_container.TestDataUpdate();
 }
 
 /**
