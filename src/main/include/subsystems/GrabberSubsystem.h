@@ -25,7 +25,7 @@ class GrabberSubsystem : public frc2::SubsystemBase {
 
   void GrabberTest();
 
-  const double kRollerGripPercent = 0.10;
+  const double kRollerGripPercent = 0.15;
 
  private:
   

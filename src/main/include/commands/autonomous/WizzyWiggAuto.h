@@ -15,8 +15,9 @@ class WizzyWiggAuto
     : public frc2::CommandHelper<frc2::SequentialCommandGroup,
                                  WizzyWiggAuto> {
  public:
-  WizzyWiggAuto( Drivetrain *drive, ArmSubsystem *arm, GrabberSubsystem *grabber, units::degree_t angle );
+  WizzyWiggAuto( Drivetrain *drive, ArmSubsystem *arm, GrabberSubsystem *grabber );
 
 
-  
+ private:
+  frc::Pose2d m_targetpose;
 };
