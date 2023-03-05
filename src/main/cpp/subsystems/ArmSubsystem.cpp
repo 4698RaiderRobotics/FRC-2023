@@ -14,6 +14,12 @@ ArmSubsystem::ArmSubsystem() {
 };
 
 void ArmSubsystem::Periodic() {
+    units::degree_t measurement = m_enc.GetPosition();
+    if ( measurement > 120_deg || measurement < -120_deg ) {
+        FRC_ReportError	( -111 /*generic error*/, "Arm Absolute Encoder out of bounds." );
+        return;
+    }
+
     m_goal = { m_angle, 0_deg_per_s };
 
     frc::TrapezoidProfile<units::degrees> m_profile{ m_constraints, m_goal, m_setpoint };
@@ -21,9 +27,6 @@ void ArmSubsystem::Periodic() {
 
     frc::SmartDashboard::PutNumber( "Arm Setpoint Position", m_setpoint.position.value() );
     frc::SmartDashboard::PutNumber( "Arm Setpoint Velocity", m_setpoint.velocity.value() );
-
-    units::degree_t measurement = m_enc.GetPosition();
-
 
     double output = pid.Calculate( measurement.value(), m_setpoint.position.value());
     double feedforwardOut = feedforward.Calculate( m_setpoint.position, m_setpoint.velocity ).value();
