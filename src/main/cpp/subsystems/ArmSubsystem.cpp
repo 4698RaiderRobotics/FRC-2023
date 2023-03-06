@@ -3,6 +3,7 @@
 // the WPILib BSD license file in the root directory of this project.
 
 #include "subsystems/ArmSubsystem.h"
+#include <frc/DriverStation.h>
 
 ArmSubsystem::ArmSubsystem() {
     m_right.SetInverted( true );
@@ -14,8 +15,16 @@ ArmSubsystem::ArmSubsystem() {
 };
 
 void ArmSubsystem::Periodic() {
+    if ( disabled && frc::DriverStation::IsEnabled() ) {
+        m_setpoint.position = m_enc.GetPosition();
+        m_angle = m_enc.GetPosition();
+        disabled = false;
+    } else if ( !disabled && frc::DriverStation::IsDisabled() ) {
+        disabled = true;
+    }
+    
     units::degree_t measurement = m_enc.GetPosition();
-    if ( measurement > 120_deg || measurement < -120_deg ) {
+    if ( measurement > 120_deg || measurement < -140_deg ) {
         FRC_ReportError	( -111 /*generic error*/, "Arm Absolute Encoder out of bounds." );
         return;
     }
