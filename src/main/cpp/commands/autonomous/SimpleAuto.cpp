@@ -32,11 +32,11 @@ SimpleAuto::SimpleAuto( Drivetrain *drive, ArmSubsystem *arm, GrabberSubsystem *
     
     AddCommands( 
       DriveToPoseCommand( drive, drive->redAllianceGridPoints[8] ),
-      ArmSet( angle, arm ),
-      TestProfileMove( 17_in, TestProfileMove::FORWARD, drive ),
+      ArmSet( arm, angle ),
+      TestProfileMove( drive, 17_in, TestProfileMove::FORWARD ),
       OpenGrabber( grabber ),
-      TestProfileMove( -17_in, TestProfileMove::FORWARD, drive ),
-      ArmSet( -90_deg, arm ),
+      TestProfileMove( drive, -17_in, TestProfileMove::FORWARD ),
+      ArmSet( arm, -90_deg ),
       TurnToAngle( drive, -175_deg ),
       FollowTrajectory( drive, m_trajectory, 180_deg, 180_deg ),
       DriveToPoseCommand( drive, { endPose.X() + 1.75_m, endPose.Y(), -179_deg } ),

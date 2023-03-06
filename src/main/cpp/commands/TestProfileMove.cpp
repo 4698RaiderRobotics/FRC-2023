@@ -11,8 +11,8 @@
 
 
 
-TestProfileMove::TestProfileMove( units::meter_t distance, Direction d, Drivetrain *drive )
-    : m_distance{distance}, m_direction{ d },  m_drive{ drive } {
+TestProfileMove::TestProfileMove( Drivetrain *drive, units::meter_t distance, Direction d )
+    :  m_drive{ drive }, m_distance{ distance }, m_direction{ d } {
         AddRequirements( { drive } );
 
     }

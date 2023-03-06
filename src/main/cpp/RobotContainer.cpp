@@ -55,15 +55,15 @@ void RobotContainer::ConfigureButtonBindings() {
 
   m_operatorController.LeftTrigger().OnTrue( frc2::InstantCommand( [this] { m_grabber.Toggle( ); }, { &m_grabber } ).ToPtr() );
 
-  m_operatorController.Y().OnTrue( ArmSet( 30_deg, &m_arm ).ToPtr() );
+  m_operatorController.Y().OnTrue( ArmSet( &m_arm, 30_deg ).ToPtr() );
 
-  m_operatorController.B().OnTrue( ArmSet( 0_deg, &m_arm ).ToPtr() );
+  m_operatorController.B().OnTrue( ArmSet( &m_arm, 0_deg ).ToPtr() );
 
-  m_operatorController.A().OnTrue( ArmSet( -90_deg, &m_arm ).ToPtr() );
+  m_operatorController.A().OnTrue( ArmSet( &m_arm, -90_deg ).ToPtr() );
 
-  m_operatorController.X().OnTrue( ArmSet( -35_deg, &m_arm ).ToPtr() );
+  m_operatorController.X().OnTrue( ArmSet( &m_arm, -35_deg ).ToPtr() );
 
-  m_operatorController.RightStick().OnTrue( ArmSet( -118_deg, &m_arm ).ToPtr() );
+  m_operatorController.RightStick().OnTrue( ArmSet( &m_arm, -118_deg ).ToPtr() );
 
   // frc2::JoystickButton( &m_operatorController, frc::XboxController::Axis::kLeftY )
   // .WhileTrue( frc2::RunCommand( [this] { m_arm.AdjustAngle( m_operatorController.GetLeftY() * 15_deg ); }, { &m_arm } ).ToPtr() );
@@ -95,10 +95,10 @@ void RobotContainer::TeleopDataUpdate() {
 
 void RobotContainer::TestDataSetup() {
   // Arm Commands and Setup
-  frc::SmartDashboard::PutData( "Goto -90", new ArmSet( -90_deg, &m_arm ) );
-  frc::SmartDashboard::PutData( "Goto 30", new ArmSet( 30_deg, &m_arm ) );
-  frc::SmartDashboard::PutData( "Goto 45", new ArmSet( 45_deg, &m_arm ) );
-  frc::SmartDashboard::PutData( "Goto -35", new ArmSet( -35_deg, &m_arm ) );
+  frc::SmartDashboard::PutData( "Goto -90", new ArmSet( &m_arm, -90_deg ) );
+  frc::SmartDashboard::PutData( "Goto 30", new ArmSet( &m_arm, 30_deg ) );
+  frc::SmartDashboard::PutData( "Goto 45", new ArmSet( &m_arm, 45_deg ) );
+  frc::SmartDashboard::PutData( "Goto -35", new ArmSet( &m_arm, -35_deg ) );
   m_arm.ArmDataSetup(  );
 
   m_drive.DrivetrainSetup();

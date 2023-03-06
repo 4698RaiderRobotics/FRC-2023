@@ -14,7 +14,7 @@
 class ArmSet
     : public frc2::CommandHelper<frc2::CommandBase, ArmSet> {
  public:
-  ArmSet( units::degree_t angle, ArmSubsystem *arm );
+  ArmSet( ArmSubsystem *arm, units::degree_t angle );
 
   void Initialize() override;
 
@@ -24,8 +24,8 @@ class ArmSet
 
   bool IsFinished() override;
  private:
-  units::degree_t m_angle;
   ArmSubsystem *m_arm; 
+  units::degree_t m_angle;
 
   units::second_t m_startTime;
 };

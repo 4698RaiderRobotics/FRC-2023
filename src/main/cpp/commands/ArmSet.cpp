@@ -7,8 +7,8 @@
 #include "commands/ArmSet.h"
 
 
-ArmSet::ArmSet( units::degree_t angle, ArmSubsystem *arm )
-        : m_angle{ angle }, m_arm{ arm } {
+ArmSet::ArmSet( ArmSubsystem *arm, units::degree_t angle )
+        : m_arm{ arm }, m_angle{ angle } {
   AddRequirements( { arm } );
 }
 

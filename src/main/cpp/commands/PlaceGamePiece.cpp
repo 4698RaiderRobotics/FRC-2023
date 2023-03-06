@@ -16,11 +16,11 @@ PlaceGamePiece::PlaceGamePiece( Drivetrain *drive, ArmSubsystem *arm, GrabberSub
                                 frc::Pose2d targetPose, units::degree_t angle ) {
   AddCommands(
     DriveToPoseCommand{ drive },
-    ArmSet( angle, arm ),
-    TestProfileMove( 18_in, TestProfileMove::FORWARD, drive ),
+    ArmSet( arm, angle ),
+    TestProfileMove( drive, 18_in, TestProfileMove::FORWARD ),
     OpenGrabber( grabber ),
-    TestProfileMove( -18_in, TestProfileMove::FORWARD, drive ),
-    ArmSet( -90_deg, arm )
+    TestProfileMove( drive, -18_in, TestProfileMove::FORWARD ),
+    ArmSet( arm, -90_deg )
 );
   m_timer.Restart();
 }

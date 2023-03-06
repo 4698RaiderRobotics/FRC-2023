@@ -17,7 +17,7 @@ class TestProfileMove
  public:
   enum Direction { FORWARD, LEFT };
 
-  TestProfileMove( units::meter_t distance, Direction d, Drivetrain *drive );
+  TestProfileMove( Drivetrain *drive, units::meter_t distance, Direction d );
 
   void Initialize() override;
 
@@ -27,8 +27,8 @@ class TestProfileMove
 
 private:
   Drivetrain* m_drive;
-  Direction m_direction;
   units::meter_t m_distance;
+  Direction m_direction;
   units::second_t m_elapsed_time;
 
   frc::TrapezoidProfile<units::meters>::Constraints m_linearConstraints{ 1.5_mps, 1.5_mps_sq };
