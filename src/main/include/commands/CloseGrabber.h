@@ -19,7 +19,7 @@
 class CloseGrabber
     : public frc2::CommandHelper<frc2::CommandBase, CloseGrabber> {
  public:
-  CloseGrabber( GrabberSubsystem *grabber );
+  CloseGrabber( GrabberSubsystem *grabber, bool spin_on_close = true );
 
   void Initialize() override;
 
@@ -30,5 +30,6 @@ class CloseGrabber
   bool IsFinished() override;
 
  private:
+  bool m_spin_on_close;
   GrabberSubsystem *m_grabber;
 };

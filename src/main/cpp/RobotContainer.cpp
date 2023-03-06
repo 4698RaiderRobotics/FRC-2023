@@ -47,28 +47,23 @@ void RobotContainer::ConfigureButtonBindings() {
   // frc2::JoystickButton( &m_driverController, frc::PS4Controller::Button::kSquare )
   // .WhileTrue( UpdateOdom( &m_drive, &m_limelight).ToPtr());
 
-  frc2::JoystickButton( &m_operatorController, frc::XboxController::Button::kRightBumper )
-  .OnTrue( OpenGrabber( &m_grabber, 0.0 ).ToPtr() );
+  m_operatorController.RightBumper().OnTrue( OpenGrabber( &m_grabber, 0.0 ).ToPtr() );
 
-  frc2::JoystickButton( &m_operatorController, frc::XboxController::Button::kLeftBumper )
-  .WhileTrue( CloseGrabber( &m_grabber ).ToPtr() );
+  m_operatorController.LeftBumper().OnTrue( CloseGrabber( &m_grabber ).ToPtr() );
 
   m_operatorController.RightTrigger().OnTrue( frc2::InstantCommand( [this] { m_grabber.Spin( -0.25 ); }, { &m_grabber } ).ToPtr() );
 
-  m_operatorController.LeftTrigger().ToggleOnTrue( frc2::StartEndCommand( [this] { m_grabber.Spin( 0 ); },
-   [this] { m_grabber.Spin( m_grabber.kRollerGripPercent ); }, { &m_grabber } ).ToPtr() );
+  m_operatorController.LeftTrigger().OnTrue( frc2::InstantCommand( [this] { m_grabber.Toggle( ); }, { &m_grabber } ).ToPtr() );
 
-  frc2::JoystickButton( &m_operatorController, frc::XboxController::Button::kY )
-  .WhileTrue( ArmSet( 30_deg, &m_arm ).ToPtr() );
+  m_operatorController.Y().OnTrue( ArmSet( 30_deg, &m_arm ).ToPtr() );
 
-  frc2::JoystickButton( &m_operatorController, frc::XboxController::Button::kB )
-  .WhileTrue( ArmSet( 0_deg, &m_arm ).ToPtr() );
+  m_operatorController.B().OnTrue( ArmSet( 0_deg, &m_arm ).ToPtr() );
 
-  frc2::JoystickButton( &m_operatorController, frc::XboxController::Button::kA )
-  .WhileTrue( ArmSet( -90_deg, &m_arm ).ToPtr() );
+  m_operatorController.A().OnTrue( ArmSet( -90_deg, &m_arm ).ToPtr() );
 
-  frc2::JoystickButton( &m_operatorController, frc::XboxController::Button::kX )
-  .WhileTrue( ArmSet( -35_deg, &m_arm ).ToPtr() );
+  m_operatorController.X().OnTrue( ArmSet( -35_deg, &m_arm ).ToPtr() );
+
+  m_operatorController.RightStick().OnTrue( ArmSet( -118_deg, &m_arm ).ToPtr() );
 
   // frc2::JoystickButton( &m_operatorController, frc::XboxController::Axis::kLeftY )
   // .WhileTrue( frc2::RunCommand( [this] { m_arm.AdjustAngle( m_operatorController.GetLeftY() * 15_deg ); }, { &m_arm } ).ToPtr() );
@@ -76,7 +71,11 @@ void RobotContainer::ConfigureButtonBindings() {
 
 frc2::Command* RobotContainer::GetAutonomousCommand() {
   // An example command will be run in autonomous
-  return &m_wizzyWiggAuto;
+  delete m_autoCommand;
+
+  m_autoCommand = new WizzyWiggAuto( &m_drive, &m_arm, &m_grabber );
+
+  return m_autoCommand;
 }
 
 void RobotContainer::TeleopDataSetup() {

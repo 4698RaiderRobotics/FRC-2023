@@ -23,12 +23,15 @@ class GrabberSubsystem : public frc2::SubsystemBase {
 
   void Spin( double speed );
 
+  void Toggle( void );
+
   void GrabberTest();
 
   const double kRollerGripPercent = 0.15;
 
  private:
-  
+  double m_spin_speed = 0.0;
+
   ctre::phoenix::motorcontrol::can::TalonFX m_roller{ 14 };
   frc::DoubleSolenoid m_grab{ 9, frc::PneumaticsModuleType::CTREPCM, deviceIDs::kGrabberSolenoidForwardChannel, deviceIDs::kGrabberSolenoidReverseChannel };
 };

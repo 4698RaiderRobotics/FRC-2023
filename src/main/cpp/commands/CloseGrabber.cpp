@@ -4,15 +4,16 @@
 
 #include "commands/CloseGrabber.h"
 
-CloseGrabber::CloseGrabber( GrabberSubsystem *grabber )
-        : m_grabber{ grabber } {
+CloseGrabber::CloseGrabber( GrabberSubsystem *grabber, bool spin_on_close )
+        : m_grabber{ grabber }, m_spin_on_close{spin_on_close} {
   AddRequirements( { grabber } );
 }
 
 // Called when the command is initially scheduled.
 void CloseGrabber::Initialize() {
-  m_grabber->Spin( m_grabber->kRollerGripPercent );
-  
+  if( m_spin_on_close ) {
+    m_grabber->Spin( m_grabber->kRollerGripPercent );
+  }
 }
 
 // Called repeatedly when this Command is scheduled to run
