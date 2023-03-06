@@ -45,8 +45,10 @@ class RobotContainer {
   ArmSubsystem m_arm;
   GrabberSubsystem m_grabber;
 
-  SimpleAuto m_simpleAuto{ &m_drive, &m_arm, &m_grabber, 30_deg };
-  WizzyWiggAuto m_wizzyWiggAuto{ &m_drive, &m_arm, &m_grabber };
+//  SimpleAuto m_simpleAuto{ &m_drive, &m_arm, &m_grabber, 30_deg };
+// WizzyWiggAuto m_wizzyWiggAuto{ &m_drive, &m_arm, &m_grabber };
+
+  frc2::Command *m_autoCommand = nullptr;
 
   frc::PowerDistribution PDP{0, frc::PowerDistribution::ModuleType::kCTRE};
   frc::Compressor Compressor{9, frc::PneumaticsModuleType::CTREPCM}; 
