@@ -7,6 +7,7 @@
 #include "commands/ArmSet.h"
 #include "commands/TestProfileMove.h"
 #include "commands/OpenGrabber.h"
+#include "commands/CloseGrabber.h"
 #include "commands/autonomous/FollowTrajectory.h"
 #include "commands/TestProfileMove.h"
 #include "commands/TurnToAngle.h"
@@ -18,31 +19,35 @@
 WizzyWiggAuto::WizzyWiggAuto( Drivetrain *drive, ArmSubsystem *arm, GrabberSubsystem *grabber ) {
   frc::Pose2d redAllianceTargetPoints[2] = { drive->redAllianceGridPoints[3], drive->redAllianceGridPoints[5] };
   frc::Pose2d blueAllianceTargetPoints[2] = { drive->blueAllianceGridPoints[3], drive->blueAllianceGridPoints[5] };
-
+  fmt::print( "WizzyWiggAuto::WizzyWiggAuto\n" );
   // If on blue side, do blue auto
   if ( drive->GetPose().X() < 7.5_m ) {
+    fmt::print( "Blue Alliance\n");
     m_targetpose = drive->GetPose().Nearest( std::span<frc::Pose2d> ( blueAllianceTargetPoints, 2 ) );
     AddCommands(
       DriveToPoseCommand( drive, m_targetpose ),
-      ArmSet( 30_deg, arm ),
-      TestProfileMove( 17_in, TestProfileMove::FORWARD, drive ),
+      ArmSet( arm, 30_deg ),
+      TestProfileMove( drive, 17_in, TestProfileMove::FORWARD ),
       OpenGrabber( grabber ),
-      TestProfileMove( -17_in, TestProfileMove::FORWARD, drive ),
-      ArmSet( -90_deg, arm ),
-      DriveToPoseCommand( drive, { m_targetpose.X() + 1.5_m, m_targetpose.Y(), 0_deg } ),
+      TestProfileMove( drive, -17_in, TestProfileMove::FORWARD ),
+      CloseGrabber( grabber, false ),
+      ArmSet( arm, -118_deg ),
+      DriveToPoseCommand( drive, { m_targetpose.X() + 1.5_m, m_targetpose.Y(), 180_deg } ),
       GyroBalance( drive )
     );
   // If on red side, do red auto
   } else if ( drive->GetPose().X() > 7.5_m ) {
+    fmt::print( "Red Alliance\n");
     m_targetpose = drive->GetPose().Nearest( std::span<frc::Pose2d> ( redAllianceTargetPoints, 2 ) );
     AddCommands(
       DriveToPoseCommand( drive, m_targetpose ),
-      ArmSet( 30_deg, arm ),
-      TestProfileMove( 17_in, TestProfileMove::FORWARD, drive ),
+      ArmSet( arm, 30_deg ),
+      TestProfileMove( drive, 17_in, TestProfileMove::FORWARD ),
       OpenGrabber( grabber ),
-      TestProfileMove( -17_in, TestProfileMove::FORWARD, drive ),
-      ArmSet( -90_deg, arm ),
-      DriveToPoseCommand( drive, { m_targetpose.X() - 1.5_m, m_targetpose.Y(), 0_deg } ),
+      TestProfileMove( drive, -17_in, TestProfileMove::FORWARD ),
+      CloseGrabber( grabber, false ),
+      ArmSet( arm, -118_deg ),
+      DriveToPoseCommand( drive, { m_targetpose.X() - 1.75_m, m_targetpose.Y(), 0_deg } ),
       GyroBalance( drive )
     );
   }
