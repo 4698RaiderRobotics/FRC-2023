@@ -30,6 +30,6 @@ class CloseGrabber
   bool IsFinished() override;
 
  private:
-  bool m_spin_on_close;
-  GrabberSubsystem *m_grabber;
+   GrabberSubsystem *m_grabber;
+   bool m_spin_on_close;
 };

@@ -41,8 +41,13 @@ class ArmSubsystem : public frc2::SubsystemBase {
 
   AbsoluteEncoder m_enc{ deviceIDs::kArmEncoderID, physical::kArmAbsoluteOffset, true };
 
-  double kS = 0.4;
-  double kG = 1.6;
+  // double kS = 0.4;
+  // double kG = 1.7;
+  // double kV = 0.4;
+  // double kA = 0.0;
+
+  double kS = 0.5;
+  double kG = 1.8;
   double kV = 0.4;
   double kA = 0.0;
 
@@ -62,5 +67,7 @@ class ArmSubsystem : public frc2::SubsystemBase {
   frc::TrapezoidProfile<units::degrees>::State m_setpoint;
 
   units::second_t dt = 20_ms;
-  units::degree_t m_angle = -90_deg;
+  units::degree_t m_angle = -118_deg;
+
+  bool disabled = true;
 };

@@ -38,6 +38,8 @@ void Robot::RobotPeriodic() {
 void Robot::DisabledInit() {}
 
 void Robot::DisabledPeriodic() {
+  // TODO: This call completely disabled to robot.  It would not respond
+  //       to joystick input.  No motors would work.  Need to DEBUG
 //    m_container.TestDataUpdate();
 
 }
