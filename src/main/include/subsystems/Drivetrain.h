@@ -52,6 +52,7 @@ class Drivetrain : public frc2::SubsystemBase {
     units::second_t m_averagingDelay = 100_ms;
     units::second_t m_lastVisionTS = 0_s;
     frc::Pose2d m_avgVisionPose;
+    units::degree_t m_gyro_operator_offset = 180_deg;
 
 //    SwerveStatusDisplay swerve_display{ "Swerve Drive", "Robot Wheel Status" };
 

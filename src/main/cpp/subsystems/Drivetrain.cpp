@@ -9,8 +9,8 @@ Drivetrain::Drivetrain( Limelight *ll ) : m_limelight{ll} {
   ResetGyro( 180_deg );
 
   for( int n=0; n<9; ++n ) {
-    redAllianceGridPoints[n] = { 14.1_m, 20_in + 22_in*n, 0_deg };
-    blueAllianceGridPoints[n] = { 1.95_m, 20_in + 22_in*n, 180_deg };
+    redAllianceGridPoints[n] = { 14.3_m, 20_in + 22_in*n, 0_deg };
+    blueAllianceGridPoints[n] = { 2.25_m, 20_in + 22_in*n, 180_deg };
   }
 
   frc::SmartDashboard::PutData("Field", &m_field);
@@ -26,8 +26,14 @@ void Drivetrain::ArcadeDrive( double xSpeed, double ySpeed, double omegaSpeed, b
     frc::ChassisSpeeds speeds{ x, y , omega };
 
     if( operatorRelative ) {
-        speeds = speeds.FromFieldRelativeSpeeds( 
-                    speeds.vx, speeds.vy, speeds.omega, frc::Rotation2d{ units::degree_t{ m_gyro.GetYaw() } } );
+        // fmt::print( "Gyro Reading = {}\n", units::degree_t{ m_gyro.GetYaw() } );
+        // fmt::print( "Field Angle = {}\n", m_odometry.GetEstimatedPosition().Rotation().Degrees() );
+
+        // fmt::print( "  Drivetrain::ArcadeDrive operator angle = {} - {} = {}\n", 
+        //                units::degree_t{ m_gyro.GetYaw() }, m_gyro_operator_offset,
+        //                units::degree_t{ m_gyro.GetYaw() } - m_gyro_operator_offset );
+        speeds = speeds.FromFieldRelativeSpeeds( speeds.vx, speeds.vy, speeds.omega, 
+                                                 units::degree_t{ m_gyro.GetYaw() } - m_gyro_operator_offset );
     }
 
     Drive( speeds, false );
@@ -105,7 +111,7 @@ void Drivetrain::Periodic( ) {
         } else {
             if( m_odometry.GetEstimatedPosition().Translation().Distance( visionPose.Translation() ) < 1_m ) {
                 // Only update if the vision pose is within 1m of the current pose
-                m_odometry.AddVisionMeasurement( visionPose, timestamp );
+ //               m_odometry.AddVisionMeasurement( visionPose, timestamp );
             }
         }
     }
@@ -118,8 +124,8 @@ void Drivetrain::Periodic( ) {
     // frc::SmartDashboard::PutNumber( "Estimated Y", estm_pose.Y().value() );
     // frc::SmartDashboard::PutNumber( "Estimated Theta", estm_pose.Rotation().Degrees().value() );
 
-    frc::SmartDashboard::PutNumber( "Pitch", m_gyro.GetPitch() );
-    frc::SmartDashboard::PutNumber( "Roll", m_gyro.GetRoll() );
+//    frc::SmartDashboard::PutNumber( "Pitch", m_gyro.GetPitch() );
+//    frc::SmartDashboard::PutNumber( "Roll", m_gyro.GetRoll() );
 
     m_field.SetRobotPose( estm_pose );
     m_field.GetObject( "Vision Pose" )->SetPose( visionPose );
@@ -176,13 +182,24 @@ void Drivetrain::AverageVisionPose( frc::Pose2d visionPose, units::second_t time
     m_lastVisionTS = frc::Timer::GetFPGATimestamp();
 
     if( m_avgIteration == 10 ) {
-            // Reset the gyro angle for operator relative control.
-        units::degree_t vision_angle = m_avgVisionPose.Rotation().Degrees() / m_avgIteration;
-        ResetGyro( vision_angle + 180_deg );
-
         m_avgVisionPose = frc::Pose2d{ m_avgVisionPose.X() / m_avgIteration,
                                        m_avgVisionPose.Y() / m_avgIteration,
                                        m_avgVisionPose.Rotation().Degrees() / m_avgIteration };
+
+  // TODO: The calculation of the gyro operator offset seems overly complicated.
+  //       This does work but it is ugly and confusing.
+
+        if ( m_avgVisionPose.X() < 7.5_m ) {
+            fmt::print( "Blue Alliance\n");
+            m_gyro_operator_offset = 360_deg - units::degree_t{ m_gyro.GetYaw() } - m_avgVisionPose.Rotation().Degrees();
+        } else {
+            fmt::print( "Red Alliance\n");
+            m_gyro_operator_offset = 180_deg - units::degree_t{ m_gyro.GetYaw() } - m_avgVisionPose.Rotation().Degrees();
+        }
+        fmt::print( "Gyro Reading = {}\n", units::degree_t{ m_gyro.GetYaw() } );
+        fmt::print( "Field Angle = {}\n", m_avgVisionPose.Rotation().Degrees() );
+        fmt::print( "Gyro offset = {}\n", m_gyro_operator_offset );
+
         m_odometry.ResetPosition( frc::Rotation2d{ units::degree_t{ m_gyro.GetYaw() } },
         {
             m_frontLeft.GetPosition(), m_frontRight.GetPosition(), 
@@ -194,8 +211,6 @@ void Drivetrain::AverageVisionPose( frc::Pose2d visionPose, units::second_t time
         fmt::print( "Set vision pose average ({:.6}, {:.6}, {:.6}) [{}]!\n", 
                     m_avgVisionPose.X().value(), m_avgVisionPose.Y().value(),
                     m_avgVisionPose.Rotation().Degrees().value(), m_avgIteration );
-        fmt::print( "Reset gyro to ({:.6})!\n", vision_angle.value() + 180.0 );
-
     }
 }
 
