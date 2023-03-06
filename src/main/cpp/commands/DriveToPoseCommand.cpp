@@ -19,6 +19,15 @@ DriveToPoseCommand::DriveToPoseCommand(  Drivetrain *d, frc::Pose2d targetPose )
 
 // Called when the command is initially scheduled.
 void DriveToPoseCommand::Initialize() {
+
+  fmt::print( "DriveToPose targetpose = ({:.6}, {:.6}, {:.6}), actual = ({:.6}, {:.6}, {:.6})\n", 
+              m_targetpose.X(), m_targetpose.Y(), m_targetpose.Rotation().Degrees(),
+              m_drive->GetPose().X(), m_drive->GetPose().Y(), m_drive->GetPose().Rotation().Degrees() );
+  fmt::print( "      Distance to Target = X{:.6}, Y{:.6}, A{:.6}\n", 
+              m_drive->GetPose().Translation().X() - m_targetpose.Translation().X(),
+              m_drive->GetPose().Translation().Y() - m_targetpose.Translation().Y(),
+              m_drive->GetPose().Rotation().Degrees() - m_targetpose.Rotation().Degrees() );
+
   if( m_targetpose.X() > 0.1_cm ) {
       // We already have a target pose since all poses on the field are positive X
       return;
@@ -98,12 +107,14 @@ bool DriveToPoseCommand::IsFinished() {
     //              m_drive->GetPose().X(), m_drive->GetPose().Y(), m_drive->GetPose().Rotation().Degrees(), 
     //              distance_error, angle_error );
 
-  bool atTargetLocation = distance_error < 1.5_cm && angle_error < 0.25_deg;
+  bool atTargetLocation = distance_error < 1.0_cm && angle_error < 0.15_deg;
   if( atTargetLocation ) { 
     fmt::print( "DriveToPoseCommand::IsFinished target( {}, {}, {} ), robot( {}, {}, {} ) = L{}, A{}\n", 
                  m_targetpose.X(), m_targetpose.Y(), m_targetpose.Rotation().Degrees(), 
                  m_drive->GetPose().X(), m_drive->GetPose().Y(), m_drive->GetPose().Rotation().Degrees(), 
                  distance_error, angle_error );
+      // Make sure the drive is stopped.
+    m_drive->ArcadeDrive( 0.0, 0.0, 0.0 );
   }
 
   return atTargetLocation;
