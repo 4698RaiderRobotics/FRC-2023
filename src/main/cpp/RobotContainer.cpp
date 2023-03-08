@@ -18,10 +18,16 @@
 RobotContainer::RobotContainer() {
   // Initialize all of your commands and subsystems here
   m_drive.SetDefaultCommand(frc2::RunCommand(
-      [this] { m_drive.ArcadeDrive( vx_axis.GetAxis(), vy_axis.GetAxis(), omega_axis.GetAxis() ); }, { &m_drive } ) );
+      [this] { m_drive.ArcadeDrive( vx_axis.GetAxis(), vy_axis.GetAxis(), omega_axis.GetAxis() ); 
+               m_arm.AdjustAngle( arm_angle_axis.GetAxis() * 0.5_deg );
+             }, { &m_drive, &m_arm } ) );
 
   // Configure the button bindings
   ConfigureButtonBindings();
+
+  m_chooser.SetDefaultOption(kAutoNameDefault, kAutoNameDefault);
+  m_chooser.AddOption(kAutoNameCustom, kAutoNameCustom);
+  frc::SmartDashboard::PutData("Auto Modes", &m_chooser);
 }
 
 void RobotContainer::ConfigureButtonBindings() {
@@ -65,15 +71,21 @@ void RobotContainer::ConfigureButtonBindings() {
 
   m_operatorController.RightStick().OnTrue( ArmSet( &m_arm, -118_deg ).ToPtr() );
 
-  // frc2::JoystickButton( &m_operatorController, frc::XboxController::Axis::kLeftY )
-  // .WhileTrue( frc2::RunCommand( [this] { m_arm.AdjustAngle( m_operatorController.GetLeftY() * 15_deg ); }, { &m_arm } ).ToPtr() );
+//  frc2::JoystickButton( &m_operatorController, frc::XboxController::Axis::kLeftY )
+ // .WhileTrue( frc2::InstantCommand( [this] { m_arm.AdjustAngle( m_operatorController.GetLeftY() * 1_deg ); }, { &m_arm } ).ToPtr() );
 }
 
 frc2::Command* RobotContainer::GetAutonomousCommand() {
   // An example command will be run in autonomous
   delete m_autoCommand;
 
-  m_autoCommand = new WizzyWiggAuto( &m_drive, &m_arm, &m_grabber );
+  m_autoSelected = m_chooser.GetSelected();
+
+  if (m_autoSelected == kAutoNameDefault ) {
+    m_autoCommand = new WizzyWiggAuto( &m_drive, &m_arm, &m_grabber );
+  } else if ( m_autoSelected == kAutoNameCustom ) {
+    m_autoCommand = new NoBalanceAuto( &m_drive, &m_arm, &m_grabber );
+  }
 
   return m_autoCommand;
 }

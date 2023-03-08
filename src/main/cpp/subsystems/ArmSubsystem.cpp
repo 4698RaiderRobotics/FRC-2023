@@ -4,6 +4,7 @@
 
 #include "subsystems/ArmSubsystem.h"
 #include <frc/DriverStation.h>
+#include <frc/Timer.h>
 
 ArmSubsystem::ArmSubsystem() {
     m_right.SetInverted( true );
@@ -45,6 +46,7 @@ void ArmSubsystem::Periodic() {
 }
 
 void ArmSubsystem::GotoAngle( units::degree_t angle ) {
+    // fmt::print( "GoToAngle = {}\n", angle);
     m_angle = angle;
 
         // Range check angle
@@ -53,8 +55,8 @@ void ArmSubsystem::GotoAngle( units::degree_t angle ) {
 }
 
 void ArmSubsystem::AdjustAngle( units::degree_t delta_angle ) {
-    
     m_angle += delta_angle;
+        // fmt::print( "AdjustAngle = {}\n", delta_angle );
 
         // Range check angle
     if( m_angle > max_angle ) m_angle = max_angle;
