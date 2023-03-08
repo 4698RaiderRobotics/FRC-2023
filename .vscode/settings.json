@@ -91,7 +91,8 @@
     "xmemory": "cpp",
     "xstddef": "cpp",
     "xtr1common": "cpp",
-    "xutility": "cpp"
+    "xutility": "cpp",
+    "xstring": "cpp"
   },
   "editor.fontLigatures": true
 }

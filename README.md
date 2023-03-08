@@ -1,3 +1,4 @@
+[![CI](https://github.com/4698RaiderRobotics/FRC-2023/actions/workflows/main.yml/badge.svg)](https://github.com/4698RaiderRobotics/FRC-2023/actions/workflows/main.yml)
 # 4698 Raider Robotics 2023 Charged Up FRC Robot Code
 
 This repository contains the command-based robot code for Team 4698 Raider Robotics for the 2023 FRC game, Charged Up.

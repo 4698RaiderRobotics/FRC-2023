@@ -10,16 +10,27 @@ GrabberSubsystem::GrabberSubsystem() = default;
 void GrabberSubsystem::Periodic() {}
 
 void GrabberSubsystem::Open( ) {
-    m_grab.Set( frc::DoubleSolenoid::Value::kReverse );
+    m_grab.Set( frc::DoubleSolenoid::Value::kForward );
 }
 
 void GrabberSubsystem::Close( ) {
-    m_grab.Set( frc::DoubleSolenoid::Value::kForward );
+    m_grab.Set( frc::DoubleSolenoid::Value::kReverse );
 }
 
 // Speed is value from -1 to 1
 void GrabberSubsystem::Spin( double speed ) {
-    m_roller.Set( ctre::phoenix::motorcontrol::ControlMode::PercentOutput, speed );
+    m_spin_speed = speed;
+    m_roller.Set( ctre::phoenix::motorcontrol::ControlMode::PercentOutput, m_spin_speed );
+}
+
+void GrabberSubsystem::Toggle( void ) {
+    if( std::fabs(m_spin_speed) > 0.01 ) {
+        m_roller.Set( ctre::phoenix::motorcontrol::ControlMode::PercentOutput, 0.0 );
+        m_spin_speed = 0.0;
+    } else {
+        m_roller.Set( ctre::phoenix::motorcontrol::ControlMode::PercentOutput, kRollerGripPercent );
+        m_spin_speed = kRollerGripPercent;
+    }
 }
 
 void GrabberSubsystem::GrabberTest() {

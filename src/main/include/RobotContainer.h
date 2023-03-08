@@ -1,23 +1,23 @@
 #pragma once
 
 #include <frc2/command/Command.h>
-#include <frc2/command/RunCommand.h>
-#include <frc2/command/InstantCommand.h>
-#include <frc2/command/RepeatCommand.h>
+
 #include <frc2/command/button/JoystickButton.h>
 #include <frc/XboxController.h>
+#include <frc/PS4Controller.h>
+#include <frc2/command/button/CommandXboxController.h>
 
-#include "commands/ExampleCommand.h"
-#include "commands/TargetLimelight.h"
-#include "commands/GyroBalance.h"
-#include "commands/UpdateOdom.h"
-#include "commands/ArmSet.h"
-#include "commands/CloseGrabber.h"
-#include "subsystems/ExampleSubsystem.h"
+#include <frc/PowerDistribution.h>
+#include <frc/Compressor.h>
+
 #include "subsystems/Drivetrain.h"
 #include "subsystems/Limelight.h"
 #include "subsystems/ArmSubsystem.h"
 #include "subsystems/GrabberSubsystem.h"
+
+#include "commands/autonomous/SimpleAuto.h"
+#include "commands/autonomous/WizzyWiggAuto.h"
+
 #include "ControllerAxis.h"
 
 /**
@@ -33,26 +33,32 @@ class RobotContainer {
 
   frc2::Command* GetAutonomousCommand();
 
-  void TestSetup();
-
-  void TestMode();
+  void TeleopDataSetup();
+  void TeleopDataUpdate();
+  void TestDataSetup();
+  void TestDataUpdate();
 
  private:
   // The robot's subsystems and commands are defined here...
-  Drivetrain m_drive;
   Limelight m_limelight;
+  Drivetrain m_drive{ &m_limelight };
   ArmSubsystem m_arm;
   GrabberSubsystem m_grabber;
 
-  ExampleSubsystem m_subsystem;
-  ExampleCommand m_autonomousCommand;
+//  SimpleAuto m_simpleAuto{ &m_drive, &m_arm, &m_grabber, 30_deg };
+// WizzyWiggAuto m_wizzyWiggAuto{ &m_drive, &m_arm, &m_grabber };
 
-  frc::XboxController m_driverController{ 0 };
-  frc::XboxController m_operatorController{ 1 };
+  frc2::Command *m_autoCommand = nullptr;
 
-  ControllerAxis vx_axis{ m_driverController, frc::XboxController::Axis::kLeftY, true };
-  ControllerAxis vy_axis{ m_driverController, frc::XboxController::Axis::kLeftX, true };
-  ControllerAxis omega_axis{ m_driverController, frc::XboxController::Axis::kRightX, true };
+  frc::PowerDistribution PDP{0, frc::PowerDistribution::ModuleType::kCTRE};
+  frc::Compressor Compressor{9, frc::PneumaticsModuleType::CTREPCM}; 
+
+  frc::PS4Controller m_driverController{ 0 };
+  frc2::CommandXboxController m_operatorController{ 1 };
+
+  ControllerAxis vx_axis{ m_driverController, frc::PS4Controller::Axis::kLeftY, true };
+  ControllerAxis vy_axis{ m_driverController, frc::PS4Controller::Axis::kLeftX, true };
+  ControllerAxis omega_axis{ m_driverController, frc::PS4Controller::Axis::kRightX, true };
 
   void ConfigureButtonBindings();
 };

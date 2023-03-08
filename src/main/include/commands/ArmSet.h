@@ -7,20 +7,14 @@
 #include <frc2/command/CommandBase.h>
 #include <frc2/command/CommandHelper.h>
 #include <units/angle.h>
+#include <units/time.h>
 
 #include "subsystems/ArmSubsystem.h"
 
-/**
- * An example command.
- *
- * <p>Note that this extends CommandHelper, rather extending CommandBase
- * directly; this is crucially important, or else the decorator functions in
- * Command will *not* work!
- */
 class ArmSet
     : public frc2::CommandHelper<frc2::CommandBase, ArmSet> {
  public:
-  ArmSet( units::degree_t angle, ArmSubsystem *arm );
+  ArmSet( ArmSubsystem *arm, units::degree_t angle );
 
   void Initialize() override;
 
@@ -30,6 +24,8 @@ class ArmSet
 
   bool IsFinished() override;
  private:
-  ArmSubsystem *m_arm;
+  ArmSubsystem *m_arm; 
   units::degree_t m_angle;
+
+  units::second_t m_startTime;
 };

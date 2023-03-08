@@ -1,13 +1,56 @@
 {
+  "HALProvider": {
+    "Other Devices": {
+      "DutyCycleEncoder[1]": {
+        "header": {
+          "open": true
+        }
+      }
+    }
+  },
   "NTProvider": {
     "types": {
       "/FMSInfo": "FMSInfo",
+      "/LiveWindow/Ungrouped/DigitalInput[0]": "Digital Input",
+      "/LiveWindow/Ungrouped/DigitalInput[1]": "Digital Input",
+      "/LiveWindow/Ungrouped/DigitalInput[2]": "Digital Input",
+      "/LiveWindow/Ungrouped/DigitalInput[3]": "Digital Input",
+      "/LiveWindow/Ungrouped/DigitalInput[4]": "Digital Input",
+      "/LiveWindow/Ungrouped/Scheduler": "Scheduler",
+      "/LiveWindow/Ungrouped/class frc2::SubsystemBase": "Subsystem",
       "/Shuffleboard/Swerve Drive/Robot Wheel Status/Front Left Wheel Steering Angle": "Gyro",
       "/Shuffleboard/Swerve Drive/Robot Wheel Status/Front Right Wheel Steering Angle": "Gyro",
       "/Shuffleboard/Swerve Drive/Robot Wheel Status/Rear Left Wheel Steering Angle": "Gyro",
       "/Shuffleboard/Swerve Drive/Robot Wheel Status/Rear Right Wheel Steering Angle": "Gyro",
       "/SmartDashboard/Field": "Field2d",
-      "/SmartDashboard/Field2": "Field2d"
+      "/SmartDashboard/Field2": "Field2d",
+      "/SmartDashboard/Goto -35": "Command",
+      "/SmartDashboard/Goto -90": "Command",
+      "/SmartDashboard/Goto 30": "Command",
+      "/SmartDashboard/Goto 45": "Command",
+      "/SmartDashboard/Scheduler": "Scheduler"
+    }
+  },
+  "NetworkTables": {
+    "transitory": {
+      "SmartDashboard": {
+        "Goto -90": {
+          "open": true
+        },
+        "open": true
+      }
+    }
+  },
+  "Plot": {
+    "Plot <0>": {
+      "plots": [
+        {
+          "height": 338
+        }
+      ],
+      "window": {
+        "visible": false
+      }
     }
   }
 }

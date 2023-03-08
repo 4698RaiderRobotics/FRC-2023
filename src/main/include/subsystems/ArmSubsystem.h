@@ -24,37 +24,50 @@ class ArmSubsystem : public frc2::SubsystemBase {
 
   void Periodic() override;
 
-  void Arm( units::degree_t angle );
+  void GotoAngle( units::degree_t angle );
 
-  void BrakeOn();
+  void AdjustAngle( units::degree_t delta_angle );
 
-  void BrakeOff();
+  bool Finished( );
 
-  void ArmTestSetup();
+  void ArmDataSetup( );
 
-  void ArmTest();
+  void ArmDataUpdate( );
 
  private:
 
   ctre::phoenix::motorcontrol::can::TalonFX m_left{ deviceIDs::kLeftArmMotorID };
   ctre::phoenix::motorcontrol::can::TalonFX m_right{ deviceIDs::kRightArmMotorID }; 
 
-  AbsoluteEncoder m_enc{ deviceIDs::kArmEncoderID, physical::kArmAbsoluteOffset };
+  AbsoluteEncoder m_enc{ deviceIDs::kArmEncoderID, physical::kArmAbsoluteOffset, true };
 
-  frc::DoubleSolenoid m_brake{ frc::PneumaticsModuleType::REVPH, deviceIDs::kBrakeSolenoidForwardChannel, deviceIDs::kBrakeSolenoidReverseChannel };
+  // double kS = 0.4;
+  // double kG = 1.7;
+  // double kV = 0.4;
+  // double kA = 0.0;
 
-  double kS = 0.0;
-  double kG = 0.0;
-  double kV = 0.0;
+  double kS = 0.5;
+  double kG = 1.8;
+  double kV = 0.4;
   double kA = 0.0;
 
-  double kP = 0.0;
+  double kP = 0.0015;
   double kI = 0.0;
-  double kD = 0.0;
+  double kD = 0.001;
 
-  frc::TrapezoidProfile<units::degrees>::Constraints m_constraints{ 360_deg_per_s, 360_deg_per_s_sq };
+  units::degree_t max_angle = 120_deg;
+  units::degree_t min_angle = -120_deg;
+
+  frc2::PIDController pid{ kP, kI, kD };
+  
+  frc::ArmFeedforward feedforward{ units::volt_t{ kS }, units::volt_t{ kG },  units::unit_t<frc::ArmFeedforward::kv_unit> { kV }  };
+
+  frc::TrapezoidProfile<units::degrees>::Constraints m_constraints{ 720_deg_per_s, 360_deg_per_s_sq };
   frc::TrapezoidProfile<units::degrees>::State m_goal;
-  frc::TrapezoidProfile<units::degrees>::State m_setpoint{ 0_deg, 0_deg_per_s };
+  frc::TrapezoidProfile<units::degrees>::State m_setpoint;
 
   units::second_t dt = 20_ms;
+  units::degree_t m_angle = -118_deg;
+
+  bool disabled = true;
 };

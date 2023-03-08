@@ -2,8 +2,6 @@
 
 #include <frc/kinematics/ChassisSpeeds.h>
 #include <vector>
-#include <frc/smartdashboard/Field2d.h>
-
 #include "frc/smartdashboard/SmartDashboard.h"
 #include "frc/shuffleboard/Shuffleboard.h"
 #include "networktables/NetworkTable.h"
@@ -19,29 +17,33 @@
 class Limelight : public frc2::SubsystemBase {
     public:
         Limelight(void);
-        
-        frc::ChassisSpeeds TargetRobot_AT ( void );
 
-        bool Targeted( void );
+        void Periodic( void ) override;
+        
+        bool getFieldAprilTagPose( frc::Pose2d &, units::second_t & );
+
+        bool TargetRobot_AT( frc::Pose2d& );
 
         bool VisionPose( frc::Pose2d* );
         
         void SetPipeline( int pipelineId );
+        
+        void LimelightTest();
+    
+    private:
+        bool haveValidAprilTag( void );
 
     private:
         std::shared_ptr<nt::NetworkTable> table = nt::NetworkTableInstance::GetDefault().GetTable("limelight");
-        frc::Field2d m_field;
-
         // The X position of the target in the limelight's view
         double targetX;
         // The Y position of the target in the limelight's view
         double targetY;
 
-        std::vector<double> camtran{};
         std::vector<double> botpose{};
         std::span<double> defaultValue{};
         double ll_Pose[3];
         frc::Pose2d l_Pose;
         units::degree_t rZ;
-        frc::ChassisSpeeds t_speeds;
+        frc::Pose2d t_speeds;
 };

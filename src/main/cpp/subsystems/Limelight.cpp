@@ -1,31 +1,62 @@
+
+#include <iostream>
+
+#include <frc/Timer.h>
+
 #include "subsystems/Limelight.h"
 
 Limelight::Limelight()
 {
-    frc::SmartDashboard::PutData("Field2", &m_field);
+//    frc::SmartDashboard::PutData("Field2", &m_field);
 }
 
-frc::ChassisSpeeds Limelight::TargetRobot_AT(void)
+void Limelight::Periodic( void  ) {
+    // frc::Pose2d pose;
+
+    // TargetRobot_AT( pose );
+    // frc::SmartDashboard::PutNumber( "Current X Pose", pose.X().value() );
+    // frc::SmartDashboard::PutNumber( "Current Y Pose", -pose.Y().value() );
+    // frc::SmartDashboard::PutNumber( "Current Omega Pose", -pose.Rotation().Degrees().value() );
+
+}
+
+bool Limelight::TargetRobot_AT( frc::Pose2d &april_tag_pose)
 {
-    targetX = table->GetNumber("tx", 0.0);
-    targetY = table->GetNumber("ty", 0.0);
-    // [x,y,z,pitch,yaw,roll]
+    if ( !haveValidAprilTag() ) {
+        return false;
+    }
 
-    camtran = table->GetNumberArray("camtran", defaultValue);
-    // Back up if the target is high
-    t_speeds.vx = -targetY * pidf::kXTargetP * physical::kMaxDriveSpeed;
-    // Go left if off center to the right
-    t_speeds.vy = camtran[0] * pidf::kYTargetP * physical::kMaxDriveSpeed;
-    // Rotate if the target isn't centered
-    t_speeds.omega = -targetX * pidf::kOmegaTargetP * physical::kMaxTurnSpeed;
+    std::vector<double> camtran{};
 
-    return t_speeds;
+    camtran = table->GetNumberArray("camerapose_targetspace", defaultValue);
+    if( camtran.size() < 6 ) return false;
+ 
+    april_tag_pose = frc::Pose2d( units::meter_t{ camtran[2] },
+                                  units::meter_t{ camtran[0] },
+                                  frc::Rotation2d{ units::degree_t{ camtran[4] } } );
+
+    return true;
 }
 
-bool Limelight::Targeted(void)
-{
-    return (targetX && targetY && camtran[0]) < 0.1;
+bool Limelight::getFieldAprilTagPose( frc::Pose2d&april_tag_pose, units::second_t &timestamp ) {
+    if ( !haveValidAprilTag() ) {
+        return false;
+    }
+
+    std::vector<double> botpose{};
+    botpose = table->GetNumberArray("botpose", defaultValue);
+    if( botpose.size() < 6 ) return false;
+
+    april_tag_pose = frc::Pose2d( units::meter_t{ botpose[0] } + physical::kLimelightXAxisOffset,
+                                  units::meter_t{ botpose[1] } + physical::kLimelightYAxisOffset,
+                                  frc::Rotation2d{ units::degree_t{ botpose[5] } } );
+
+    // See https://docs.limelightvision.io/en/latest/apriltags_in_3d.html#using-wpilib-s-pose-estimator
+    timestamp = frc::Timer::GetFPGATimestamp() - units::second_t{ botpose[6]/1000.0 };
+
+    return true;
 }
+
 
 // Sets the limelight to new targeting settings
 void Limelight::SetPipeline(int pipelineId)
@@ -51,5 +82,35 @@ bool Limelight::VisionPose(frc::Pose2d* AP_Pose)
         (AP_Pose->Y().value()),
         AP_Pose->Rotation().Degrees().value()};
     frc::SmartDashboard::PutNumberArray("l_Pose", ll_Pose);
+    return true;
+}
+
+void Limelight::LimelightTest( ) {
+    // frc::SmartDashboard::PutNumber( "tx", targetX );
+    // frc::SmartDashboard::PutNumber( "ty", targetY );
+    // frc::SmartDashboard::PutNumber( "tv", table->GetNumber("tv", 0.0 ) );
+    // if ( camtran.size() > 0 ) {
+    //     frc::SmartDashboard::PutNumber( "Yaw", camtran[0]);
+    // }
+}
+
+bool Limelight::haveValidAprilTag( void ) {
+    std::vector<double> bpose{};
+    
+    bpose = table->GetNumberArray("botpose", defaultValue);
+    if ( bpose.size() < 6 ) {
+        return false;
+    }
+
+    if( table->GetNumber("tv", 0.0 ) < 1.0 ) {
+        return false;
+    }
+
+    bpose = table->GetNumberArray("camerapose_targetspace", defaultValue);
+    if ( bpose.size() >= 6 ) {
+            // Seems to give bad data when the April Tag is far away.
+        if( std::fabs(bpose[2]) > 3.0 ) return false;
+    }
+
     return true;
 }

@@ -3,6 +3,8 @@
 #include <frc/TimedRobot.h>
 #include <frc2/command/Command.h>
 
+
+
 #include "RobotContainer.h"
 
 class Robot : public frc::TimedRobot {
@@ -19,6 +21,9 @@ class Robot : public frc::TimedRobot {
   void TestPeriodic() override;
   void SimulationInit() override;
   void SimulationPeriodic() override;
+
+  
+  frc::Trajectory complexAutoTrajectory;
 
  private:
   // Have it null by default so that if testing teleop it
