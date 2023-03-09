@@ -2,6 +2,8 @@
 // Open Source Software; you can modify and/or share it under the terms of
 // the WPILib BSD license file in the root directory of this project.
 
+#include <frc2/command/WaitCommand.h>
+
 #include "commands/autonomous/WizzyWiggAuto.h"
 #include "commands/DriveToPoseCommand.h"
 #include "commands/ArmSet.h"
@@ -29,10 +31,11 @@ WizzyWiggAuto::WizzyWiggAuto( Drivetrain *drive, ArmSubsystem *arm, GrabberSubsy
       ArmSet( arm, 30_deg ),
       TestProfileMove( drive, 17_in, TestProfileMove::FORWARD ),
       OpenGrabber( grabber ),
+      frc2::WaitCommand( 0.25_s ),
       TestProfileMove( drive, -17_in, TestProfileMove::FORWARD ),
       CloseGrabber( grabber, false ),
       ArmSet( arm, -118_deg ),
-      DriveToPoseCommand( drive, { m_targetpose.X() + 1.5_m, m_targetpose.Y(), 180_deg } ),
+      DriveToPoseCommand( drive, { m_targetpose.X() + 1.75_m, m_targetpose.Y(), 180_deg } ),
       GyroBalance( drive )
     );
   // If on red side, do red auto
@@ -44,6 +47,7 @@ WizzyWiggAuto::WizzyWiggAuto( Drivetrain *drive, ArmSubsystem *arm, GrabberSubsy
       ArmSet( arm, 30_deg ),
       TestProfileMove( drive, 17_in, TestProfileMove::FORWARD ),
       OpenGrabber( grabber ),
+      frc2::WaitCommand( 0.25_s ),
       TestProfileMove( drive, -17_in, TestProfileMove::FORWARD ),
       CloseGrabber( grabber, false ),
       ArmSet( arm, -118_deg ),
