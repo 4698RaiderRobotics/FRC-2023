@@ -34,24 +34,11 @@ void RobotContainer::ConfigureButtonBindings() {
   // Configure your button bindings here
 
   // Press the B button to balance the robot on the Charge Station
-  // frc2::JoystickButton( &m_driverController, frc::PS4Controller::Button::kCircle )
-  // .WhileTrue( GyroBalance( &m_drive ).ToPtr() );
+  frc2::JoystickButton( &m_driverController, frc::PS4Controller::Button::kCircle )
+  .WhileTrue( GyroBalance( &m_drive ).ToPtr() );
 
-  // Press the X button to do Limelight targeting w/ Apriltags
-//  frc2::JoystickButton( &m_driverController, frc::PS4Controller::Button::kCross )
-//    .WhileTrue( TargetLimelight( &m_drive, &m_limelight, frc::Pose2d{ -36_in, 22_in, 0_deg } ).ToPtr());
-
-  // frc2::JoystickButton( &m_driverController, frc::PS4Controller::Button::kCross )
-  //   .WhileTrue( PlaceGamePiece( &m_drive, &m_arm, &m_grabber, 
-  //                 frc::Pose2d{ -42_in, 22_in, 0_deg }, 30_deg ).ToPtr());
-
-  // frc2::JoystickButton( &m_driverController, frc::PS4Controller::Button::kL1 )
-  //   .WhileTrue( PlaceGamePiece( &m_drive, &m_arm, &m_grabber, 
-  //                 frc::Pose2d{ -42_in, 0_in, 0_deg }, 30_deg ).ToPtr());
-
-  // Press the Y button to update the odometry with Apriltags
-  // frc2::JoystickButton( &m_driverController, frc::PS4Controller::Button::kSquare )
-  // .WhileTrue( UpdateOdom( &m_drive, &m_limelight).ToPtr());
+  frc2::JoystickButton( &m_driverController, frc::PS4Controller::Button::kL1 )
+  .WhileTrue( PlaceGamePiece( &m_drive, &m_arm, &m_grabber, 30_deg ).ToPtr());
 
   m_operatorController.RightBumper().OnTrue( OpenGrabber( &m_grabber, 0.0 ).ToPtr() );
 
@@ -72,9 +59,6 @@ void RobotContainer::ConfigureButtonBindings() {
   m_operatorController.X().OnTrue( ArmSet( &m_arm, -35_deg ).ToPtr() );
 
   m_operatorController.RightStick().OnTrue( ArmSet( &m_arm, -118_deg ).ToPtr() );
-
-//  frc2::JoystickButton( &m_operatorController, frc::XboxController::Axis::kLeftY )
- // .WhileTrue( frc2::InstantCommand( [this] { m_arm.AdjustAngle( m_operatorController.GetLeftY() * 1_deg ); }, { &m_arm } ).ToPtr() );
 }
 
 frc2::Command* RobotContainer::GetAutonomousCommand() {

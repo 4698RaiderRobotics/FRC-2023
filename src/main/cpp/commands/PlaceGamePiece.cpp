@@ -13,13 +13,13 @@
 // For more information, see:
 // https://docs.wpilib.org/en/stable/docs/software/commandbased/convenience-features.html
 PlaceGamePiece::PlaceGamePiece( Drivetrain *drive, ArmSubsystem *arm, GrabberSubsystem *grabber, 
-                                frc::Pose2d targetPose, units::degree_t angle ) {
+                                units::degree_t angle ) {
   AddCommands(
     DriveToPoseCommand{ drive },
     ArmSet( arm, angle ),
-    TestProfileMove( drive, 18_in, TestProfileMove::FORWARD ),
+    TestProfileMove( drive, physical::kPlaceDistance, TestProfileMove::FORWARD ),
     OpenGrabber( grabber ),
-    TestProfileMove( drive, -18_in, TestProfileMove::FORWARD ),
+    TestProfileMove( drive, -physical::kPlaceDistance, TestProfileMove::FORWARD ),
     ArmSet( arm, -90_deg )
 );
   m_timer.Restart();

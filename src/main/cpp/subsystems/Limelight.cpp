@@ -20,7 +20,8 @@ void Limelight::Periodic( void  ) {
 
 }
 
-bool Limelight::TargetRobot_AT( frc::Pose2d &april_tag_pose)
+// Unused
+bool Limelight::TargetRobot_AT_Unused( frc::Pose2d &april_tag_pose)
 {
     if ( !haveValidAprilTag() ) {
         return false;
@@ -38,6 +39,7 @@ bool Limelight::TargetRobot_AT( frc::Pose2d &april_tag_pose)
     return true;
 }
 
+// Gets the current pose of the robot in field space
 bool Limelight::getFieldAprilTagPose( frc::Pose2d&april_tag_pose, units::second_t &timestamp ) {
     if ( !haveValidAprilTag() ) {
         return false;
@@ -64,7 +66,8 @@ void Limelight::SetPipeline(int pipelineId)
     table->PutNumber("pipeline", pipelineId);
 }
 
-bool Limelight::VisionPose(frc::Pose2d* AP_Pose)
+// Unused
+bool Limelight::VisionPose_Unused(frc::Pose2d* AP_Pose)
 {
 
     // Translation(x, y, z)Rotation(pitch, yaw, roll)
@@ -94,6 +97,7 @@ void Limelight::LimelightTest( ) {
     // }
 }
 
+// Checks if the limelight sees an AprilTag
 bool Limelight::haveValidAprilTag( void ) {
     std::vector<double> bpose{};
     

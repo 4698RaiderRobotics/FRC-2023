@@ -9,13 +9,6 @@
 
 #include "subsystems/GrabberSubsystem.h"
 
-/**
- * An example command.
- *
- * <p>Note that this extends CommandHelper, rather extending CommandBase
- * directly; this is crucially important, or else the decorator functions in
- * Command will *not* work!
- */
 class OpenGrabber
     : public frc2::CommandHelper<frc2::CommandBase, OpenGrabber> {
  public:
@@ -25,9 +18,8 @@ class OpenGrabber
 
   void Execute() override;
 
-  void End(bool interrupted) override;
-
   bool IsFinished() override;
+  
  private:
   GrabberSubsystem *m_grabber;
   double m_speed;

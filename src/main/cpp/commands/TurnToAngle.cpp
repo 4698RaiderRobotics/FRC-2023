@@ -9,14 +9,12 @@ TurnToAngle::TurnToAngle( Drivetrain *drive, units::degree_t angle )
   AddRequirements( { drive } );
 }
 
-// Called when the command is initially scheduled.
 void TurnToAngle::Initialize() {
   m_goal = { m_angle };
   m_setpoint = { m_drive->GetPose().Rotation().Degrees() };
   m_finished = false;
 }
 
-// Called repeatedly when this Command is scheduled to run
 void TurnToAngle::Execute() {
   if ( units::math::abs( m_goal.position - m_setpoint.position ) > 180_deg ) {
     if ( m_goal.position < 0_deg ) {

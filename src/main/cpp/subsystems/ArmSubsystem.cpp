@@ -16,6 +16,7 @@ ArmSubsystem::ArmSubsystem() {
 };
 
 void ArmSubsystem::Periodic() {
+    // Holds arm in position after enabled
     if ( disabled && frc::DriverStation::IsEnabled() ) {
         m_setpoint.position = m_enc.GetPosition();
         m_angle = m_enc.GetPosition();
@@ -25,6 +26,7 @@ void ArmSubsystem::Periodic() {
     }
     
     units::degree_t measurement = m_enc.GetPosition();
+    // Checks for unplugged absolute encoder on the arm
     if ( measurement > 120_deg || measurement < -140_deg ) {
         FRC_ReportError	( -111 /*generic error*/, "Arm Absolute Encoder out of bounds." );
         return;
@@ -32,12 +34,14 @@ void ArmSubsystem::Periodic() {
 
     m_goal = { m_angle, 0_deg_per_s };
 
+    // Creates a new trapezoid profile every loop
     frc::TrapezoidProfile<units::degrees> m_profile{ m_constraints, m_goal, m_setpoint };
     m_setpoint = m_profile.Calculate( dt );
 
     frc::SmartDashboard::PutNumber( "Arm Setpoint Position", m_setpoint.position.value() );
     frc::SmartDashboard::PutNumber( "Arm Setpoint Velocity", m_setpoint.velocity.value() );
 
+    // Calculates setpoint using PID and feedforward control
     double output = pid.Calculate( measurement.value(), m_setpoint.position.value());
     double feedforwardOut = feedforward.Calculate( m_setpoint.position, m_setpoint.velocity ).value();
     frc::SmartDashboard::PutNumber( "Arm Voltage", output * 12 + feedforwardOut );
@@ -45,6 +49,7 @@ void ArmSubsystem::Periodic() {
     m_left.Set( ctre::phoenix::motorcontrol::ControlMode::PercentOutput, output + feedforwardOut / 12 );
 }
 
+// Changed the setpoint of the arm
 void ArmSubsystem::GotoAngle( units::degree_t angle ) {
     // fmt::print( "GoToAngle = {}\n", angle);
     m_angle = angle;
@@ -54,6 +59,7 @@ void ArmSubsystem::GotoAngle( units::degree_t angle ) {
     if( m_angle < min_angle ) m_angle = min_angle;
 }
 
+// Allows setpoint of arm to be nudged
 void ArmSubsystem::AdjustAngle( units::degree_t delta_angle ) {
     m_angle += delta_angle;
         // fmt::print( "AdjustAngle = {}\n", delta_angle );

@@ -18,7 +18,7 @@ class PlaceGamePiece
     : public frc2::CommandHelper<frc2::SequentialCommandGroup, PlaceGamePiece> {
  public:
   PlaceGamePiece( Drivetrain *drive, ArmSubsystem *arm, GrabberSubsystem *grabber, 
-                  frc::Pose2d targetPose, units::degree_t angle );
+                  units::degree_t angle );
 
   Command::InterruptionBehavior GetInterruptionBehavior() const override;
 

@@ -17,7 +17,6 @@ DriveToPoseCommand::DriveToPoseCommand(  Drivetrain *d, frc::Pose2d targetPose )
   AddRequirements( { m_drive } );
 }
 
-// Called when the command is initially scheduled.
 void DriveToPoseCommand::Initialize() {
 
   fmt::print( "DriveToPose targetpose = ({:.6}, {:.6}, {:.6}), actual = ({:.6}, {:.6}, {:.6})\n", 
@@ -43,7 +42,6 @@ void DriveToPoseCommand::Initialize() {
   }
 }
 
-// Called repeatedly when this Command is scheduled to run
 void DriveToPoseCommand::Execute() {
     units::degree_t adjustedAngle; 
 
@@ -93,7 +91,6 @@ void DriveToPoseCommand::Execute() {
     m_drive->Drive( speeds );
 }
 
-// Returns true when the command should end.
 bool DriveToPoseCommand::IsFinished() {
   units::meter_t distance_error;
   units::degree_t angle_error;

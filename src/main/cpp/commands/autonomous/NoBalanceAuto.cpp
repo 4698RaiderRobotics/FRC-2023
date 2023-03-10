@@ -2,6 +2,8 @@
 // Open Source Software; you can modify and/or share it under the terms of
 // the WPILib BSD license file in the root directory of this project.
 
+#include <frc2/command/WaitCommand.h>
+
 #include "commands/autonomous/NoBalanceAuto.h"
 #include "commands/autonomous/WizzyWiggAuto.h"
 #include "commands/DriveToPoseCommand.h"
@@ -27,12 +29,13 @@ NoBalanceAuto::NoBalanceAuto( Drivetrain *drive, ArmSubsystem *arm, GrabberSubsy
     AddCommands(
       DriveToPoseCommand( drive, m_targetpose ),
       ArmSet( arm, 30_deg ),
-      TestProfileMove( drive, 17_in, TestProfileMove::FORWARD ),
+      TestProfileMove( drive, physical::kPlaceDistance, TestProfileMove::FORWARD ),
       OpenGrabber( grabber ),
-      TestProfileMove( drive, -17_in, TestProfileMove::FORWARD ),
+      frc2::WaitCommand( 0.25_s ),
+      TestProfileMove( drive, -physical::kPlaceDistance, TestProfileMove::FORWARD ),
       CloseGrabber( grabber, false ),
       ArmSet( arm, -118_deg ),
-      DriveToPoseCommand( drive, { m_targetpose.X() + 2.5_m, m_targetpose.Y(), 180_deg } )
+      DriveToPoseCommand( drive, { m_targetpose.X() + 3.5_m, m_targetpose.Y(), 180_deg } )
     );
   // If on red side, do red auto
   } else if ( drive->GetPose().X() > 7.5_m ) {
@@ -41,12 +44,13 @@ NoBalanceAuto::NoBalanceAuto( Drivetrain *drive, ArmSubsystem *arm, GrabberSubsy
     AddCommands(
       DriveToPoseCommand( drive, m_targetpose ),
       ArmSet( arm, 30_deg ),
-      TestProfileMove( drive, 17_in, TestProfileMove::FORWARD ),
+      TestProfileMove( drive, physical::kPlaceDistance, TestProfileMove::FORWARD ),
       OpenGrabber( grabber ),
-      TestProfileMove( drive, -17_in, TestProfileMove::FORWARD ),
+      frc2::WaitCommand( 0.25_s ),
+      TestProfileMove( drive, -physical::kPlaceDistance, TestProfileMove::FORWARD ),
       CloseGrabber( grabber, false ),
       ArmSet( arm, -118_deg ),
-      DriveToPoseCommand( drive, { m_targetpose.X() - 2.5_m, m_targetpose.Y(), 0_deg } )
+      DriveToPoseCommand( drive, { m_targetpose.X() - 3.5_m, m_targetpose.Y(), 0_deg } )
     );
   }
 }

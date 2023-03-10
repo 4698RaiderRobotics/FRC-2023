@@ -25,8 +25,6 @@ class CloseGrabber
 
   void Execute() override;
 
-  void End(bool interrupted) override;
-
   bool IsFinished() override;
 
  private:
