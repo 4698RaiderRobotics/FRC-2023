@@ -108,10 +108,10 @@ void Drivetrain::Periodic( ) {
 
         if( m_noValidPose && frc::DriverStation::IsDisabled() ) {
             AverageVisionPose( visionPose, timestamp );
-        } else {
+        } else if ( frc::DriverStation::IsTeleopEnabled() ) {
             if( m_odometry.GetEstimatedPosition().Translation().Distance( visionPose.Translation() ) < 1_m ) {
                 // Only update if the vision pose is within 1m of the current pose
- //               m_odometry.AddVisionMeasurement( visionPose, timestamp );
+                m_odometry.AddVisionMeasurement( visionPose, timestamp );
             }
         }
     }

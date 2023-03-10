@@ -8,7 +8,7 @@ TargetLimelight::TargetLimelight( Drivetrain* drive, Limelight* limelight, frc::
 
 void TargetLimelight::Initialize() {
     m_trajFinished = false;
-    m_poseFound = m_limelight->TargetRobot_AT( m_pose );
+    m_poseFound = m_limelight->TargetRobot_AT_Unused( m_pose );
     if( !m_poseFound ) {
         m_trajFinished = true;
         return;
@@ -37,7 +37,7 @@ void TargetLimelight::Initialize() {
 void TargetLimelight::Execute() {
     if( m_trajFinished ) return;
 
-    m_poseFound = m_limelight->TargetRobot_AT( m_pose );
+    m_poseFound = m_limelight->TargetRobot_AT_Unused( m_pose );
     frc::SmartDashboard::PutNumber( "Current X Pose", m_pose.X().value() );
     frc::SmartDashboard::PutNumber( "Current Y Pose", -m_pose.Y().value() );
     frc::SmartDashboard::PutNumber( "Current Omega Pose", -m_pose.Rotation().Degrees().value() );

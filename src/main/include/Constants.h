@@ -10,17 +10,18 @@
 #include <units/length.h>
 
 namespace pidf {
-    /*
-    constexpr double kTurnP = 0.005;
+    // PID values for turn motor of swerve modules
+    constexpr double kTurnP = 0.0095;
     constexpr double kTurnI = 0;
     constexpr double kTurnD = 0;
 
-    constexpr double kDriveP = 0.00006;
-    constexpr double kDriveI = 0.000001;
-    constexpr double kDriveD = 0;
-    constexpr double kDriveFF = 0.000015;
-    */
+    // PID values for drive motor of swerve modules
+    constexpr double kDriveP = 0.0001;
+    constexpr double kDriveI = 0;
+    constexpr double kDriveD = 0.001;
+    constexpr double kDriveFF = 0.0002;
 
+    // P value for auto balance on charge station
     constexpr double kGyroBalanceP = 0.004;
 
     //constexpr double kXTargetP = 0.005;
@@ -73,9 +74,10 @@ namespace physical {
     // wheel circumference / gear ratio
     constexpr meters_per_rev_t kDriveMetersPerRotation = std::numbers::pi * 4.0_in / (kDriveGearRatio *  1_tr );
 
-    // 
+    // Gear ratio of the arm
     constexpr double kArmGearRatio = 12.0 / 58.0 * 18.0 / 58.0 * 15.0 / 26.0;
 
+    // Conversion factor for falcon motors
     constexpr double tics_per_100ms_to_deg_per_s = 3600.0 / 2048.0;
 
     // Gear ratio of the turn motors. 12.8 rotations of the turning motor is one rotation of the swerve module.
@@ -84,24 +86,23 @@ namespace physical {
     // The width of the drive base from the center of one module to another adjacent one.
     constexpr units::meter_t kDriveBaseWidth = 23.25_in;
 
+    // Length of the drive base
     constexpr units::meter_t kDriveBaseLength = 22.5_in;
-/*
-    constexpr double kFrontLeftAbsoluteOffset = 0.1372;
-    constexpr double kFrontRightAbsoluteOffset = 0.3699;
-    constexpr double kBackLeftAbsoluteOffset = 0.7882;
-    constexpr double kBackRightAbsoluteOffset = 0.4485;
-*/
+
+    // Absolute encoder offset for the swerve modules
     constexpr double kFrontLeftAbsoluteOffset = 0.1372 + 0.5;
     constexpr double kFrontRightAbsoluteOffset = 0.3699 + 0.5;
     constexpr double kBackLeftAbsoluteOffset = 0.7882 - 0.5;
     constexpr double kBackRightAbsoluteOffset = 0.4485 + 0.5;
 
+    // Absolute encoder offset for the arm encoder
     constexpr double kArmAbsoluteOffset = 0.5802;
 
+    // IsFinished condition for arm
     constexpr units::degree_t kArmAngleError = 3_deg;
-    constexpr double kLimelightTargetError = 1;
 
-    const units::inch_t kLimelightXAxisOffset = 325.61_in;
-    const units::inch_t kLimelightYAxisOffset = 157.8_in;
+    constexpr units::inch_t kLimelightXAxisOffset = 325.61_in;
+    constexpr units::inch_t kLimelightYAxisOffset = 157.8_in;
 
+    constexpr units::inch_t kPlaceDistance = 17_in;
 }

@@ -29,10 +29,10 @@ NoBalanceAuto::NoBalanceAuto( Drivetrain *drive, ArmSubsystem *arm, GrabberSubsy
     AddCommands(
       DriveToPoseCommand( drive, m_targetpose ),
       ArmSet( arm, 30_deg ),
-      TestProfileMove( drive, 17_in, TestProfileMove::FORWARD ),
+      TestProfileMove( drive, physical::kPlaceDistance, TestProfileMove::FORWARD ),
       OpenGrabber( grabber ),
       frc2::WaitCommand( 0.25_s ),
-      TestProfileMove( drive, -17_in, TestProfileMove::FORWARD ),
+      TestProfileMove( drive, -physical::kPlaceDistance, TestProfileMove::FORWARD ),
       CloseGrabber( grabber, false ),
       ArmSet( arm, -118_deg ),
       DriveToPoseCommand( drive, { m_targetpose.X() + 3.5_m, m_targetpose.Y(), 180_deg } )
@@ -44,10 +44,10 @@ NoBalanceAuto::NoBalanceAuto( Drivetrain *drive, ArmSubsystem *arm, GrabberSubsy
     AddCommands(
       DriveToPoseCommand( drive, m_targetpose ),
       ArmSet( arm, 30_deg ),
-      TestProfileMove( drive, 17_in, TestProfileMove::FORWARD ),
+      TestProfileMove( drive, physical::kPlaceDistance, TestProfileMove::FORWARD ),
       OpenGrabber( grabber ),
       frc2::WaitCommand( 0.25_s ),
-      TestProfileMove( drive, -17_in, TestProfileMove::FORWARD ),
+      TestProfileMove( drive, -physical::kPlaceDistance, TestProfileMove::FORWARD ),
       CloseGrabber( grabber, false ),
       ArmSet( arm, -118_deg ),
       DriveToPoseCommand( drive, { m_targetpose.X() - 3.5_m, m_targetpose.Y(), 0_deg } )

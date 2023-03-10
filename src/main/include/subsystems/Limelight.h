@@ -22,9 +22,9 @@ class Limelight : public frc2::SubsystemBase {
         
         bool getFieldAprilTagPose( frc::Pose2d &, units::second_t & );
 
-        bool TargetRobot_AT( frc::Pose2d& );
+        bool TargetRobot_AT_Unused( frc::Pose2d& );
 
-        bool VisionPose( frc::Pose2d* );
+        bool VisionPose_Unused( frc::Pose2d* );
         
         void SetPipeline( int pipelineId );
         

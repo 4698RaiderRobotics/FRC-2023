@@ -15,13 +15,13 @@ SwerveModule::SwerveModule( const int turnMotorChannel,
                            : m_driveMotor{ driveMotorChannel, rev::CANSparkMaxLowLevel::MotorType::kBrushless },
                            m_turnMotor{ turnMotorChannel, rev::CANSparkMaxLowLevel::MotorType::kBrushless },
                            m_turnEncoder{ absoluteEncoderChannel, absoluteEncoderOffset } {
-    m_drivePIDController.SetP(kDriveP);
-    m_drivePIDController.SetI(kDriveI);
-    m_drivePIDController.SetD(kDriveD);
-    m_drivePIDController.SetFF(kDriveFF);
+    m_drivePIDController.SetP( pidf::kDriveP );
+    m_drivePIDController.SetI( pidf::kDriveI );
+    m_drivePIDController.SetD( pidf::kDriveD );
+    m_drivePIDController.SetFF( pidf::kDriveFF );
     m_turnPIDController.EnableContinuousInput(-180, 180);
-    m_turnPIDController.SetP( kTurnP );   
-    m_turnPIDController.SetD( kTurnD );
+    m_turnPIDController.SetP( pidf::kTurnP );   
+    m_turnPIDController.SetD( pidf::kTurnD );
 }
 
 // Sets each individual SwerveModule to an optimized SwerveModuleState

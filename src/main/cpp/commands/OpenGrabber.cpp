@@ -9,21 +9,15 @@ OpenGrabber::OpenGrabber( GrabberSubsystem *grabber, double speed )
   AddRequirements( { grabber } );
 }
 
-// Called when the command is initially scheduled.
 void OpenGrabber::Initialize() {
   
-    m_grabber->Spin( -m_speed );
+  m_grabber->Spin( -m_speed );
   
-    m_grabber->Open();
+  m_grabber->Open();
 }
 
-// Called repeatedly when this Command is scheduled to run
 void OpenGrabber::Execute() {}
 
-// Called once the command ends or is interrupted.
-void OpenGrabber::End(bool interrupted) {}
-
-// Returns true when the command should end.
 bool OpenGrabber::IsFinished() {
   return true;
 }

@@ -20,9 +20,8 @@ class ArmSet
 
   void Execute() override;
 
-  void End(bool interrupted) override;
-
   bool IsFinished() override;
+  
  private:
   ArmSubsystem *m_arm; 
   units::degree_t m_angle;

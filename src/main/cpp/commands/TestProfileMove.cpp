@@ -9,13 +9,11 @@
 
 #include "subsystems/Drivetrain.h"
 
-
-
 TestProfileMove::TestProfileMove( Drivetrain *drive, units::meter_t distance, Direction d )
     :  m_drive{ drive }, m_distance{ distance }, m_direction{ d } {
-        AddRequirements( { drive } );
+  AddRequirements( { drive } );
 
-    }
+}
 
 void TestProfileMove::Initialize( void ) {
   m_Setpoint.position = 0_m;

@@ -5,6 +5,7 @@ GyroBalance::GyroBalance( Drivetrain* drive )
     AddRequirements( { drive } );
 }
 
+// Calculates a speed for the motors based on what the gyro reads
 void GyroBalance::Execute( ) {
     currentAngle = -m_drive->GetPitch();
     frc::SmartDashboard::PutNumber( "Pitch", currentAngle );

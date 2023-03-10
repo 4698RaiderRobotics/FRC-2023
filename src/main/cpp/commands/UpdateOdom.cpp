@@ -6,7 +6,7 @@ UpdateOdom::UpdateOdom(Drivetrain *drive, Limelight *limelight)
 }
 void UpdateOdom::Execute() {
     frc::Pose2d AP_Pose;
-    if (m_limelight->VisionPose(&AP_Pose)) {
+    if (m_limelight->VisionPose_Unused(&AP_Pose)) {
         m_drive->ResetPose(AP_Pose);
     }
 }
