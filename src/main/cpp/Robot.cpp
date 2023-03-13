@@ -3,6 +3,7 @@
 #include <frc/smartdashboard/SmartDashboard.h>
 #include <frc2/command/CommandScheduler.h>
 #include <iostream>
+#include <cameraserver/CameraServer.h>
 
 #include "frc/DataLogManager.h"
 #include "frc/DriverStation.h"
@@ -12,11 +13,11 @@
 
 void Robot::RobotInit() {
   // Starts recording to data log
-  //frc::DataLogManager::Start();
+  frc::DataLogManager::Start();
   // Record both DS control and joystick data
-  //frc::DriverStation::StartDataLog(frc::DataLogManager::GetLog());
+  frc::DriverStation::StartDataLog(frc::DataLogManager::GetLog());
   // Log in Telelop:
-
+  frc::CameraServer::StartAutomaticCapture();
 }
 
 /**

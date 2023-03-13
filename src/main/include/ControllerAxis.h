@@ -35,5 +35,5 @@ private:
     int m_axis;
     bool m_invert;
     double m_deadband{0.08};
-    double m_mixer{0.75};
+    double m_mixer{0.85};
 };

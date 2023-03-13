@@ -14,6 +14,7 @@ ArmSet::ArmSet( ArmSubsystem *arm, units::degree_t angle )
 
 void ArmSet::Initialize() {
   m_startTime = frc::Timer::GetFPGATimestamp();
+  m_arm->Brake( false );
 }
 
 void ArmSet::Execute() {

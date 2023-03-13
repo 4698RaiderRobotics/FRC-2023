@@ -34,12 +34,16 @@ class ArmSubsystem : public frc2::SubsystemBase {
 
   void ArmDataUpdate( );
 
+  void Brake( bool state );
+
  private:
 
   ctre::phoenix::motorcontrol::can::TalonFX m_left{ deviceIDs::kLeftArmMotorID };
   ctre::phoenix::motorcontrol::can::TalonFX m_right{ deviceIDs::kRightArmMotorID }; 
 
   AbsoluteEncoder m_enc{ deviceIDs::kArmEncoderID, physical::kArmAbsoluteOffset, true };
+
+  frc::DoubleSolenoid m_brake{ 9, frc::PneumaticsModuleType::CTREPCM, 2, 3 };
 
   // double kS = 0.4;
   // double kG = 1.7;

@@ -1,45 +1,54 @@
+// Copyright (c) FIRST and other WPILib contributors.
+// Open Source Software; you can modify and/or share it under the terms of
+// the WPILib BSD license file in the root directory of this project.
+
+#include <frc2/command/WaitCommand.h>
 
 #include "commands/autonomous/SimpleAuto.h"
 #include "commands/DriveToPoseCommand.h"
 #include "commands/ArmSet.h"
 #include "commands/TestProfileMove.h"
 #include "commands/OpenGrabber.h"
+#include "commands/CloseGrabber.h"
 #include "commands/autonomous/FollowTrajectory.h"
 #include "commands/TestProfileMove.h"
 #include "commands/TurnToAngle.h"
 #include "commands/GyroBalance.h"
 
-SimpleAuto::SimpleAuto( Drivetrain *drive, ArmSubsystem *arm, GrabberSubsystem *grabber, 
-                        units::degree_t angle ) {
-  /*
-    fs::path deployDirectory = frc::filesystem::GetDeployDirectory();
-    deployDirectory = deployDirectory / "output" / "SimpleAuto.wpilib.json";
-    m_simpleAutoTrajectory = frc::TrajectoryUtil::FromPathweaverJson(deployDirectory.string());
-  */
-
-      // The start is the rightmost cone grid next to AT#3 (for testing).
-    const frc::Pose2d startPose{ drive->redAllianceGridPoints[8].X(), drive->redAllianceGridPoints[8].Y(), 180_deg };
-      // The end is around the back of the charge station.
-    const frc::Pose2d endPose{ 10.75_m, 3.38_m, 270_deg };
-
-    std::vector<frc::Translation2d> interiorWaypoints{
-      frc::Translation2d{ 11.452_m, 4.9_m }
-    };
-
-    frc::TrajectoryConfig config{ 1.5_mps, 1.5_mps_sq };
-
-    m_trajectory = frc::TrajectoryGenerator::GenerateTrajectory(startPose, interiorWaypoints, endPose, config);
-    
-    AddCommands( 
-      DriveToPoseCommand( drive, drive->redAllianceGridPoints[8] ),
-      ArmSet( arm, angle ),
-      TestProfileMove( drive, 17_in, TestProfileMove::FORWARD ),
+// NOTE:  Consider using this command inline, rather than writing a subclass.
+// For more information, see:
+// https://docs.wpilib.org/en/stable/docs/software/commandbased/convenience-features.html
+SimpleAuto::SimpleAuto( Drivetrain *drive, ArmSubsystem *arm, GrabberSubsystem *grabber ) {
+  frc::Pose2d redAllianceTargetPoints[2] = { drive->redAllianceGridPoints[3], drive->redAllianceGridPoints[5] };
+  frc::Pose2d blueAllianceTargetPoints[2] = { drive->blueAllianceGridPoints[3], drive->blueAllianceGridPoints[5] };
+  fmt::print( "WizzyWiggAuto::WizzyWiggAuto\n" );
+  // If on blue side, do blue auto
+  if ( drive->GetPose().X() < 7.5_m ) {
+    fmt::print( "Blue Alliance\n");
+    m_targetpose = drive->GetPose().Nearest( std::span<frc::Pose2d> ( blueAllianceTargetPoints, 2 ) );
+    AddCommands(
+      DriveToPoseCommand( drive, m_targetpose ),
+      ArmSet( arm, 30_deg ),
+      TestProfileMove( drive, physical::kPlaceDistance, TestProfileMove::FORWARD ),
       OpenGrabber( grabber ),
-      TestProfileMove( drive, -17_in, TestProfileMove::FORWARD ),
-      ArmSet( arm, -90_deg ),
-      TurnToAngle( drive, -175_deg ),
-      FollowTrajectory( drive, m_trajectory, 180_deg, 180_deg ),
-      DriveToPoseCommand( drive, { endPose.X() + 1.75_m, endPose.Y(), -179_deg } ),
-      GyroBalance( drive )
+      frc2::WaitCommand( 0.25_s ),
+      TestProfileMove( drive, -physical::kPlaceDistance, TestProfileMove::FORWARD ),
+      CloseGrabber( grabber, false ),
+      ArmSet( arm, -118_deg )
     );
+  // If on red side, do red auto
+  } else if ( drive->GetPose().X() > 7.5_m ) {
+    fmt::print( "Red Alliance\n");
+    m_targetpose = drive->GetPose().Nearest( std::span<frc::Pose2d> ( redAllianceTargetPoints, 2 ) );
+    AddCommands(
+      DriveToPoseCommand( drive, m_targetpose ),
+      ArmSet( arm, 30_deg ),
+      TestProfileMove( drive, physical::kPlaceDistance, TestProfileMove::FORWARD ),
+      OpenGrabber( grabber ),
+      frc2::WaitCommand( 0.25_s ),
+      TestProfileMove( drive, -physical::kPlaceDistance, TestProfileMove::FORWARD ),
+      CloseGrabber( grabber, false ),
+      ArmSet( arm, -118_deg )
+    );
+  }
 }

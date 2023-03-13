@@ -7,7 +7,13 @@
 GrabberSubsystem::GrabberSubsystem() = default;
 
 // This method will be called once per scheduler run
-void GrabberSubsystem::Periodic() {}
+void GrabberSubsystem::Periodic() {
+    if ( m_roller.GetSensorCollection().GetIntegratedSensorVelocity() * physical::tics_per_100ms_to_deg_per_s > 1 ) {
+        frc::SmartDashboard::PutBoolean( "Rollers", true );
+    } else {
+        frc::SmartDashboard::PutBoolean( "Rollers", false );
+    }
+}
 
 // Opens grabber
 void GrabberSubsystem::Open( ) {

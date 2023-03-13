@@ -54,6 +54,7 @@ class RobotContainer {
   frc::SendableChooser<std::string> m_chooser;
   const std::string kAutoNameDefault = "Place Cone and Balance";
   const std::string kAutoNameCustom = "Place Cone and Leave";
+  const std::string kAutoNameThird = "Just Place Cone";
   std::string m_autoSelected;
 
   frc::PowerDistribution PDP{0, frc::PowerDistribution::ModuleType::kCTRE};

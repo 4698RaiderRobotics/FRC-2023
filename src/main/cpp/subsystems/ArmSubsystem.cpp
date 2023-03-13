@@ -109,3 +109,11 @@ void ArmSubsystem::ArmDataUpdate( ) {
     frc::SmartDashboard::PutNumber( "Arm Raw Pos", m_enc.GetRawPosition() );
     
 }
+
+void ArmSubsystem::Brake( bool state ) {
+    if ( state ) {
+        m_brake.Set( frc::DoubleSolenoid::Value::kReverse );
+    } else {
+        m_brake.Set( frc::DoubleSolenoid::Value::kForward );
+    }
+}

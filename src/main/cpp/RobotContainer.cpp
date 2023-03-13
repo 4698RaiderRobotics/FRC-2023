@@ -25,8 +25,9 @@ RobotContainer::RobotContainer() {
   // Configure the button bindings
   ConfigureButtonBindings();
 
-  m_chooser.SetDefaultOption(kAutoNameDefault, kAutoNameDefault);
-  m_chooser.AddOption(kAutoNameCustom, kAutoNameCustom);
+  m_chooser.SetDefaultOption( kAutoNameDefault, kAutoNameDefault );
+  m_chooser.AddOption( kAutoNameCustom, kAutoNameCustom );
+  m_chooser.AddOption( kAutoNameThird, kAutoNameThird );
   frc::SmartDashboard::PutData("Auto Modes", &m_chooser);
 }
 
@@ -37,8 +38,11 @@ void RobotContainer::ConfigureButtonBindings() {
   frc2::JoystickButton( &m_driverController, frc::PS4Controller::Button::kCircle )
   .WhileTrue( GyroBalance( &m_drive ).ToPtr() );
 
-  frc2::JoystickButton( &m_driverController, frc::PS4Controller::Button::kL1 )
+  frc2::JoystickButton( &m_driverController, frc::PS4Controller::Button::kTriangle )
   .WhileTrue( PlaceGamePiece( &m_drive, &m_arm, &m_grabber, 30_deg ).ToPtr());
+
+  ( frc2::JoystickButton( &m_driverController, frc::PS4Controller::Button::kL1 ) && frc2::JoystickButton( &m_driverController, frc::PS4Controller::Button::kR1 ) )
+  .OnTrue( frc2::InstantCommand( [this] { m_drive.ResetGyro( 180_deg ); }, { &m_drive } ).ToPtr() );
 
   m_operatorController.RightBumper().OnTrue( OpenGrabber( &m_grabber, 0.0 ).ToPtr() );
 
@@ -69,6 +73,8 @@ frc2::Command* RobotContainer::GetAutonomousCommand() {
     m_autoCommand = new WizzyWiggAuto( &m_drive, &m_arm, &m_grabber );
   } else if ( m_autoSelected == kAutoNameCustom ) {
     m_autoCommand = new NoBalanceAuto( &m_drive, &m_arm, &m_grabber );
+  } else if ( m_autoSelected == kAutoNameThird ) {
+    m_autoCommand = new SimpleAuto( &m_drive, &m_arm, &m_grabber );
   }
 
   return m_autoCommand;

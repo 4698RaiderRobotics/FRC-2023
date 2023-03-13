@@ -105,9 +105,23 @@ void Drivetrain::Periodic( ) {
                 // Stop averaging if the DS is enabled.
             m_averagingPose = false;
         }
+        if ( frc::DriverStation::IsDisabled() ) {
+            if ( visionPose.X() < 7.5_m ) {
+                fmt::print( "Blue Alliance\n");
+                m_gyro_operator_offset = 360_deg - units::degree_t{ m_gyro.GetYaw() } - visionPose.Rotation().Degrees();
+            } else {
+                fmt::print( "Red Alliance\n");
+                m_gyro_operator_offset = 180_deg - units::degree_t{ m_gyro.GetYaw() } - visionPose.Rotation().Degrees();
+            }
 
-        if( m_noValidPose && frc::DriverStation::IsDisabled() ) {
-            AverageVisionPose( visionPose, timestamp );
+            m_odometry.ResetPosition( frc::Rotation2d{ units::degree_t{ m_gyro.GetYaw() } },
+            {
+                m_frontLeft.GetPosition(), m_frontRight.GetPosition(), 
+                m_backLeft.GetPosition(), m_backRight.GetPosition() 
+            }, visionPose );
+        
+        //if( m_noValidPose && frc::DriverStation::IsDisabled() ) {
+           // AverageVisionPose( visionPose, timestamp );
         } else if ( frc::DriverStation::IsTeleopEnabled() ) {
             if( m_odometry.GetEstimatedPosition().Translation().Distance( visionPose.Translation() ) < 1_m ) {
                 // Only update if the vision pose is within 1m of the current pose
