@@ -53,6 +53,8 @@ void RobotContainer::ConfigureButtonBindings() {
   m_operatorController.LeftTrigger().OnTrue( frc2::InstantCommand( [this] { m_grabber.Toggle( ); }, { &m_grabber } ).ToPtr() );
 
   m_operatorController.Y().OnTrue( ArmSet( &m_arm, 30_deg ).ToPtr() );
+  // Hamburger 🍔 Button.
+  m_operatorController.Button(8).OnTrue(ArmSet(&m_arm, 25_deg).ToPtr());
 
   m_operatorController.B().OnTrue( ArmSet( &m_arm, 0_deg ).ToPtr() );
 
