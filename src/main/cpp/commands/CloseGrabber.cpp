@@ -11,12 +11,12 @@ CloseGrabber::CloseGrabber( GrabberSubsystem *grabber, bool spin_on_close )
 
 void CloseGrabber::Initialize() {
   if( m_spin_on_close ) {
-    m_grabber->Spin( m_grabber->kRollerGripPercent );
+    //m_grabber->Spin( m_grabber->kRollerGripPercent );
   }
 }
 
 void CloseGrabber::Execute() {
-  m_grabber->Close();
+  //m_grabber->Close();
 }
 
 bool CloseGrabber::IsFinished() {

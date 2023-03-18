@@ -11,9 +11,9 @@ OpenGrabber::OpenGrabber( GrabberSubsystem *grabber, double speed )
 
 void OpenGrabber::Initialize() {
   
-  m_grabber->Spin( -m_speed );
+  //m_grabber->Spin( -m_speed );
   
-  m_grabber->Open();
+  //m_grabber->Open();
 }
 
 void OpenGrabber::Execute() {}

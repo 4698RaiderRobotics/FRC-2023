@@ -8,6 +8,7 @@
 
 #include "commands/TestProfileMove.h"
 #include "commands/OpenGrabber.h"
+#include "commands/Intake.h"
 #include "commands/TargetLimelight.h"
 #include "commands/GyroBalance.h"
 #include "commands/UpdateOdom.h"
@@ -44,13 +45,14 @@ void RobotContainer::ConfigureButtonBindings() {
   ( frc2::JoystickButton( &m_driverController, frc::PS4Controller::Button::kL1 ) && frc2::JoystickButton( &m_driverController, frc::PS4Controller::Button::kR1 ) )
   .OnTrue( frc2::InstantCommand( [this] { m_drive.ResetGyro( 180_deg ); }, { &m_drive } ).ToPtr() );
 
-  m_operatorController.RightBumper().OnTrue( OpenGrabber( &m_grabber, 0.0 ).ToPtr() );
+  //m_operatorController.RightBumper().OnTrue( OpenGrabber( &m_grabber, 0.0 ).ToPtr() );
 
-  m_operatorController.LeftBumper().OnTrue( CloseGrabber( &m_grabber ).ToPtr() );
+  //m_operatorController.LeftBumper().OnTrue( CloseGrabber( &m_grabber ).ToPtr() );
 
-  m_operatorController.RightTrigger().OnTrue( frc2::InstantCommand( [this] { m_grabber.Spin( -0.25 ); }, { &m_grabber } ).ToPtr() );
-
-  m_operatorController.LeftTrigger().OnTrue( frc2::InstantCommand( [this] { m_grabber.Toggle( ); }, { &m_grabber } ).ToPtr() );
+  //m_operatorController.RightTrigger().OnTrue( frc2::InstantCommand( [this] { m_grabber.Spin( -0.25 ); }, { &m_grabber } ).ToPtr() );
+  m_operatorController.RightTrigger().OnTrue(Intake( &m_grabber, true ).ToPtr() );
+  m_operatorController.LeftTrigger().OnTrue(Intake(&m_grabber,false).ToPtr());
+  //m_operatorController.LeftTrigger().OnTrue( frc2::InstantCommand( [this] { m_grabber.Toggle( ); }, { &m_grabber } ).ToPtr() );
 
   m_operatorController.Y().OnTrue( ArmSet( &m_arm, 30_deg ).ToPtr() );
   // Hamburger 🍔 Button.
@@ -94,24 +96,29 @@ void RobotContainer::TeleopDataUpdate() {
 //  m_drive.DrivetrainSetup();
 //  frc::SmartDashboard::PutData(&PDP);
   frc::SmartDashboard::PutData(&Compressor);
+  m_grabber.GrabberTest();
 }
 
 
 void RobotContainer::TestDataSetup() {
   // Arm Commands and Setup
+  
   frc::SmartDashboard::PutData( "Goto -90", new ArmSet( &m_arm, -90_deg ) );
   frc::SmartDashboard::PutData( "Goto 30", new ArmSet( &m_arm, 30_deg ) );
   frc::SmartDashboard::PutData( "Goto 45", new ArmSet( &m_arm, 45_deg ) );
   frc::SmartDashboard::PutData( "Goto -35", new ArmSet( &m_arm, -35_deg ) );
+  frc::SmartDashboard::PutData( "Run Grabber Motor.", new Intake(&m_grabber, true));
   m_arm.ArmDataSetup(  );
 
   m_drive.DrivetrainSetup();
   frc::SmartDashboard::PutData(&PDP);
   frc::SmartDashboard::PutData(&Compressor);
+  
 }
-
+ 
 void RobotContainer::TestDataUpdate() {
   m_arm.ArmDataUpdate( );
+  //fmt::print( "TestUpdate" );
   m_grabber.GrabberTest();
   m_drive.DrivetrainTest();
   m_limelight.LimelightTest();
