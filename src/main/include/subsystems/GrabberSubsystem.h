@@ -27,10 +27,11 @@ class GrabberSubsystem : public frc2::SubsystemBase {
     void IntakeTest();
     const double kRollerGripPercent = 0.15;
   #else
-    void Spin( double speed );
     units::ampere_t GetCurrent();
     void GrabberTest();
   #endif
+  void Spin( double speed );
+
  private:
   double m_spin_speed = 0.0;
   #if defined(Claw)
