@@ -10,13 +10,7 @@ Intake::Intake(GrabberSubsystem *grabber, bool GamePieceType)
 // Called when the command is initially scheduled.
 void Intake::Initialize() {
   m_startTime = frc::Timer::GetFPGATimestamp();
-
-  if (m_GamePieceType) {
-    m_grabber->Spin(0.2);
-  }
-  else {
-    m_grabber->Spin(-0.2);
-  }
+  m_GamePieceType ? m_grabber->Spin(0.2) : m_grabber->Spin(-0.2);
 }
 
 // Called repeatedly when this Command is scheduled to run
