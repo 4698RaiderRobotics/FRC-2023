@@ -4,6 +4,9 @@
 
 #pragma once
 
+#include "Config.h"
+
+#if defined(Claw)
 #include <frc2/command/CommandBase.h>
 #include <frc2/command/CommandHelper.h>
 
@@ -24,3 +27,4 @@ class OpenGrabber
   GrabberSubsystem *m_grabber;
   double m_speed;
 };
+#endif

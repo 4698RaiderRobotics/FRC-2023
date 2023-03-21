@@ -44,16 +44,17 @@ void RobotContainer::ConfigureButtonBindings() {
 
   ( frc2::JoystickButton( &m_driverController, frc::PS4Controller::Button::kL1 ) && frc2::JoystickButton( &m_driverController, frc::PS4Controller::Button::kR1 ) )
   .OnTrue( frc2::InstantCommand( [this] { m_drive.ResetGyro( 180_deg ); }, { &m_drive } ).ToPtr() );
+  #if defined(Claw)
+  m_operatorController.RightBumper().OnTrue( OpenGrabber( &m_grabber, 0.0 ).ToPtr() );
 
-  //m_operatorController.RightBumper().OnTrue( OpenGrabber( &m_grabber, 0.0 ).ToPtr() );
+  m_operatorController.LeftBumper().OnTrue( CloseGrabber( &m_grabber ).ToPtr() );
 
-  //m_operatorController.LeftBumper().OnTrue( CloseGrabber( &m_grabber ).ToPtr() );
-
-  //m_operatorController.RightTrigger().OnTrue( frc2::InstantCommand( [this] { m_grabber.Spin( -0.25 ); }, { &m_grabber } ).ToPtr() );
+  m_operatorController.RightTrigger().OnTrue( frc2::InstantCommand( [this] { m_grabber.Spin( -0.25 ); }, { &m_grabber } ).ToPtr() );
+  m_operatorController.LeftTrigger().OnTrue( frc2::InstantCommand( [this] { m_grabber.Toggle( ); }, { &m_grabber } ).ToPtr() );
+  #else
   m_operatorController.RightTrigger().OnTrue(Intake( &m_grabber, true ).ToPtr() );
   m_operatorController.LeftTrigger().OnTrue(Intake(&m_grabber,false).ToPtr());
-  //m_operatorController.LeftTrigger().OnTrue( frc2::InstantCommand( [this] { m_grabber.Toggle( ); }, { &m_grabber } ).ToPtr() );
-
+  #endif
   m_operatorController.Y().OnTrue( ArmSet( &m_arm, 30_deg ).ToPtr() );
   // Hamburger 🍔 Button.
   m_operatorController.Button(8).OnTrue(ArmSet(&m_arm, 25_deg).ToPtr());

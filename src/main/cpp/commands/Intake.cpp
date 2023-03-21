@@ -1,5 +1,5 @@
 #include "commands/Intake.h"
-
+#if !defined(Claw)
 #include <frc/Timer.h>
 
 Intake::Intake(GrabberSubsystem *grabber, bool GamePieceType) 
@@ -9,8 +9,10 @@ Intake::Intake(GrabberSubsystem *grabber, bool GamePieceType)
 
 // Called when the command is initially scheduled.
 void Intake::Initialize() {
+  
   m_startTime = frc::Timer::GetFPGATimestamp();
   m_GamePieceType ? m_grabber->Spin(0.2) : m_grabber->Spin(-0.2);
+  
 }
 
 // Called repeatedly when this Command is scheduled to run
@@ -26,3 +28,4 @@ bool Intake::IsFinished() {
   //There is an initial 30 A spike that lasts for ~150 ms so...
   return (m_grabber->GetCurrent() > 4_A) & (frc::Timer::GetFPGATimestamp() - m_startTime > 0.3_s);
 }
+#endif

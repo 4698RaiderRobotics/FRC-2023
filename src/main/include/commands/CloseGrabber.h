@@ -4,6 +4,8 @@
 
 #pragma once
 
+#include "Config.h"
+#if defined(Claw)
 #include <frc2/command/CommandBase.h>
 #include <frc2/command/CommandHelper.h>
 
@@ -31,3 +33,4 @@ class CloseGrabber
    GrabberSubsystem *m_grabber;
    bool m_spin_on_close;
 };
+#endif

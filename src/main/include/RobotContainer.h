@@ -1,5 +1,7 @@
 #pragma once
 
+#include "Config.h"
+
 #include <frc2/command/Command.h>
 
 #include <frc2/command/button/JoystickButton.h>
