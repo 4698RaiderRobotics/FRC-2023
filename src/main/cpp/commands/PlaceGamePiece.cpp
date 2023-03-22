@@ -3,6 +3,7 @@
 // the WPILib BSD license file in the root directory of this project.
 
 #include "commands/PlaceGamePiece.h"
+#include "Config.h"
 
 #include "commands/DriveToPoseCommand.h"
 #include "commands/ArmSet.h"
@@ -18,7 +19,9 @@ PlaceGamePiece::PlaceGamePiece( Drivetrain *drive, ArmSubsystem *arm, GrabberSub
     DriveToPoseCommand{ drive },
     ArmSet( arm, angle ),
     TestProfileMove( drive, physical::kPlaceDistance, TestProfileMove::FORWARD ),
+    #if defined(Claw)
     OpenGrabber( grabber ),
+    #endif
     TestProfileMove( drive, -physical::kPlaceDistance, TestProfileMove::FORWARD ),
     ArmSet( arm, -90_deg )
 );

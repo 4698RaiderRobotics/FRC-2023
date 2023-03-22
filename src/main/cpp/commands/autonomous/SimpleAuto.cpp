@@ -30,10 +30,14 @@ SimpleAuto::SimpleAuto( Drivetrain *drive, ArmSubsystem *arm, GrabberSubsystem *
       DriveToPoseCommand( drive, m_targetpose ),
       ArmSet( arm, 30_deg ),
       TestProfileMove( drive, physical::kPlaceDistance, TestProfileMove::FORWARD ),
+      #if defined(Claw)
       OpenGrabber( grabber ),
+      #endif
       frc2::WaitCommand( 0.25_s ),
       TestProfileMove( drive, -physical::kPlaceDistance, TestProfileMove::FORWARD ),
+      #if defined(Claw)
       CloseGrabber( grabber, false ),
+      #endif
       ArmSet( arm, -118_deg )
     );
   // If on red side, do red auto
@@ -44,10 +48,14 @@ SimpleAuto::SimpleAuto( Drivetrain *drive, ArmSubsystem *arm, GrabberSubsystem *
       DriveToPoseCommand( drive, m_targetpose ),
       ArmSet( arm, 30_deg ),
       TestProfileMove( drive, physical::kPlaceDistance, TestProfileMove::FORWARD ),
+      #if defined(Claw)
       OpenGrabber( grabber ),
+      #endif
       frc2::WaitCommand( 0.25_s ),
       TestProfileMove( drive, -physical::kPlaceDistance, TestProfileMove::FORWARD ),
+      #if defined(Claw)
       CloseGrabber( grabber, false ),
+      #endif
       ArmSet( arm, -118_deg )
     );
   }

@@ -3,7 +3,7 @@
 // the WPILib BSD license file in the root directory of this project.
 
 #include "commands/CloseGrabber.h"
-
+#if defined(Claw)
 CloseGrabber::CloseGrabber( GrabberSubsystem *grabber, bool spin_on_close )
         : m_grabber{ grabber }, m_spin_on_close{spin_on_close} {
   AddRequirements( { grabber } );
@@ -22,3 +22,4 @@ void CloseGrabber::Execute() {
 bool CloseGrabber::IsFinished() {
   return true;
 }
+#endif

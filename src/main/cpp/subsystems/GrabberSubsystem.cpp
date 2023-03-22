@@ -8,14 +8,13 @@ GrabberSubsystem::GrabberSubsystem() = default;
 
 // This method will be called once per scheduler run
 void GrabberSubsystem::Periodic() {
-    if ( m_roller.GetSensorCollection().GetIntegratedSensorVelocity() * physical::tics_per_100ms_to_deg_per_s > 1 ) {
-        frc::SmartDashboard::PutBoolean( "Rollers", true );
-    } else {
-        frc::SmartDashboard::PutBoolean( "Rollers", false );
-    }
+    #if defined(Claw)
+    frc::SmartDashboard::PutBoolean("Rollers", (m_roller.GetSensorCollection().GetIntegratedSensorVelocity() * physical::tics_per_100ms_to_deg_per_s > 1 ));
+    #endif
 }
 
 // Opens grabber
+#if defined(Claw)
 void GrabberSubsystem::Open( ) {
     m_grab.Set( frc::DoubleSolenoid::Value::kForward );
 }
@@ -24,13 +23,6 @@ void GrabberSubsystem::Open( ) {
 void GrabberSubsystem::Close( ) {
     m_grab.Set( frc::DoubleSolenoid::Value::kReverse );
 }
-
-// Speed of rollers is value from -1 to 1
-void GrabberSubsystem::Spin( double speed ) {
-    m_spin_speed = speed;
-    m_roller.Set( ctre::phoenix::motorcontrol::ControlMode::PercentOutput, m_spin_speed );
-}
-
 // Toggles the rollers on or off
 void GrabberSubsystem::Toggle( void ) {
     if( std::fabs( m_spin_speed ) > 0.01 ) {
@@ -41,8 +33,26 @@ void GrabberSubsystem::Toggle( void ) {
         m_spin_speed = kRollerGripPercent;
     }
 }
+#endif
+// Speed of rollers is value from -1 to 1
+void GrabberSubsystem::Spin( double speed ) {
+    m_spin_speed = speed;
+    #if defined(Claw)
+    m_roller.Set( ctre::phoenix::motorcontrol::ControlMode::PercentOutput, m_spin_speed );
+    #else 
+    m_intake.Set(m_spin_speed);
+    #endif
+}
+#if !defined(Claw)
+units::ampere_t GrabberSubsystem::GetCurrent() {
+    return units::ampere_t{m_intake.GetOutputCurrent()};
+}
 
 void GrabberSubsystem::GrabberTest() {
-    frc::SmartDashboard::PutData( &m_grab );
-    frc::SmartDashboard::PutNumber( "Roller Speed", m_roller.GetMotorOutputPercent() );
+    //frc::SmartDashboard::PutData( &m_grab );
+    //frc::SmartDashboard::PutNumber( "Roller Speed", m_roller.GetMotorOutputPercent() );
+    //fmt::print( "GrabberTest" );    
+    frc::SmartDashboard::PutNumber("Intake Speed", m_intake.Get());
+    frc::SmartDashboard::PutNumber("Intake Current", m_intake.GetOutputCurrent());
 }
+#endif

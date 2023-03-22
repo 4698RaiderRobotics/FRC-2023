@@ -30,10 +30,14 @@ WizzyWiggAuto::WizzyWiggAuto( Drivetrain *drive, ArmSubsystem *arm, GrabberSubsy
       DriveToPoseCommand( drive, m_targetpose ),
       ArmSet( arm, 30_deg ),
       TestProfileMove( drive, physical::kPlaceDistance, TestProfileMove::FORWARD ),
+      #if defined(Claw)
       OpenGrabber( grabber ),
+      #endif
       frc2::WaitCommand( 0.25_s ),
       TestProfileMove( drive, -physical::kPlaceDistance, TestProfileMove::FORWARD ),
+      #if defined(Claw)
       CloseGrabber( grabber, false ),
+      #endif
       ArmSet( arm, -118_deg ),
       DriveToPoseCommand( drive, { m_targetpose.X() + 1.75_m, m_targetpose.Y(), 180_deg } ),
       GyroBalance( drive )
@@ -46,10 +50,14 @@ WizzyWiggAuto::WizzyWiggAuto( Drivetrain *drive, ArmSubsystem *arm, GrabberSubsy
       DriveToPoseCommand( drive, m_targetpose ),
       ArmSet( arm, 30_deg ),
       TestProfileMove( drive, physical::kPlaceDistance, TestProfileMove::FORWARD ),
+      #if defined(Claw)
       OpenGrabber( grabber ),
+      #endif
       frc2::WaitCommand( 0.25_s ),
       TestProfileMove( drive, -physical::kPlaceDistance, TestProfileMove::FORWARD ),
+      #if defined(Claw)
       CloseGrabber( grabber, false ),
+      #endif
       ArmSet( arm, -118_deg ),
       DriveToPoseCommand( drive, { m_targetpose.X() - 1.75_m, m_targetpose.Y(), 0_deg } ),
       GyroBalance( drive )

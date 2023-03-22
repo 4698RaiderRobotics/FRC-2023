@@ -5,26 +5,30 @@
 #pragma once
 
 #include "Config.h"
+#if !defined(Claw)
 
-#if defined(Claw)
 #include <frc2/command/CommandBase.h>
 #include <frc2/command/CommandHelper.h>
 
+#include <units/time.h>
+
 #include "subsystems/GrabberSubsystem.h"
 
-class OpenGrabber
-    : public frc2::CommandHelper<frc2::CommandBase, OpenGrabber> {
+class Intake
+    : public frc2::CommandHelper<frc2::CommandBase, Intake> {
  public:
-  OpenGrabber( GrabberSubsystem *grabber, double speed = 0 );
-
+  Intake(GrabberSubsystem *grabber, bool GamePieceType);
+  
   void Initialize() override;
 
   void Execute() override;
 
+  void End(bool interrupted) override;
+
   bool IsFinished() override;
-  
  private:
   GrabberSubsystem *m_grabber;
-  double m_speed;
+  bool m_GamePieceType;
+  units::second_t m_startTime;
 };
 #endif

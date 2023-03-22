@@ -87,6 +87,7 @@ void Robot::TestInit() {
  * This function is called periodically during test mode.
  */
 void Robot::TestPeriodic() {
+  m_container.TestDataUpdate();
 }
 
 /**
