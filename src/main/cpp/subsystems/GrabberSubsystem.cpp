@@ -33,7 +33,7 @@ void GrabberSubsystem::Toggle( void ) {
         m_spin_speed = kRollerGripPercent;
     }
 }
-#else
+#endif
 // Speed of rollers is value from -1 to 1
 void GrabberSubsystem::Spin( double speed ) {
     m_spin_speed = speed;
@@ -43,7 +43,7 @@ void GrabberSubsystem::Spin( double speed ) {
     m_intake.Set(m_spin_speed);
     #endif
 }
-
+#if !defined(Claw)
 units::ampere_t GrabberSubsystem::GetCurrent() {
     return units::ampere_t{m_intake.GetOutputCurrent()};
 }
