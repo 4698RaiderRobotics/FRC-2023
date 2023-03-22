@@ -47,8 +47,11 @@ void RobotContainer::ConfigureButtonBindings() {
   m_operatorController.RightBumper().OnTrue( OpenGrabber( &m_grabber, 0.0 ).ToPtr() );
 
   m_operatorController.LeftBumper().OnTrue( CloseGrabber( &m_grabber ).ToPtr() );
-
+  //-0.25
   m_operatorController.RightTrigger().OnTrue( frc2::InstantCommand( [this] { m_grabber.Spin( -0.25 ); }, { &m_grabber } ).ToPtr() );
+  // Kobe 100% charge station shot.
+  // Using the "Share" Button.
+  m_operatorController.Button(7).OnTrue( frc2::InstantCommand( [this] { m_grabber.Spin( -1 ); }, { &m_grabber } ).ToPtr() );
 
   m_operatorController.LeftTrigger().OnTrue( frc2::InstantCommand( [this] { m_grabber.Toggle( ); }, { &m_grabber } ).ToPtr() );
 
