@@ -57,14 +57,17 @@ namespace deviceIDs {
 }
 
 namespace physical {
-    // Max drive speed of Mk3 swerve modules * a scalar value
-    constexpr units::meters_per_second_t kMaxDriveSpeed = 14.4_fps * 1;
+    // Max drive speed of Mk4 swerve modules * a scalar value
+    constexpr units::meters_per_second_t kMaxDriveSpeed = 19.0_fps * 1.0;
 
     // The max speed of the turn motors
     constexpr auto kMaxTurnSpeed =  5_rad_per_s;
 
-    // Gear ratio of the drive motors. 6.86 rotations of the drive motor is one rotation of the wheel.
-    constexpr double kDriveGearRatio = 6.86;
+    // Old: Gear ratio of the drive motors. 6.86 rotations of the drive motor is one rotation of the wheel.
+    // Mark IV L4 gear ratio 
+    // https://www.swervedrivespecialties.com/products/mk3-to-mk4-upgrade-kit
+    // https://www.swervedrivespecialties.com/products/mk4-swerve-module
+    constexpr double kDriveGearRatio = 5.14;
 
     // Compound unit for the meter per revolution constant.
     using meters_per_rev = units::compound_unit<units::meters, units::inverse<units::turns>>;
