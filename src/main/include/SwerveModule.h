@@ -25,6 +25,8 @@ class SwerveModule {
 
         void SetDesiredState( const frc::SwerveModuleState& state );
 
+        void StopMotors( );
+
         frc::SwerveModuleState GetState( void );
         frc::SwerveModulePosition GetPosition ( void );
 

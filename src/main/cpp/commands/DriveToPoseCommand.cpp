@@ -111,7 +111,8 @@ bool DriveToPoseCommand::IsFinished() {
                  m_drive->GetPose().X(), m_drive->GetPose().Y(), m_drive->GetPose().Rotation().Degrees(), 
                  distance_error, angle_error );
       // Make sure the drive is stopped.
-    m_drive->ArcadeDrive( 0.0, 0.0, 0.0 );
+    //m_drive->ArcadeDrive( 0.0, 0.0, 0.0 );
+    m_drive->StopDrive( );
   }
 
   return atTargetLocation;

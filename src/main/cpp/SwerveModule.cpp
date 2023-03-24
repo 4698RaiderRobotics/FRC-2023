@@ -45,6 +45,11 @@ void SwerveModule::SetDesiredState( const frc::SwerveModuleState& referenceState
     m_turnMotor.Set( m_turnPIDController.Calculate( m_turnEncoder.GetPosition().value(), state.angle.Degrees().value() ) );
 }
 
+void SwerveModule::StopMotors( ) {
+    m_driveMotor.Set( 0.0 );
+    m_turnMotor.Set( 0.0 );
+}
+
 // Returns the current state of the SwerveModule
 frc::SwerveModuleState SwerveModule::GetState( void ) {
     //undo this for odometry

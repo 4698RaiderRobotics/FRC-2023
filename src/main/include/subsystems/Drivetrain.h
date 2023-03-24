@@ -26,6 +26,8 @@ class Drivetrain : public frc2::SubsystemBase {
 
     void DriveTrajectory( frc::Trajectory::State trajectoryState, const frc::Rotation2d &robotHeading );
 
+    void StopDrive( );
+
     void Periodic() override;
 
     void ResetGyro( units::degree_t angle );

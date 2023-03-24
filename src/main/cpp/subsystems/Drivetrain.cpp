@@ -33,7 +33,7 @@ void Drivetrain::ArcadeDrive( double xSpeed, double ySpeed, double omegaSpeed, b
         //                units::degree_t{ m_gyro.GetYaw() }, m_gyro_operator_offset,
         //                units::degree_t{ m_gyro.GetYaw() } - m_gyro_operator_offset );
         speeds = speeds.FromFieldRelativeSpeeds( speeds.vx, speeds.vy, speeds.omega, 
-                                                 units::degree_t{ m_gyro.GetYaw() } - m_gyro_operator_offset );
+                                                 units::degree_t{ m_gyro.GetYaw() } /* - m_gyro_operator_offset */ );
     }
 
     Drive( speeds, false );
@@ -87,6 +87,13 @@ void Drivetrain::DriveTrajectory( frc::Trajectory::State trajectoryState, const 
     //            adjustedSpeeds.vx, adjustedSpeeds.vy, adjustedSpeeds.omega );
 
     Drive( adjustedSpeeds, false );
+}
+
+void Drivetrain::StopDrive( ) {
+    m_frontLeft.StopMotors( );
+    m_backLeft.StopMotors( );
+    m_frontRight.StopMotors( );
+    m_backRight.StopMotors( );
 }
 
 void Drivetrain::Periodic( ) {
