@@ -11,7 +11,7 @@ Intake::Intake(GrabberSubsystem *grabber, bool GamePieceType)
 void Intake::Initialize() {
   
   m_startTime = frc::Timer::GetFPGATimestamp();
-  m_GamePieceType ? m_grabber->Spin(1) : m_grabber->Spin(-1);
+  m_GamePieceType ? m_grabber->Spin(0.5) : m_grabber->Spin(-1);
   
 }
 
@@ -26,6 +26,6 @@ void Intake::End(bool interrupted) {
 // Returns true when the command should end.
 bool Intake::IsFinished() {
   //There is an initial 30 A spike that lasts for ~150 ms so...
-  return (m_grabber->GetCurrent() > 1000_A) & (frc::Timer::GetFPGATimestamp() - m_startTime > 0.3_s);
+  return (m_grabber->GetCurrent() > 20_A) & (frc::Timer::GetFPGATimestamp() - m_startTime > 0.3_s);
 }
 #endif
