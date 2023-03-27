@@ -57,6 +57,7 @@ void RobotContainer::ConfigureButtonBindings() {
   #else
   m_operatorController.RightTrigger().OnTrue(Intake( &m_grabber, true ).ToPtr() );
   m_operatorController.LeftTrigger().OnTrue(Intake(&m_grabber,false).ToPtr());
+  m_operatorController.LeftBumper().OnTrue();
   #endif
   m_operatorController.Y().OnTrue( ArmSet( &m_arm, 30_deg ).ToPtr() );
   // Hamburger 🍔 Button.
