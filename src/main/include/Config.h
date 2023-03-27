@@ -1,1 +1,1 @@
-#define Claw
+//#define Claw

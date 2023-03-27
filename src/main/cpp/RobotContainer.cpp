@@ -99,8 +99,8 @@ void RobotContainer::TeleopDataUpdate() {
 //  m_arm.ArmTestSetup();
 //  m_drive.DrivetrainSetup();
 //  frc::SmartDashboard::PutData(&PDP);
-  frc::SmartDashboard::PutData(&Compressor);
-  //m_grabber.GrabberTest();
+  //frc::SmartDashboard::PutData(&Compressor);
+  m_grabber.GrabberTest();
 }
 
 
