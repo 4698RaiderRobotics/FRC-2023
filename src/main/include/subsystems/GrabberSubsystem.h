@@ -41,8 +41,12 @@ class GrabberSubsystem : public frc2::SubsystemBase {
   void HandleCone( void );
  private:
   double m_spin_speed = 1.0;
-  double m_cone_max_amps = 8.0;
-  double m_cube_max_amps = 5.0;
+  double m_cone_intake_speed = 0.5;
+  double m_cone_shoot_speed = 1.0;
+  double m_cube_intake_speed = 0.5;
+  double m_cube_shoot_speed = 0.75;
+  double m_cone_max_amps = 20.0;
+  double m_cube_max_amps = 15.0;
   double m_target_amps = 5.0;
   frc::PowerDistribution &m_pdp;
 

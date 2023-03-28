@@ -119,7 +119,7 @@ void GrabberSubsystem::HandleCone( void ) {
     
     if( m_hasCone ) {
         m_isEjecting = true;
-        m_intake.Set ( -m_spin_speed );
+        m_intake.Set ( -m_cone_shoot_speed );
     } else {
         m_loadingCone = true;
         m_loadingCube = false;
@@ -127,7 +127,7 @@ void GrabberSubsystem::HandleCone( void ) {
         m_hasCube = false;
         m_isEjecting = false;
         m_target_amps = m_cone_max_amps;
-        m_intake.Set( m_spin_speed );
+        m_intake.Set( m_cone_intake_speed );
     }
 }
 
@@ -141,7 +141,7 @@ void GrabberSubsystem::HandleCube( void ) {
     
     if( m_hasCube ) {
         m_isEjecting = true;
-        m_intake.Set ( m_spin_speed );
+        m_intake.Set ( m_cube_shoot_speed );
     } else {
         m_loadingCone = false;
         m_loadingCube = true;
@@ -149,7 +149,7 @@ void GrabberSubsystem::HandleCube( void ) {
         m_hasCube = false;
         m_isEjecting = false;
         m_target_amps = m_cube_max_amps;
-        m_intake.Set( -m_spin_speed );
+        m_intake.Set( -m_cube_intake_speed );
     }
 }
 
