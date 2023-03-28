@@ -5,14 +5,8 @@
 #include <frc2/command/WaitCommand.h>
 
 #include "commands/autonomous/WizzyWiggAuto.h"
+#include "commands/autonomous/PlaceAtPose.h"
 #include "commands/DriveToPoseCommand.h"
-#include "commands/ArmSet.h"
-#include "commands/TestProfileMove.h"
-#include "commands/OpenGrabber.h"
-#include "commands/CloseGrabber.h"
-#include "commands/autonomous/FollowTrajectory.h"
-#include "commands/TestProfileMove.h"
-#include "commands/TurnToAngle.h"
 #include "commands/GyroBalance.h"
 
 // NOTE:  Consider using this command inline, rather than writing a subclass.
@@ -27,18 +21,7 @@ WizzyWiggAuto::WizzyWiggAuto( Drivetrain *drive, ArmSubsystem *arm, GrabberSubsy
     fmt::print( "Blue Alliance\n");
     m_targetpose = drive->GetPose().Nearest( std::span<frc::Pose2d> ( blueAllianceTargetPoints, 2 ) );
     AddCommands(
-      DriveToPoseCommand( drive, m_targetpose ),
-      ArmSet( arm, 30_deg ),
-      TestProfileMove( drive, physical::kPlaceDistance, TestProfileMove::FORWARD ),
-      #if defined(Claw)
-      OpenGrabber( grabber ),
-      #endif
-      frc2::WaitCommand( 0.25_s ),
-      TestProfileMove( drive, -physical::kPlaceDistance, TestProfileMove::FORWARD ),
-      #if defined(Claw)
-      CloseGrabber( grabber, false ),
-      #endif
-      ArmSet( arm, -118_deg ),
+      PlaceAtPose( drive, arm, grabber, m_targetpose ),
       DriveToPoseCommand( drive, { m_targetpose.X() + 1.75_m, m_targetpose.Y(), 180_deg } ),
       GyroBalance( drive )
     );
@@ -47,18 +30,7 @@ WizzyWiggAuto::WizzyWiggAuto( Drivetrain *drive, ArmSubsystem *arm, GrabberSubsy
     fmt::print( "Red Alliance\n");
     m_targetpose = drive->GetPose().Nearest( std::span<frc::Pose2d> ( redAllianceTargetPoints, 2 ) );
     AddCommands(
-      DriveToPoseCommand( drive, m_targetpose ),
-      ArmSet( arm, 30_deg ),
-      TestProfileMove( drive, physical::kPlaceDistance, TestProfileMove::FORWARD ),
-      #if defined(Claw)
-      OpenGrabber( grabber ),
-      #endif
-      frc2::WaitCommand( 0.25_s ),
-      TestProfileMove( drive, -physical::kPlaceDistance, TestProfileMove::FORWARD ),
-      #if defined(Claw)
-      CloseGrabber( grabber, false ),
-      #endif
-      ArmSet( arm, -118_deg ),
+      PlaceAtPose( drive, arm, grabber, m_targetpose ),
       DriveToPoseCommand( drive, { m_targetpose.X() - 1.75_m, m_targetpose.Y(), 0_deg } ),
       GyroBalance( drive )
     );

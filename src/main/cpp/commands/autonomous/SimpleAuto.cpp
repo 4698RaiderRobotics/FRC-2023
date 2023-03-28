@@ -5,15 +5,7 @@
 #include <frc2/command/WaitCommand.h>
 
 #include "commands/autonomous/SimpleAuto.h"
-#include "commands/DriveToPoseCommand.h"
-#include "commands/ArmSet.h"
-#include "commands/TestProfileMove.h"
-#include "commands/OpenGrabber.h"
-#include "commands/CloseGrabber.h"
-#include "commands/autonomous/FollowTrajectory.h"
-#include "commands/TestProfileMove.h"
-#include "commands/TurnToAngle.h"
-#include "commands/GyroBalance.h"
+#include "commands/autonomous/PlaceAtPose.h"
 
 // NOTE:  Consider using this command inline, rather than writing a subclass.
 // For more information, see:
@@ -27,36 +19,14 @@ SimpleAuto::SimpleAuto( Drivetrain *drive, ArmSubsystem *arm, GrabberSubsystem *
     fmt::print( "Blue Alliance\n");
     m_targetpose = drive->GetPose().Nearest( std::span<frc::Pose2d> ( blueAllianceTargetPoints, 2 ) );
     AddCommands(
-      DriveToPoseCommand( drive, m_targetpose ),
-      ArmSet( arm, 30_deg ),
-      TestProfileMove( drive, physical::kPlaceDistance, TestProfileMove::FORWARD ),
-      #if defined(Claw)
-      OpenGrabber( grabber ),
-      #endif
-      frc2::WaitCommand( 0.25_s ),
-      TestProfileMove( drive, -physical::kPlaceDistance, TestProfileMove::FORWARD ),
-      #if defined(Claw)
-      CloseGrabber( grabber, false ),
-      #endif
-      ArmSet( arm, -118_deg )
+      PlaceAtPose( drive, arm, grabber, m_targetpose )
     );
   // If on red side, do red auto
   } else if ( drive->GetPose().X() > 7.5_m ) {
     fmt::print( "Red Alliance\n");
     m_targetpose = drive->GetPose().Nearest( std::span<frc::Pose2d> ( redAllianceTargetPoints, 2 ) );
     AddCommands(
-      DriveToPoseCommand( drive, m_targetpose ),
-      ArmSet( arm, 30_deg ),
-      TestProfileMove( drive, physical::kPlaceDistance, TestProfileMove::FORWARD ),
-      #if defined(Claw)
-      OpenGrabber( grabber ),
-      #endif
-      frc2::WaitCommand( 0.25_s ),
-      TestProfileMove( drive, -physical::kPlaceDistance, TestProfileMove::FORWARD ),
-      #if defined(Claw)
-      CloseGrabber( grabber, false ),
-      #endif
-      ArmSet( arm, -118_deg )
+      PlaceAtPose( drive, arm, grabber, m_targetpose )
     );
   }
 }

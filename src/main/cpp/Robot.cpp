@@ -17,7 +17,7 @@ void Robot::RobotInit() {
   // Record both DS control and joystick data
   frc::DriverStation::StartDataLog(frc::DataLogManager::GetLog());
   // Log in Telelop:
-  frc::CameraServer::StartAutomaticCapture();
+//  frc::CameraServer::StartAutomaticCapture();
 }
 
 /**

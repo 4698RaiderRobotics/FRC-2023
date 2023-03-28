@@ -55,8 +55,14 @@ void RobotContainer::ConfigureButtonBindings() {
   m_operatorController.Button(7).OnTrue( frc2::InstantCommand( [this] { m_grabber.Spin( -1 ); }, { &m_grabber } ).ToPtr() );
   m_operatorController.LeftTrigger().OnTrue( frc2::InstantCommand( [this] { m_grabber.Toggle( ); }, { &m_grabber } ).ToPtr() );
   #else
-  m_operatorController.RightTrigger().OnTrue(Intake( &m_grabber, true ).ToPtr() );
-  m_operatorController.LeftTrigger().OnTrue(Intake(&m_grabber,false).ToPtr());
+  m_operatorController.RightTrigger().ToggleOnTrue( frc2::StartEndCommand( [this] { m_grabber.Cone( true ); }, [this] { m_grabber.Cone( false ); } ).ToPtr() );
+
+  m_operatorController.LeftTrigger().ToggleOnTrue( frc2::StartEndCommand( [this] { m_grabber.Cube( true ); }, [this] { m_grabber.Cube( false ); } ).ToPtr() );
+
+  //m_operatorController.RightTrigger().ToggleOnTrue( Intake( &m_grabber, true ).ToPtr() );
+
+  //m_operatorController.LeftTrigger().OnTrue(Intake( &m_grabber, true ).ToPtr() );
+
   #endif
   m_operatorController.Y().OnTrue( ArmSet( &m_arm, 30_deg ).ToPtr() );
   // Hamburger 🍔 Button.
@@ -100,7 +106,7 @@ void RobotContainer::TeleopDataUpdate() {
 //  m_drive.DrivetrainSetup();
 //  frc::SmartDashboard::PutData(&PDP);
   //frc::SmartDashboard::PutData(&Compressor);
-  m_grabber.GrabberTest();
+//  m_grabber.GrabberTest();
 }
 
 

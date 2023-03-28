@@ -17,7 +17,7 @@
 class Intake
     : public frc2::CommandHelper<frc2::CommandBase, Intake> {
  public:
-  Intake(GrabberSubsystem *grabber, bool GamePieceType);
+  Intake( GrabberSubsystem *grabber, bool reversed );
   
   void Initialize() override;
 
@@ -28,7 +28,7 @@ class Intake
   bool IsFinished() override;
  private:
   GrabberSubsystem *m_grabber;
-  bool m_GamePieceType;
+  bool m_reversed;
   units::second_t m_startTime;
 };
 #endif

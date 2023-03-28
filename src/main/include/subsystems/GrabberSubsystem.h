@@ -31,12 +31,18 @@ class GrabberSubsystem : public frc2::SubsystemBase {
     void GrabberTest();
   #endif
   void Spin( double speed );
+
+  void Cone( bool direction );
+
+  void Cube( bool direction );
  private:
-  double m_spin_speed = 0.0;
+  double m_spin_speed = 0.5;
   #if defined(Claw)
     ctre::phoenix::motorcontrol::can::TalonFX m_roller{ 14 };
     frc::DoubleSolenoid m_grab{ 9, frc::PneumaticsModuleType::CTREPCM, deviceIDs::kGrabberSolenoidForwardChannel, deviceIDs::kGrabberSolenoidReverseChannel };
   #else
     rev::CANSparkMax m_intake{14, rev::CANSparkMaxLowLevel::MotorType::kBrushless};
   #endif
+
+  units::second_t m_startTime;
 };
