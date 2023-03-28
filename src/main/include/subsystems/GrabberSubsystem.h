@@ -11,13 +11,14 @@
 #include <ctre/phoenix/motorcontrol/can/TalonFX.h>
 #include <frc/DoubleSolenoid.h>
 #include <frc/smartdashboard/SmartDashboard.h>
+#include <frc/PowerDistribution.h>
 
 #include <units/current.h>
 #include "Constants.h"
 
 class GrabberSubsystem : public frc2::SubsystemBase {
  public:
-  GrabberSubsystem();
+  GrabberSubsystem( frc::PowerDistribution & );
 
   void Periodic() override;
   #if defined(Claw)
@@ -35,8 +36,16 @@ class GrabberSubsystem : public frc2::SubsystemBase {
   void Cone( bool direction );
 
   void Cube( bool direction );
+
+  void HandleCube( void );
+  void HandleCone( void );
  private:
-  double m_spin_speed = 0.5;
+  double m_spin_speed = 1.0;
+  double m_cone_max_amps = 8.0;
+  double m_cube_max_amps = 5.0;
+  double m_target_amps = 5.0;
+  frc::PowerDistribution &m_pdp;
+
   #if defined(Claw)
     ctre::phoenix::motorcontrol::can::TalonFX m_roller{ 14 };
     frc::DoubleSolenoid m_grab{ 9, frc::PneumaticsModuleType::CTREPCM, deviceIDs::kGrabberSolenoidForwardChannel, deviceIDs::kGrabberSolenoidReverseChannel };
@@ -45,4 +54,7 @@ class GrabberSubsystem : public frc2::SubsystemBase {
   #endif
 
   units::second_t m_startTime;
+  bool m_isEjecting;
+  bool m_loadingCone{false}, m_hasCone{ false };
+  bool m_loadingCube{false}, m_hasCube{ false };
 };

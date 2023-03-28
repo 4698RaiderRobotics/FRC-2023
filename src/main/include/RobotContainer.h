@@ -42,11 +42,14 @@ class RobotContainer {
   void TestDataUpdate();
 
  private:
+  frc::PowerDistribution PDP{0, frc::PowerDistribution::ModuleType::kCTRE};
+  frc::Compressor Compressor{9, frc::PneumaticsModuleType::CTREPCM}; 
+
   // The robot's subsystems and commands are defined here...
   Limelight m_limelight;
   Drivetrain m_drive{ &m_limelight };
   ArmSubsystem m_arm;
-  GrabberSubsystem m_grabber;
+  GrabberSubsystem m_grabber{ PDP };
 
 //  SimpleAuto m_simpleAuto{ &m_drive, &m_arm, &m_grabber, 30_deg };
 // WizzyWiggAuto m_wizzyWiggAuto{ &m_drive, &m_arm, &m_grabber };
@@ -58,9 +61,6 @@ class RobotContainer {
   const std::string kAutoNameCustom = "Place Cone and Leave";
   const std::string kAutoNameThird = "Just Place Cone";
   std::string m_autoSelected;
-
-  frc::PowerDistribution PDP{0, frc::PowerDistribution::ModuleType::kCTRE};
-  frc::Compressor Compressor{9, frc::PneumaticsModuleType::CTREPCM}; 
 
   frc::PS4Controller m_driverController{ 0 };
   frc2::CommandXboxController m_operatorController{ 1 };
