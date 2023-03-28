@@ -67,11 +67,11 @@ void RobotContainer::ConfigureButtonBindings() {
   //m_operatorController.LeftTrigger().OnTrue(Intake( &m_grabber, true ).ToPtr() );
 
   #endif
-  m_operatorController.Y().OnTrue( ArmSet( &m_arm, 30_deg ).ToPtr() );
+  m_operatorController.Y().OnTrue( ArmSet( &m_arm, 12.28_deg ).ToPtr() );
   // Hamburger 🍔 Button.
   m_operatorController.Button(8).OnTrue(ArmSet(&m_arm, 25_deg).ToPtr());
 
-  m_operatorController.B().OnTrue( ArmSet( &m_arm, 0_deg ).ToPtr() );
+  m_operatorController.B().OnTrue( ArmSet( &m_arm, -3.95_deg ).ToPtr() );
 
   m_operatorController.A().OnTrue( ArmSet( &m_arm, -90_deg ).ToPtr() );
 
