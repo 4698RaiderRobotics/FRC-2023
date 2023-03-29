@@ -13,12 +13,13 @@
 #include <frc/smartdashboard/SmartDashboard.h>
 #include <frc/PowerDistribution.h>
 
+
 #include <units/current.h>
 #include "Constants.h"
-
+class ArmSubsystem;
 class GrabberSubsystem : public frc2::SubsystemBase {
  public:
-  GrabberSubsystem( frc::PowerDistribution & );
+  GrabberSubsystem( frc::PowerDistribution &, ArmSubsystem* );
 
   void Periodic() override;
   #if defined(Claw)
@@ -44,19 +45,20 @@ class GrabberSubsystem : public frc2::SubsystemBase {
   double m_cone_intake_speed = 0.5;
   double m_cone_shoot_speed = 1.0;
   double m_cube_intake_speed = 0.5;
-  double m_cube_shoot_speed = 0.75;
+  double m_cube_shoot_fast_speed = 0.75;
+  double m_cube_shoot_slow_speed = 0.25;
+
   double m_cone_max_amps = 20.0;
-  double m_cube_max_amps = 15.0;
+  double m_cube_max_amps = 10.0;
   double m_target_amps = 5.0;
   frc::PowerDistribution &m_pdp;
-
+  ArmSubsystem *m_arm;
   #if defined(Claw)
     ctre::phoenix::motorcontrol::can::TalonFX m_roller{ 14 };
     frc::DoubleSolenoid m_grab{ 9, frc::PneumaticsModuleType::CTREPCM, deviceIDs::kGrabberSolenoidForwardChannel, deviceIDs::kGrabberSolenoidReverseChannel };
   #else
     rev::CANSparkMax m_intake{14, rev::CANSparkMaxLowLevel::MotorType::kBrushless};
   #endif
-
   units::second_t m_startTime;
   bool m_isEjecting;
   bool m_loadingCone{false}, m_hasCone{ false };
