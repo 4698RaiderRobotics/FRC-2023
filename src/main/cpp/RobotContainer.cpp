@@ -42,7 +42,7 @@ void RobotContainer::ConfigureButtonBindings() {
   frc2::JoystickButton( &m_driverController, frc::PS4Controller::Button::kTriangle )
   .WhileTrue( PlaceGamePiece( &m_drive, &m_arm, &m_grabber, 30_deg ).ToPtr());
 
-  ( frc2::JoystickButton( &m_driverController, frc::PS4Controller::Button::kL1 ) && frc2::JoystickButton( &m_driverController, frc::PS4Controller::Button::kR1 ) )
+  ( frc2::JoystickButton( &m_driverController, frc::PS4Controller::Button::kL1 ) && frc2::JoystickButton( &m_driverController,frc::PS4Controller::Button::kR1 ) )
   .OnTrue( frc2::InstantCommand( [this] { m_drive.ResetGyro( 180_deg ); }, { &m_drive } ).ToPtr() );
   #if defined(Claw)
   m_operatorController.RightBumper().OnTrue( OpenGrabber( &m_grabber, 0.0 ).ToPtr() );
@@ -55,9 +55,9 @@ void RobotContainer::ConfigureButtonBindings() {
   m_operatorController.Button(7).OnTrue( frc2::InstantCommand( [this] { m_grabber.Spin( -1 ); }, { &m_grabber } ).ToPtr() );
   m_operatorController.LeftTrigger().OnTrue( frc2::InstantCommand( [this] { m_grabber.Toggle( ); }, { &m_grabber } ).ToPtr() );
   #else
-  // m_operatorController.RightTrigger().ToggleOnTrue( frc2::StartEndCommand( [this] { m_grabber.Cone( true ); }, [this] { m_grabber.Cone( false ); } ).ToPtr() );
+  //m_operatorController.RightTrigger().ToggleOnTrue(frc2::StartEndCommand( [this] { m_grabber.Cone( true ); }, [this] { m_grabber.Cone( false ); } ).ToPtr() );
 
-  // m_operatorController.LeftTrigger().ToggleOnTrue( frc2::StartEndCommand( [this] { m_grabber.Cube( true ); }, [this] { m_grabber.Cube( false ); } ).ToPtr() );
+  //m_operatorController.LeftTrigger().ToggleOnTrue( frc2::StartEndCommand( [this] { m_grabber.Cube( true ); }, [this] { m_grabber.Cube( false ); } ).ToPtr() );
   m_operatorController.RightTrigger().OnTrue( frc2::InstantCommand( [this] { m_grabber.HandleCone(); } ).ToPtr() );
 
   m_operatorController.LeftTrigger().OnTrue( frc2::InstantCommand( [this] { m_grabber.HandleCube(); } ).ToPtr() );
@@ -67,11 +67,11 @@ void RobotContainer::ConfigureButtonBindings() {
   //m_operatorController.LeftTrigger().OnTrue(Intake( &m_grabber, true ).ToPtr() );
 
   #endif
-  m_operatorController.Y().OnTrue( ArmSet( &m_arm, 12.28_deg ).ToPtr() );
+  m_operatorController.Y().OnTrue( ArmSet( &m_arm, 12_deg ).ToPtr() );
   // Hamburger 🍔 Button.
   m_operatorController.Button(8).OnTrue(ArmSet(&m_arm, 25_deg).ToPtr());
 
-  m_operatorController.B().OnTrue( ArmSet( &m_arm, -3.95_deg ).ToPtr() );
+  m_operatorController.B().OnTrue( ArmSet( &m_arm, -4_deg ).ToPtr() );
 
   m_operatorController.A().OnTrue( ArmSet( &m_arm, -90_deg ).ToPtr() );
 

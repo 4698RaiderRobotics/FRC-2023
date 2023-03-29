@@ -108,5 +108,5 @@ namespace physical {
     constexpr units::inch_t kLimelightYAxisOffset = 157.8_in;
 
     constexpr units::inch_t kPlaceDistance = 17_in;
-    constexpr units::degree_t kPlaceHeight = 30_deg;
+    constexpr units::degree_t kPlaceHeight = 12_deg;
 }

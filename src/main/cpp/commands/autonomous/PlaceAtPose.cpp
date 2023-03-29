@@ -12,14 +12,19 @@
 // NOTE:  Consider using this command inline, rather than writing a subclass.
 // For more information, see:
 // https://docs.wpilib.org/en/stable/docs/software/commandbased/convenience-features.html
-PlaceAtPose::PlaceAtPose( Drivetrain *drive, ArmSubsystem *arm, GrabberSubsystem *grabber, frc::Pose2d m_targetPose ) {
+PlaceAtPose::PlaceAtPose( Drivetrain *drive, ArmSubsystem *arm, GrabberSubsystem *grabber, frc::Pose2d m_targetPose, bool blueSide ) {
+  if ( blueSide ) {
+    calvin = 1;
+  } else {
+    calvin = -1;
+  }
   AddCommands(
     DriveToPoseCommand( drive, m_targetPose ),
     ArmSet( arm, physical::kPlaceHeight ),
-    DriveToPoseCommand( drive, { m_targetPose.X() - physical::kPlaceDistance, m_targetPose.Y(), m_targetPose.Rotation() } ),
+    DriveToPoseCommand( drive, { m_targetPose.X() - ( physical::kPlaceDistance * calvin ), m_targetPose.Y(), m_targetPose.Rotation() } ),
     Intake( grabber, true ),
     frc2::WaitCommand( 0.25_s ),
-    DriveToPoseCommand( drive, { m_targetPose.X() + physical::kPlaceDistance, m_targetPose.Y(), m_targetPose.Rotation() } ),
+    DriveToPoseCommand( drive, { m_targetPose.X() + ( physical::kPlaceDistance * calvin ), m_targetPose.Y(), m_targetPose.Rotation() } ),
     ArmSet( arm, -118_deg )
   );
 }

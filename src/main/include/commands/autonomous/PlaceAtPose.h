@@ -15,5 +15,8 @@ class PlaceAtPose
     : public frc2::CommandHelper<frc2::SequentialCommandGroup,
                                  PlaceAtPose> {
  public:
-  PlaceAtPose( Drivetrain *drive, ArmSubsystem *arm, GrabberSubsystem *grabber, frc::Pose2d m_targetPose );
+  PlaceAtPose( Drivetrain *drive, ArmSubsystem *arm, GrabberSubsystem *grabber, frc::Pose2d m_targetPose, bool blueSide );
+
+ private:
+  double calvin;
 };
