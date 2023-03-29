@@ -117,3 +117,6 @@ void ArmSubsystem::Brake( bool state ) {
         m_brake.Set( frc::DoubleSolenoid::Value::kForward );
     }
 }
+units::degree_t ArmSubsystem::GetAngle() {
+    return m_angle;
+}

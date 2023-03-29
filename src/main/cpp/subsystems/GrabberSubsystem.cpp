@@ -3,15 +3,18 @@
 // the WPILib BSD license file in the root directory of this project.
 
 #include "subsystems/GrabberSubsystem.h"
-
+#include "subsystems/ArmSubsystem.h"
 #include <frc/Timer.h>
 
-GrabberSubsystem::GrabberSubsystem( frc::PowerDistribution &pdp ) : frc2::SubsystemBase(), m_pdp{pdp} {
+GrabberSubsystem::GrabberSubsystem( frc::PowerDistribution &pdp, ArmSubsystem *arm) : frc2::SubsystemBase(), m_pdp{pdp}, m_arm{arm}{
     fmt::print( "GrabberSubsystem::GrabberSubsystem\n" );
+    m_intake.RestoreFactoryDefaults();
+    m_intake.SetSmartCurrentLimit(40);
 }
 
 // This method will be called once per scheduler run
 void GrabberSubsystem::Periodic() {
+
     #if defined(Claw)
     frc::SmartDashboard::PutBoolean("Rollers", (m_roller.GetSensorCollection().GetIntegratedSensorVelocity() * physical::tics_per_100ms_to_deg_per_s > 1 ));
     #endif
@@ -119,7 +122,7 @@ void GrabberSubsystem::HandleCone( void ) {
     
     if( m_hasCone ) {
         m_isEjecting = true;
-        m_intake.Set ( -m_cone_shoot_speed );
+        m_intake.Set ( -m_cone_shoot_speed);
     } else {
         m_loadingCone = true;
         m_loadingCube = false;
@@ -141,7 +144,12 @@ void GrabberSubsystem::HandleCube( void ) {
     
     if( m_hasCube ) {
         m_isEjecting = true;
-        m_intake.Set ( m_cube_shoot_speed );
+        if(m_arm->GetAngle() < 0_deg){
+            m_intake.Set(m_cube_shoot_slow_speed);
+        }
+        else {
+            m_intake.Set ( m_cube_shoot_fast_speed );
+        }
     } else {
         m_loadingCone = false;
         m_loadingCube = true;

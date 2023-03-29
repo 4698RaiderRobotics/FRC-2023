@@ -36,6 +36,8 @@ class ArmSubsystem : public frc2::SubsystemBase {
 
   void Brake( bool state );
 
+  units::degree_t GetAngle();
+
  private:
 
   ctre::phoenix::motorcontrol::can::TalonFX m_left{ deviceIDs::kLeftArmMotorID };

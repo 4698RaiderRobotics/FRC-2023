@@ -100,7 +100,7 @@ frc2::Command* RobotContainer::GetAutonomousCommand() {
 void RobotContainer::TeleopDataSetup() {
 //  m_arm.ArmTestSetup();
 //  m_drive.DrivetrainSetup();
-//  frc::SmartDashboard::PutData(&PDP);
+frc::SmartDashboard::PutData(&PDP);
 //  frc::SmartDashboard::PutData(&Compressor);
 }
 
