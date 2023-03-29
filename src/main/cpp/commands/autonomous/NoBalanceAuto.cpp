@@ -18,7 +18,6 @@ NoBalanceAuto::NoBalanceAuto( Drivetrain *drive, ArmSubsystem *arm, GrabberSubsy
   frc::Pose2d blueAllianceTargetPoints[2] = { drive->blueAllianceGridPoints[0], drive->blueAllianceGridPoints[8] };
   
   if ( drive->GetPose().X() < 7.5_m ) {
-    fmt::print( "Blue Alliance\n");
     m_targetpose = drive->GetPose().Nearest( std::span<frc::Pose2d> ( blueAllianceTargetPoints, 2 ) );
     AddCommands(
       PlaceAtPose( drive, arm, grabber, m_targetpose, true ),
@@ -26,7 +25,6 @@ NoBalanceAuto::NoBalanceAuto( Drivetrain *drive, ArmSubsystem *arm, GrabberSubsy
     );
   // If on red side, do red auto
   } else if ( drive->GetPose().X() > 7.5_m ) {
-    fmt::print( "Red Alliance\n");
     m_targetpose = drive->GetPose().Nearest( std::span<frc::Pose2d> ( redAllianceTargetPoints, 2 ) );
     AddCommands(
       PlaceAtPose( drive, arm, grabber, m_targetpose, false ),

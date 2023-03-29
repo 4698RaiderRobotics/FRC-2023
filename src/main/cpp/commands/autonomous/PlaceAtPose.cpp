@@ -3,6 +3,7 @@
 // the WPILib BSD license file in the root directory of this project.
 
 #include <frc2/command/WaitCommand.h>
+#include <frc2/command/InstantCommand.h>
 
 #include "commands/autonomous/PlaceAtPose.h"
 #include "commands/DriveToPoseCommand.h"
@@ -22,8 +23,9 @@ PlaceAtPose::PlaceAtPose( Drivetrain *drive, ArmSubsystem *arm, GrabberSubsystem
     DriveToPoseCommand( drive, m_targetPose ),
     ArmSet( arm, physical::kPlaceHeight ),
     DriveToPoseCommand( drive, { m_targetPose.X() - ( physical::kPlaceDistance * calvin ), m_targetPose.Y(), m_targetPose.Rotation() } ),
-    Intake( grabber, true ),
+    frc2::InstantCommand( [this, grabber] { grabber->Spin( -0.5 ) ;}, { grabber } ),
     frc2::WaitCommand( 0.25_s ),
+    frc2::InstantCommand( [this, grabber] { grabber->Spin( 0.0 ) ;}, { grabber } ),
     DriveToPoseCommand( drive, { m_targetPose.X() + ( physical::kPlaceDistance * calvin ), m_targetPose.Y(), m_targetPose.Rotation() } ),
     ArmSet( arm, -118_deg )
   );

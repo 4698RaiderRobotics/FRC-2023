@@ -16,14 +16,12 @@ SimpleAuto::SimpleAuto( Drivetrain *drive, ArmSubsystem *arm, GrabberSubsystem *
   fmt::print( "WizzyWiggAuto::WizzyWiggAuto\n" );
   // If on blue side, do blue auto
   if ( drive->GetPose().X() < 7.5_m ) {
-    fmt::print( "Blue Alliance\n");
     m_targetpose = drive->GetPose().Nearest( std::span<frc::Pose2d> ( blueAllianceTargetPoints, 2 ) );
     AddCommands(
       PlaceAtPose( drive, arm, grabber, m_targetpose, true )
     );
   // If on red side, do red auto
   } else if ( drive->GetPose().X() > 7.5_m ) {
-    fmt::print( "Red Alliance\n");
     m_targetpose = drive->GetPose().Nearest( std::span<frc::Pose2d> ( redAllianceTargetPoints, 2 ) );
     AddCommands(
       PlaceAtPose( drive, arm, grabber, m_targetpose, false )
