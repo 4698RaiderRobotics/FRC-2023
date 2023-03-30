@@ -21,7 +21,7 @@ WizzyWiggAuto::WizzyWiggAuto( Drivetrain *drive, ArmSubsystem *arm, GrabberSubsy
     m_targetpose = drive->GetPose().Nearest( std::span<frc::Pose2d> ( blueAllianceTargetPoints, 2 ) );
     AddCommands(
       PlaceAtPose( drive, arm, grabber, m_targetpose, true ),
-      DriveToPoseCommand( drive, { m_targetpose.X() + 1.85_m, m_targetpose.Y(), 180_deg } ),
+      DriveToPoseCommand( drive, { m_targetpose.X() + 1.75_m, m_targetpose.Y(), 180_deg } ),
       GyroBalance( drive )
     );
   // If on red side, do red auto
@@ -29,7 +29,7 @@ WizzyWiggAuto::WizzyWiggAuto( Drivetrain *drive, ArmSubsystem *arm, GrabberSubsy
     m_targetpose = drive->GetPose().Nearest( std::span<frc::Pose2d> ( redAllianceTargetPoints, 2 ) );
     AddCommands(
       PlaceAtPose( drive, arm, grabber, m_targetpose, false ),
-      DriveToPoseCommand( drive, { m_targetpose.X() - 1.85_m, m_targetpose.Y(), 0_deg } ),
+      DriveToPoseCommand( drive, { m_targetpose.X() - 1.75_m, m_targetpose.Y(), 0_deg } ),
       GyroBalance( drive )
     );
   }
