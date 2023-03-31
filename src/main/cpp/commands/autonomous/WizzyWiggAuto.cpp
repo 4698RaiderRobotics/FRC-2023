@@ -7,6 +7,7 @@
 #include "commands/autonomous/WizzyWiggAuto.h"
 #include "commands/autonomous/PlaceAtPose.h"
 #include "commands/DriveToPoseCommand.h"
+#include "commands/TestProfileMove.h"
 #include "commands/GyroBalance.h"
 
 // NOTE:  Consider using this command inline, rather than writing a subclass.
@@ -16,12 +17,15 @@ WizzyWiggAuto::WizzyWiggAuto( Drivetrain *drive, ArmSubsystem *arm, GrabberSubsy
   frc::Pose2d redAllianceTargetPoints[2] = { drive->redAllianceGridPoints[3], drive->redAllianceGridPoints[5] };
   frc::Pose2d blueAllianceTargetPoints[2] = { drive->blueAllianceGridPoints[3], drive->blueAllianceGridPoints[5] };
   fmt::print( "WizzyWiggAuto::WizzyWiggAuto\n" );
+
+  units::meter_t auto_drive_distance = 1.75_m;
   // If on blue side, do blue auto
   if ( drive->GetPose().X() < 7.5_m ) {
     m_targetpose = drive->GetPose().Nearest( std::span<frc::Pose2d> ( blueAllianceTargetPoints, 2 ) );
     AddCommands(
       PlaceAtPose( drive, arm, grabber, m_targetpose, true ),
-      DriveToPoseCommand( drive, { m_targetpose.X() + 1.75_m, m_targetpose.Y(), 180_deg } ),
+//      DriveToPoseCommand( drive, { m_targetpose.X() + auto_drive_distance, m_targetpose.Y(), 180_deg } ),
+      TestProfileMove( drive, - auto_drive_distance, TestProfileMove::FORWARD ),
       GyroBalance( drive )
     );
   // If on red side, do red auto
@@ -29,7 +33,8 @@ WizzyWiggAuto::WizzyWiggAuto( Drivetrain *drive, ArmSubsystem *arm, GrabberSubsy
     m_targetpose = drive->GetPose().Nearest( std::span<frc::Pose2d> ( redAllianceTargetPoints, 2 ) );
     AddCommands(
       PlaceAtPose( drive, arm, grabber, m_targetpose, false ),
-      DriveToPoseCommand( drive, { m_targetpose.X() - 1.75_m, m_targetpose.Y(), 0_deg } ),
+//      DriveToPoseCommand( drive, { m_targetpose.X() - auto_drive_distance, m_targetpose.Y(), 0_deg } ),
+      TestProfileMove( drive, - auto_drive_distance, TestProfileMove::FORWARD ),
       GyroBalance( drive )
     );
   }
