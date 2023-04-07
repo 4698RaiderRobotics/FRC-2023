@@ -26,9 +26,9 @@ RobotContainer::RobotContainer() {
   // Configure the button bindings
   ConfigureButtonBindings();
 
-  m_chooser.SetDefaultOption( kAutoNameDefault, kAutoNameDefault );
-  m_chooser.AddOption( kAutoNameCustom, kAutoNameCustom );
-  m_chooser.AddOption( kAutoNameThird, kAutoNameThird );
+  m_chooser.SetDefaultOption( kBalance, kBalance );
+  m_chooser.AddOption( kLeave, kLeave );
+  m_chooser.AddOption( kPlaceOnly, kPlaceOnly );
   frc::SmartDashboard::PutData("Auto Modes", &m_chooser);
 }
 
@@ -83,15 +83,16 @@ void RobotContainer::ConfigureButtonBindings() {
 frc2::Command* RobotContainer::GetAutonomousCommand() {
   // An example command will be run in autonomous
   delete m_autoCommand;
+  m_autoCommand = nullptr;
 
   m_autoSelected = m_chooser.GetSelected();
 
-  if (m_autoSelected == kAutoNameDefault ) {
-    m_autoCommand = new WizzyWiggAuto( &m_drive, &m_arm, &m_grabber );
-  } else if ( m_autoSelected == kAutoNameCustom ) {
-    m_autoCommand = new NoBalanceAuto( &m_drive, &m_arm, &m_grabber );
-  } else if ( m_autoSelected == kAutoNameThird ) {
-    m_autoCommand = new SimpleAuto( &m_drive, &m_arm, &m_grabber );
+  if (m_autoSelected == kBalance ) {
+    m_autoCommand = new BalanceAuto( &m_drive, &m_arm, &m_grabber );
+  } else if ( m_autoSelected == kLeave ) {
+    m_autoCommand = new LeaveAuto( &m_drive, &m_arm, &m_grabber );
+  } else if ( m_autoSelected == kPlaceOnly ) {
+    m_autoCommand = new PlaceOnlyAuto( &m_drive, &m_arm, &m_grabber );
   }
 
   return m_autoCommand;

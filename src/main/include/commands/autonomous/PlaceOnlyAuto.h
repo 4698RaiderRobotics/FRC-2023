@@ -13,11 +13,10 @@
 #include "subsystems/ArmSubsystem.h"
 #include "subsystems/GrabberSubsystem.h"
 
-class SimpleAuto
-    : public frc2::CommandHelper<frc2::SequentialCommandGroup,
-                                 SimpleAuto> {
+class PlaceOnlyAuto
+    : public frc2::CommandHelper<frc2::SequentialCommandGroup,PlaceOnlyAuto> {
  public:
-  SimpleAuto( Drivetrain *drive, ArmSubsystem *arm, GrabberSubsystem *grabber );
+  PlaceOnlyAuto( Drivetrain *drive, ArmSubsystem *arm, GrabberSubsystem *grabber );
 
  private:
   frc::Pose2d m_targetpose;

@@ -4,7 +4,7 @@
 
 #include <frc2/command/WaitCommand.h>
 
-#include "commands/autonomous/WizzyWiggAuto.h"
+#include "commands/autonomous/BalanceAuto.h"
 #include "commands/autonomous/PlaceAtPose.h"
 #include "commands/DriveToPoseCommand.h"
 #include "commands/TestProfileMove.h"
@@ -13,7 +13,7 @@
 // NOTE:  Consider using this command inline, rather than writing a subclass.
 // For more information, see:
 // https://docs.wpilib.org/en/stable/docs/software/commandbased/convenience-features.html
-WizzyWiggAuto::WizzyWiggAuto( Drivetrain *drive, ArmSubsystem *arm, GrabberSubsystem *grabber ) {
+BalanceAuto::BalanceAuto( Drivetrain *drive, ArmSubsystem *arm, GrabberSubsystem *grabber ) {
   frc::Pose2d redAllianceTargetPoints[2] = { drive->redAllianceGridPoints[3], drive->redAllianceGridPoints[5] };
   frc::Pose2d blueAllianceTargetPoints[2] = { drive->blueAllianceGridPoints[3], drive->blueAllianceGridPoints[5] };
   fmt::print( "WizzyWiggAuto::WizzyWiggAuto\n" );

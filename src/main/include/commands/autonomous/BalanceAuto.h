@@ -13,11 +13,11 @@
 #include "subsystems/ArmSubsystem.h"
 #include "subsystems/GrabberSubsystem.h"
 
-class WizzyWiggAuto
+class BalanceAuto
     : public frc2::CommandHelper<frc2::SequentialCommandGroup,
-                                 WizzyWiggAuto> {
+                                 BalanceAuto> {
  public:
-  WizzyWiggAuto( Drivetrain *drive, ArmSubsystem *arm, GrabberSubsystem *grabber );
+  BalanceAuto( Drivetrain *drive, ArmSubsystem *arm, GrabberSubsystem *grabber );
 
 
  private:

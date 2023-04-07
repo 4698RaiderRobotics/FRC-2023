@@ -17,9 +17,9 @@
 #include "subsystems/ArmSubsystem.h"
 #include "subsystems/GrabberSubsystem.h"
 
-#include "commands/autonomous/SimpleAuto.h"
-#include "commands/autonomous/WizzyWiggAuto.h"
-#include "commands/autonomous/NoBalanceAuto.h"
+#include "commands/autonomous/PlaceOnlyAuto.h"
+#include "commands/autonomous/BalanceAuto.h"
+#include "commands/autonomous/LeaveAuto.h"
 
 #include "ControllerAxis.h"
 
@@ -57,9 +57,9 @@ class RobotContainer {
   frc2::Command *m_autoCommand = nullptr;
 
   frc::SendableChooser<std::string> m_chooser;
-  const std::string kAutoNameDefault = "Place Cone and Balance";
-  const std::string kAutoNameCustom = "Place Cone and Leave";
-  const std::string kAutoNameThird = "Just Place Cone";
+  const std::string kBalance = "Place Cone and Balance";
+  const std::string kLeave = "Place Cone and Leave";
+  const std::string kPlaceOnly = "Just Place Cone";
   std::string m_autoSelected;
 
   frc::PS4Controller m_driverController{ 0 };

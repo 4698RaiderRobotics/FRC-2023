@@ -5,7 +5,7 @@
 
 #include <frc2/command/WaitCommand.h>
 
-#include "commands/autonomous/NoBalanceAuto.h"
+#include "commands/autonomous/LeaveAuto.h"
 #include "commands/autonomous/PlaceAtPose.h"
 #include "commands/DriveToPoseCommand.h"
 
@@ -13,7 +13,7 @@
 // NOTE:  Consider using this command inline, rather than writing a subclass.
 // For more information, see:
 // https://docs.wpilib.org/en/stable/docs/software/commandbased/convenience-features.html
-NoBalanceAuto::NoBalanceAuto( Drivetrain *drive, ArmSubsystem *arm, GrabberSubsystem *grabber ) {
+LeaveAuto::LeaveAuto( Drivetrain *drive, ArmSubsystem *arm, GrabberSubsystem *grabber ) {
   frc::Pose2d redAllianceTargetPoints[2] = { drive->redAllianceGridPoints[0], drive->redAllianceGridPoints[8] };
   frc::Pose2d blueAllianceTargetPoints[2] = { drive->blueAllianceGridPoints[0], drive->blueAllianceGridPoints[8] };
 

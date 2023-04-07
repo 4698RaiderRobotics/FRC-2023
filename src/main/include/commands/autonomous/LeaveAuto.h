@@ -13,11 +13,11 @@
 #include "subsystems/ArmSubsystem.h"
 #include "subsystems/GrabberSubsystem.h"
 
-class NoBalanceAuto
+class LeaveAuto
     : public frc2::CommandHelper<frc2::SequentialCommandGroup,
-                                 NoBalanceAuto> {
+                                 LeaveAuto> {
  public:
-  NoBalanceAuto( Drivetrain *drive, ArmSubsystem *arm, GrabberSubsystem *grabber );
+  LeaveAuto( Drivetrain *drive, ArmSubsystem *arm, GrabberSubsystem *grabber );
 
  private:
   frc::Pose2d m_targetpose;
