@@ -11,6 +11,7 @@
   "NTProvider": {
     "types": {
       "/FMSInfo": "FMSInfo",
+      "/LiveWindow/Ungrouped/ArmSubsystem": "Subsystem",
       "/LiveWindow/Ungrouped/DigitalInput[0]": "Digital Input",
       "/LiveWindow/Ungrouped/DigitalInput[1]": "Digital Input",
       "/LiveWindow/Ungrouped/DigitalInput[2]": "Digital Input",
@@ -18,6 +19,7 @@
       "/LiveWindow/Ungrouped/DigitalInput[4]": "Digital Input",
       "/LiveWindow/Ungrouped/Scheduler": "Scheduler",
       "/LiveWindow/Ungrouped/class frc2::SubsystemBase": "Subsystem",
+      "/Shuffleboard/Arm Subsystem/Goto -90": "Command",
       "/Shuffleboard/Swerve Drive/Robot Wheel Status/Front Left Wheel Steering Angle": "Gyro",
       "/Shuffleboard/Swerve Drive/Robot Wheel Status/Front Right Wheel Steering Angle": "Gyro",
       "/Shuffleboard/Swerve Drive/Robot Wheel Status/Rear Left Wheel Steering Angle": "Gyro",
@@ -33,6 +35,21 @@
   },
   "NetworkTables": {
     "transitory": {
+      "LiveWindow": {
+        "Ungrouped": {
+          "open": true
+        },
+        "open": true
+      },
+      "Shuffleboard": {
+        "Arm Subsystem": {
+          "Goto -90": {
+            "open": true
+          },
+          "open": true
+        },
+        "open": true
+      },
       "SmartDashboard": {
         "Goto -90": {
           "open": true

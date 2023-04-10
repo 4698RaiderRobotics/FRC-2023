@@ -95,11 +95,7 @@ void RobotContainer::TeleopDataUpdate() {
 
 void RobotContainer::TestDataSetup() {
   // Arm Commands and Setup
-  frc::SmartDashboard::PutData( "Goto -90", new ArmSet( &m_arm, -90_deg ) );
-  frc::SmartDashboard::PutData( "Goto 30", new ArmSet( &m_arm, 30_deg ) );
-  frc::SmartDashboard::PutData( "Goto 45", new ArmSet( &m_arm, 45_deg ) );
-  frc::SmartDashboard::PutData( "Goto -35", new ArmSet( &m_arm, -35_deg ) );
-  m_arm.ArmDataSetup(  );
+  m_arm.ArmDataSetup( "Arm Subsystem" );
 
   m_drive.DrivetrainSetup();
   frc::SmartDashboard::PutData(&PDP);

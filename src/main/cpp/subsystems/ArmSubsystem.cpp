@@ -2,10 +2,16 @@
 // Open Source Software; you can modify and/or share it under the terms of
 // the WPILib BSD license file in the root directory of this project.
 
-#include "subsystems/ArmSubsystem.h"
+#include <frc/smartdashboard/SmartDashboard.h>
+#include <frc/shuffleboard/Shuffleboard.h>
 #include <frc/DriverStation.h>
 
+#include "subsystems/ArmSubsystem.h"
+#include "commands/ArmSet.h"
+
 ArmSubsystem::ArmSubsystem() {
+    SetName( "ArmSubsystem" );
+
     m_right.SetInverted( true );
     m_right.Follow( m_left );
     m_left.SetNeutralMode( ctre::phoenix::motorcontrol::Brake );
@@ -65,27 +71,53 @@ bool ArmSubsystem::Finished( ) {
     return units::math::abs( m_enc.GetPosition() - m_angle ) < physical::kArmAngleError;
 }
 
-void ArmSubsystem::ArmDataSetup( ) {
+void ArmSubsystem::ArmDataSetup( std::string_view tab ) {
+    auto &arm_tab = frc::Shuffleboard::GetTab( tab );
 
-    frc::SmartDashboard::PutNumber("kG", feedforward.kG.value() );
-    frc::SmartDashboard::PutNumber("kP", kP);
-    frc::SmartDashboard::PutNumber("kD", kD);
-    frc::SmartDashboard::PutNumber("kV", kV);
-    frc::SmartDashboard::PutNumber("kS", kS);
+    auto &pid_layout = arm_tab.GetLayout( "Feed Forward", frc::BuiltInLayouts::kList ).WithSize( 2, 5 );
 
-    frc::SmartDashboard::PutNumber( "Arm Position", m_enc.GetPosition().value() );
-    frc::SmartDashboard::PutNumber( "Arm Velocity", m_left.GetSensorCollection().GetIntegratedSensorVelocity() 
-                                                    * physical::tics_per_100ms_to_deg_per_s * physical::kArmGearRatio );
+    sb_map["kG"] = pid_layout.Add( "kG", feedforward.kG.value() ).GetEntry();
+    sb_map["kV"] = pid_layout.Add( "kV", feedforward.kV.value() ).GetEntry();
+    sb_map["kS"] = pid_layout.Add( "kS", feedforward.kS.value() ).GetEntry();
+    sb_map["kP"] = pid_layout.Add( "kP", pid.GetP() ).GetEntry();
+    sb_map["kD"] = pid_layout.Add( "kD", pid.GetD() ).GetEntry();
+
+    sb_map["Arm Position"] = arm_tab.Add( "Arm Position", m_enc.GetPosition().value() ).WithSize(2,2).GetEntry();
+    sb_map["Arm Velocity"] = arm_tab.Add( "Arm Velocity", m_left.GetSensorCollection().GetIntegratedSensorVelocity() 
+                         * physical::tics_per_100ms_to_deg_per_s * physical::kArmGearRatio ).WithSize(2,2).GetEntry();
+    sb_map["Arm Raw Pos"] = arm_tab.Add( "Arm Raw Pos", m_enc.GetRawPosition() ).WithSize(2,2).GetEntry();
+
+    static ArmSet goto90( this, -90_deg );
+    arm_tab.Add( "Goto -90", goto90 ).WithSize(2,2);
+    // arm_tab.Add( "Goto 30", ArmSet( this, 30_deg ) );
+    // arm_tab.Add( "Goto 45", new ArmSet( this, 45_deg ) );
+    // arm_tab.Add( "Goto -35", new ArmSet( this, -35_deg ) );
+
+//    frc::SmartDashboard::PutNumber("kG", feedforward.kG.value() );
+    // frc::SmartDashboard::PutNumber("kP", kP);
+    // frc::SmartDashboard::PutNumber("kD", kD);
+    // frc::SmartDashboard::PutNumber("kV", kV);
+    // frc::SmartDashboard::PutNumber("kS", kS);
+
+    // frc::SmartDashboard::PutNumber( "Arm Position", m_enc.GetPosition().value() );
+    // frc::SmartDashboard::PutNumber( "Arm Velocity", m_left.GetSensorCollection().GetIntegratedSensorVelocity() 
+    //                                                 * physical::tics_per_100ms_to_deg_per_s * physical::kArmGearRatio );
 
 }
 
 void ArmSubsystem::ArmDataUpdate( ) {
 
-    double g = frc::SmartDashboard::GetNumber( "kG", 0.0 );
-    double p = frc::SmartDashboard::GetNumber( "kP", 0.0 );
-    double d = frc::SmartDashboard::GetNumber( "kD", 0.0 );
-    double v = frc::SmartDashboard::GetNumber( "kV", 0.0 );
-    double s = frc::SmartDashboard::GetNumber( "kS", 0.0 );
+    double g = sb_map["kG"]->GetDouble( 0.0 );
+    double p = sb_map["kP"]->GetDouble( 0.0 );
+    double d = sb_map["kD"]->GetDouble( 0.0 );
+    double v = sb_map["kV"]->GetDouble( 0.0 );
+    double s = sb_map["kS"]->GetDouble( 0.0 );
+
+    // double g = frc::SmartDashboard::GetNumber( "kG", 0.0 );
+    // double p = frc::SmartDashboard::GetNumber( "kP", 0.0 );
+    // double d = frc::SmartDashboard::GetNumber( "kD", 0.0 );
+    // double v = frc::SmartDashboard::GetNumber( "kV", 0.0 );
+    // double s = frc::SmartDashboard::GetNumber( "kS", 0.0 );
 
     if( g != feedforward.kG.value() ) { feedforward.kG = units::volt_t{ g }; }
     if( p != kP ) { kP = p; pid.SetP( kP ); }
@@ -93,11 +125,9 @@ void ArmSubsystem::ArmDataUpdate( ) {
     if( v != kV ) { kV = v; feedforward.kV = units::unit_t<frc::ArmFeedforward::kv_unit>{ kV }; }
     if( s != kS ) { kS = s; feedforward.kS = units::volt_t{ kS }; }
 
-    frc::SmartDashboard::PutNumber( "Arm Position", m_enc.GetPosition().value() );
-    frc::SmartDashboard::PutNumber( "Arm Velocity", m_left.GetSensorCollection().GetIntegratedSensorVelocity() 
+    sb_map[ "Arm Position" ]->SetDouble( m_enc.GetPosition().value() );
+    sb_map[ "Arm Velocity" ]->SetDouble( m_left.GetSensorCollection().GetIntegratedSensorVelocity() 
                                                     * physical::tics_per_100ms_to_deg_per_s * physical::kArmGearRatio );
-    
-
-    frc::SmartDashboard::PutNumber( "Arm Raw Pos", m_enc.GetRawPosition() );
+    sb_map[ "Arm Raw Pos" ]->SetDouble( m_enc.GetRawPosition() );
     
 }

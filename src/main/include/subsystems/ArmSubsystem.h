@@ -4,6 +4,8 @@
 
 #pragma once
 
+#include <map>
+
 #include <frc2/command/SubsystemBase.h>
 #include <ctre/phoenix/motorcontrol/can/TalonFX.h>
 #include <frc/motorcontrol/MotorControllerGroup.h>
@@ -12,8 +14,9 @@
 #include <frc/trajectory/TrapezoidProfile.h>
 #include <units/angle.h>
 #include <units/angular_acceleration.h>
-#include <frc/smartdashboard/SmartDashboard.h>
 #include <frc/DoubleSolenoid.h>
+
+#include <networktables/GenericEntry.h>
 
 #include "Constants.h"
 #include "AbsoluteEncoder.h"
@@ -30,7 +33,7 @@ class ArmSubsystem : public frc2::SubsystemBase {
 
   bool Finished( );
 
-  void ArmDataSetup( );
+  void ArmDataSetup( std::string_view tab );
 
   void ArmDataUpdate( );
 
@@ -70,4 +73,6 @@ class ArmSubsystem : public frc2::SubsystemBase {
   units::degree_t m_angle = -118_deg;
 
   bool disabled = true;
+
+  std::map<std::string, nt::GenericEntry *> sb_map;
 };

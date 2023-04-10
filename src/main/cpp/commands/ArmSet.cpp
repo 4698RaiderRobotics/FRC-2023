@@ -9,6 +9,7 @@
 
 ArmSet::ArmSet( ArmSubsystem *arm, units::degree_t angle )
         : m_arm{ arm }, m_angle{ angle } {
+  SetName( "ArmSet" );
   AddRequirements( { arm } );
 }
 
@@ -19,6 +20,7 @@ void ArmSet::Initialize() {
 
 // Called repeatedly when this Command is scheduled to run
 void ArmSet::Execute() {
+  fmt::print( "ArmSet::Execute going to angle {}", m_angle );
   m_arm->GotoAngle( m_angle );
 }
 
