@@ -38,6 +38,7 @@ void ArmSubsystem::Periodic() {
     frc::TrapezoidProfile<units::degrees> m_profile{ m_constraints, m_goal, m_setpoint };
     m_setpoint = m_profile.Calculate( dt );
 
+    frc::SmartDashboard::PutNumber( "Arm Raw Output", m_enc.GetRawPosition() );
     frc::SmartDashboard::PutNumber( "Arm Setpoint Position", m_setpoint.position.value() );
     frc::SmartDashboard::PutNumber( "Arm Setpoint Velocity", m_setpoint.velocity.value() );
 

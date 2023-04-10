@@ -22,7 +22,7 @@ namespace pidf {
     constexpr double kDriveFF = 0.0002;
 
     // P value for auto balance on charge station
-    constexpr double kGyroBalanceP = 0.004;
+    constexpr double kGyroBalanceP = 0.024;
 
     //constexpr double kXTargetP = 0.005;
     //constexpr double kYTargetP = 0.1;
@@ -99,7 +99,7 @@ namespace physical {
     constexpr double kBackRightAbsoluteOffset = 0.4485 + 0.5;
 
     // Absolute encoder offset for the arm encoder
-    constexpr double kArmAbsoluteOffset = 0.5802;
+    constexpr double kArmAbsoluteOffset = 0.585;
 
     // IsFinished condition for arm
     constexpr units::degree_t kArmAngleError = 3_deg;

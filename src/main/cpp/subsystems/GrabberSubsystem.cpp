@@ -35,11 +35,13 @@ void GrabberSubsystem::Periodic() {
             if( m_loadingCone ) {
                 m_hasCone = true;
                 m_loadingCone = false;
+                m_intake.Set( 0.05 );
             } else {
                 m_hasCube = true;
                 m_loadingCube = false;
+                m_intake.Set( -0.05 );
             }
-            m_intake.Set( 0.0 );
+ //           m_intake.Set( 0.0 );
         } else if( (frc::Timer::GetFPGATimestamp() - m_startTime) > 5_s) {
             // Timed out without getting a game piece
             m_loadingCone = false;
@@ -144,7 +146,7 @@ void GrabberSubsystem::HandleCube( void ) {
     
     if( m_hasCube ) {
         m_isEjecting = true;
-        if(m_arm->GetAngle() < 0_deg){
+        if(m_arm->GetAngle() < 10_deg){
             m_intake.Set(m_cube_shoot_slow_speed);
         }
         else {
