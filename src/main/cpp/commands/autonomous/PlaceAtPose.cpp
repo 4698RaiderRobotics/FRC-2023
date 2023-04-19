@@ -14,19 +14,15 @@
 // For more information, see:
 // https://docs.wpilib.org/en/stable/docs/software/commandbased/convenience-features.html
 PlaceAtPose::PlaceAtPose( Drivetrain *drive, ArmSubsystem *arm, GrabberSubsystem *grabber, frc::Pose2d m_targetPose, bool blueSide ) {
-  if ( blueSide ) {
-    calvin = 1;
-  } else {
-    calvin = -1;
-  }
+  alliance = blueSide ? 1 : -1;
   AddCommands(
     DriveToPoseCommand( drive, m_targetPose ),
     ArmSet( arm, physical::kPlaceHeight ),
-    DriveToPoseCommand( drive, { m_targetPose.X() - ( physical::kPlaceDistance * calvin ), m_targetPose.Y(), m_targetPose.Rotation() } ),
+    DriveToPoseCommand( drive, { m_targetPose.X() - ( physical::kPlaceDistance * alliance ), m_targetPose.Y(), m_targetPose.Rotation() } ),
     frc2::InstantCommand( [this, grabber] { grabber->Spin( -0.5 ) ;}, { grabber } ),
     frc2::WaitCommand( 0.25_s ),
     frc2::InstantCommand( [this, grabber] { grabber->Spin( 0.0 ) ;}, { grabber } ),
-    DriveToPoseCommand( drive, { m_targetPose.X() + ( physical::kPlaceDistance * calvin ), m_targetPose.Y(), m_targetPose.Rotation() } ),
+    DriveToPoseCommand( drive, { m_targetPose.X() + ( physical::kPlaceDistance * alliance ), m_targetPose.Y(), m_targetPose.Rotation() } ),
     ArmSet( arm, -118_deg )
   );
 }

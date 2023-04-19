@@ -18,10 +18,11 @@ LeaveAuto::LeaveAuto( Drivetrain *drive, ArmSubsystem *arm, GrabberSubsystem *gr
   units::meter_t drive_out_distance = 4.3_m;
   units::meter_t drive_away_distance = 0_m;
   if (m_targetpose.Y() < 50_in) {
+    // Cable-Side of the field.
     drive_away_distance = 6_in;
   }
   if ( drive->GetPose().X() < 7.5_m ) {
-    // Blue Alliance
+    // 🟦 Blue Alliance
     m_targetpose = drive->GetPose().Nearest( std::span<frc::Pose2d> ( blueAllianceTargetPoints, 2 ) );
     AddCommands(
       PlaceAtPose( drive, arm, grabber, m_targetpose, true ),
@@ -30,6 +31,7 @@ LeaveAuto::LeaveAuto( Drivetrain *drive, ArmSubsystem *arm, GrabberSubsystem *gr
     );
   // If on red side, do red auto
   } else if ( drive->GetPose().X() > 7.5_m ) {
+    // 🟥 Red Alliance
     m_targetpose = drive->GetPose().Nearest( std::span<frc::Pose2d> ( redAllianceTargetPoints, 2 ) );
     AddCommands(
       PlaceAtPose( drive, arm, grabber, m_targetpose, false ),
