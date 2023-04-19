@@ -7,13 +7,11 @@
 #include <frc2/command/StartEndCommand.h>
 
 #include "commands/TestProfileMove.h"
-#include "commands/OpenGrabber.h"
 #include "commands/Intake.h"
 #include "commands/TargetLimelight.h"
 #include "commands/GyroBalance.h"
 #include "commands/UpdateOdom.h"
 #include "commands/ArmSet.h"
-#include "commands/CloseGrabber.h"
 #include "commands/PlaceGamePiece.h"
 
 RobotContainer::RobotContainer() {
@@ -44,17 +42,6 @@ void RobotContainer::ConfigureButtonBindings() {
 
   ( frc2::JoystickButton( &m_driverController, frc::PS4Controller::Button::kL1 ) && frc2::JoystickButton( &m_driverController,frc::PS4Controller::Button::kR1 ) )
   .OnTrue( frc2::InstantCommand( [this] { m_drive.ResetGyro( 180_deg ); }, { &m_drive } ).ToPtr() );
-  #if defined(Claw)
-  m_operatorController.RightBumper().OnTrue( OpenGrabber( &m_grabber, 0.0 ).ToPtr() );
-
-  m_operatorController.LeftBumper().OnTrue( CloseGrabber( &m_grabber ).ToPtr() );
-  //-0.25
-  m_operatorController.RightTrigger().OnTrue( frc2::InstantCommand( [this] { m_grabber.Spin( -0.25 ); }, { &m_grabber } ).ToPtr() );
-  // Kobe 100% charge station shot.
-  // Using the "Share" Button.
-  m_operatorController.Button(7).OnTrue( frc2::InstantCommand( [this] { m_grabber.Spin( -1 ); }, { &m_grabber } ).ToPtr() );
-  m_operatorController.LeftTrigger().OnTrue( frc2::InstantCommand( [this] { m_grabber.Toggle( ); }, { &m_grabber } ).ToPtr() );
-  #else
   //m_operatorController.RightTrigger().ToggleOnTrue(frc2::StartEndCommand( [this] { m_grabber.Cone( true ); }, [this] { m_grabber.Cone( false ); } ).ToPtr() );
 
   //m_operatorController.LeftTrigger().ToggleOnTrue( frc2::StartEndCommand( [this] { m_grabber.Cube( true ); }, [this] { m_grabber.Cube( false ); } ).ToPtr() );
@@ -65,8 +52,6 @@ void RobotContainer::ConfigureButtonBindings() {
   //m_operatorController.RightTrigger().ToggleOnTrue( Intake( &m_grabber, true ).ToPtr() );
 
   //m_operatorController.LeftTrigger().OnTrue(Intake( &m_grabber, true ).ToPtr() );
-
-  #endif
   m_operatorController.Y().OnTrue( ArmSet( &m_arm, 12_deg ).ToPtr() );
   // Hamburger 🍔 Button.
   m_operatorController.Button(8).OnTrue(ArmSet(&m_arm, 25_deg).ToPtr());

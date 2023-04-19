@@ -4,8 +4,6 @@
 
 #pragma once
 
-#include "Config.h"
-
 #include <frc2/command/SubsystemBase.h>
 #include <rev/CANSparkMax.h>
 #include <ctre/phoenix/motorcontrol/can/TalonFX.h>
@@ -22,16 +20,9 @@ class GrabberSubsystem : public frc2::SubsystemBase {
   GrabberSubsystem( frc::PowerDistribution &, ArmSubsystem* );
 
   void Periodic() override;
-  #if defined(Claw)
-    void Open();
-    void Close();
-    void Toggle( void );
-    void IntakeTest();
-    const double kRollerGripPercent = 0.2;
-  #else
-    units::ampere_t GetCurrent();
-    void GrabberTest();
-  #endif
+
+  units::ampere_t GetCurrent();
+  void GrabberTest();
   void Spin( double speed );
 
   void Cone( bool direction );
@@ -53,12 +44,7 @@ class GrabberSubsystem : public frc2::SubsystemBase {
   double m_target_amps = 5.0;
   frc::PowerDistribution &m_pdp;
   ArmSubsystem *m_arm;
-  #if defined(Claw)
-    ctre::phoenix::motorcontrol::can::TalonFX m_roller{ 14 };
-    frc::DoubleSolenoid m_grab{ 9, frc::PneumaticsModuleType::CTREPCM, deviceIDs::kGrabberSolenoidForwardChannel, deviceIDs::kGrabberSolenoidReverseChannel };
-  #else
-    rev::CANSparkMax m_intake{14, rev::CANSparkMaxLowLevel::MotorType::kBrushless};
-  #endif
+  rev::CANSparkMax m_intake{14, rev::CANSparkMaxLowLevel::MotorType::kBrushless};
   units::second_t m_startTime;
   bool m_isEjecting;
   bool m_loadingCone{false}, m_hasCone{ false };

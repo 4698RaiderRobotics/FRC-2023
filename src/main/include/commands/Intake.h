@@ -4,9 +4,6 @@
 
 #pragma once
 
-#include "Config.h"
-#if !defined(Claw)
-
 #include <frc2/command/CommandBase.h>
 #include <frc2/command/CommandHelper.h>
 
@@ -31,4 +28,3 @@ class Intake
   bool m_reversed;
   units::second_t m_startTime;
 };
-#endif
