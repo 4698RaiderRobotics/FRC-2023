@@ -164,3 +164,6 @@ bin/
 .cache/
 
 *.swp
+
+# WPI Log Files:
+*.wpilog
