@@ -48,9 +48,10 @@ class GrabberSubsystem : public frc2::SubsystemBase {
   double m_cube_shoot_fast_speed = 0.75;
   double m_cube_shoot_slow_speed = 0.25;
 
-  double m_cone_max_amps = 20.0;
+  double m_cone_max_amps = 15.0;
   double m_cube_max_amps = 10.0;
   double m_target_amps = 5.0;
+  double m_target_stall_speed = 1000;
   frc::PowerDistribution &m_pdp;
   ArmSubsystem *m_arm;
   #if defined(Claw)
@@ -58,6 +59,7 @@ class GrabberSubsystem : public frc2::SubsystemBase {
     frc::DoubleSolenoid m_grab{ 9, frc::PneumaticsModuleType::CTREPCM, deviceIDs::kGrabberSolenoidForwardChannel, deviceIDs::kGrabberSolenoidReverseChannel };
   #else
     rev::CANSparkMax m_intake{14, rev::CANSparkMaxLowLevel::MotorType::kBrushless};
+    rev::SparkMaxRelativeEncoder m_enc = m_intake.GetEncoder();
   #endif
   units::second_t m_startTime;
   bool m_isEjecting;

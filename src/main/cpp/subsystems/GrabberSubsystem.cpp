@@ -21,6 +21,8 @@ void GrabberSubsystem::Periodic() {
 
     //double current = m_intake.GetOutputCurrent();
  //   fmt::print( "GrabberSubsystem::Periodic current is {}\n", current );
+    double current = m_pdp.GetCurrent( 9 );
+    double stallSpeed = m_enc.GetVelocity();
 
     if( (m_hasCone || m_hasCube) && m_isEjecting ) {
         if( (frc::Timer::GetFPGATimestamp() - m_startTime) > 1.0_s ) {
@@ -29,9 +31,9 @@ void GrabberSubsystem::Periodic() {
             m_intake.Set( 0.0 );
         }
     } else if( m_loadingCone || m_loadingCube ) { // Loading a game piece
-        double current = m_pdp.GetCurrent( 9 );
-        if ( ( (frc::Timer::GetFPGATimestamp() - m_startTime) > 0.5_s) && ( current > m_target_amps ) ) {
-            fmt::print( "GrabberSubsystem::Periodic stoppped with current of {}\n", current );
+        
+        if ( ( (frc::Timer::GetFPGATimestamp() - m_startTime) > 0.5_s) && ( abs( stallSpeed ) < m_target_stall_speed ) ) {
+            fmt::print( "GrabberSubsystem::Periodic stopped with current of {} and speed of {}\n", current, stallSpeed );
             if( m_loadingCone ) {
                 m_hasCone = true;
                 m_loadingCone = false;
@@ -49,6 +51,8 @@ void GrabberSubsystem::Periodic() {
             m_intake.Set( 0.0 );
         }
     }
+    //fmt::print( "Intake current: {}\n", current );
+    frc::SmartDashboard::PutNumber( "Intake Current", current );
 }
 
 // Opens grabber
