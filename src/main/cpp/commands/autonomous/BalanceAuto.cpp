@@ -16,7 +16,7 @@
 BalanceAuto::BalanceAuto( Drivetrain *drive, ArmSubsystem *arm, GrabberSubsystem *grabber ) {
   frc::Pose2d redAllianceTargetPoints[2] = { drive->redAllianceGridPoints[3], drive->redAllianceGridPoints[5] };
   frc::Pose2d blueAllianceTargetPoints[2] = { drive->blueAllianceGridPoints[3], drive->blueAllianceGridPoints[5] };
-  fmt::print( "WizzyWiggAuto::WizzyWiggAuto\n" );
+  fmt::print( "BalanceAuto::BalanceAuto\n" );
 
   units::meter_t auto_drive_distance = 1.75_m;
   // If on blue side, do blue auto

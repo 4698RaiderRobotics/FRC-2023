@@ -4,7 +4,6 @@
 
 #pragma once
 
-#include "Config.h"
 
 #include <frc2/command/CommandHelper.h>
 #include <frc2/command/SequentialCommandGroup.h>

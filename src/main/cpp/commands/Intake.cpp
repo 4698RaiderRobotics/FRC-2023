@@ -1,5 +1,5 @@
 #include "commands/Intake.h"
-#if !defined(Claw)
+
 #include <frc/Timer.h>
 
 Intake::Intake(GrabberSubsystem *grabber, bool reversed ) 
@@ -34,4 +34,3 @@ bool Intake::IsFinished() {
   //return ( m_grabber->GetCurrent() > 20_A) & (frc::Timer::GetFPGATimestamp() - m_startTime > 0.5_s );
   return false;
 }
-#endif

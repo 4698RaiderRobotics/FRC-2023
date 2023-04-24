@@ -18,5 +18,5 @@ class PlaceAtPose
   PlaceAtPose( Drivetrain *drive, ArmSubsystem *arm, GrabberSubsystem *grabber, frc::Pose2d m_targetPose, bool blueSide );
 
  private:
-  double calvin;
+  double alliance;
 };
