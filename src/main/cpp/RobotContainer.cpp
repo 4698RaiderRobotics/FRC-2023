@@ -43,7 +43,8 @@ void RobotContainer::ConfigureButtonBindings() {
   ( frc2::JoystickButton( &m_driverController, frc::PS4Controller::Button::kL1 ) && frc2::JoystickButton( &m_driverController,frc::PS4Controller::Button::kR1 ) )
   .OnTrue( frc2::InstantCommand( [this] { m_drive.ResetGyro( 180_deg ); }, { &m_drive } ).ToPtr() );
   //m_operatorController.RightTrigger().ToggleOnTrue(frc2::StartEndCommand( [this] { m_grabber.Cone( true ); }, [this] { m_grabber.Cone( false ); } ).ToPtr() );
-
+  frc2::JoystickButton(&m_driverController, frc::PS4Controller::Button::kCross )
+  .OnTrue(frc2::InstantCommand([this]{ m_leds.Rainbow();}).ToPtr() );
   //m_operatorController.LeftTrigger().ToggleOnTrue( frc2::StartEndCommand( [this] { m_grabber.Cube( true ); }, [this] { m_grabber.Cube( false ); } ).ToPtr() );
   m_operatorController.RightTrigger().OnTrue( frc2::InstantCommand( [this] { m_grabber.HandleCone(); } ).ToPtr() );
 

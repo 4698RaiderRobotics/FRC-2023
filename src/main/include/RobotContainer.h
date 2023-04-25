@@ -14,6 +14,7 @@
 #include "subsystems/Limelight.h"
 #include "subsystems/ArmSubsystem.h"
 #include "subsystems/GrabberSubsystem.h"
+#include "subsystems/LEDs.h"
 
 #include "commands/autonomous/PlaceOnlyAuto.h"
 #include "commands/autonomous/BalanceAuto.h"
@@ -48,6 +49,7 @@ class RobotContainer {
   Drivetrain m_drive{ &m_limelight };
   ArmSubsystem m_arm;
   GrabberSubsystem m_grabber{ PDP, &m_arm};
+  LEDs m_leds;
 
 //  SimpleAuto m_simpleAuto{ &m_drive, &m_arm, &m_grabber, 30_deg };
 // WizzyWiggAuto m_wizzyWiggAuto{ &m_drive, &m_arm, &m_grabber };

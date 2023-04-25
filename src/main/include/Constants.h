@@ -54,6 +54,8 @@ namespace deviceIDs {
     constexpr int kGrabberSolenoidReverseChannel = 0;
     constexpr int kBrakeSolenoidForwardChannel = 3;
     constexpr int kBrakeSolenoidReverseChannel = 4;
+
+    constexpr int kLEDPWMID = 8;
 }
 
 namespace physical {
