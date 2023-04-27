@@ -15,9 +15,10 @@
 #include <units/current.h>
 #include "Constants.h"
 class ArmSubsystem;
+class LEDs;
 class GrabberSubsystem : public frc2::SubsystemBase {
  public:
-  GrabberSubsystem( frc::PowerDistribution &, ArmSubsystem* );
+  GrabberSubsystem( frc::PowerDistribution &, ArmSubsystem*, LEDs* );
 
   void Periodic() override;
 
@@ -45,6 +46,7 @@ class GrabberSubsystem : public frc2::SubsystemBase {
   double m_target_stall_speed = 1000;
   frc::PowerDistribution &m_pdp;
   ArmSubsystem *m_arm;
+  LEDs *m_leds;
   rev::CANSparkMax m_intake{14, rev::CANSparkMaxLowLevel::MotorType::kBrushless};
   rev::SparkMaxRelativeEncoder m_enc = m_intake.GetEncoder();  
   units::second_t m_startTime;

@@ -15,7 +15,8 @@ class LEDs : public frc2::SubsystemBase {
  public:
   LEDs();
   void Rainbow();
-  void SetColor(int R, int G, int B);
+  void SetAllRGB(int R, int G, int B);
+  void SetAllColors(frc::Color color);
   //void Off();
   /**
    * Will be called periodically whenever the CommandScheduler runs.
@@ -25,7 +26,7 @@ class LEDs : public frc2::SubsystemBase {
  private:
   // Components (e.g. motor controllers and sensors) should generally be
   // declared private and exposed only through public methods.
-  static constexpr int kLength = 10;
+  static constexpr int kLength = 60;
   frc::AddressableLED m_led{deviceIDs::kLEDPWMID};
 
   std::array<frc::AddressableLED::LEDData, kLength>

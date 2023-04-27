@@ -52,10 +52,12 @@ void RobotContainer::ConfigureButtonBindings()
                   .ToPtr());
   // m_operatorController.RightTrigger().ToggleOnTrue(frc2::StartEndCommand( [this] { m_grabber.Cone( true ); }, [this] { m_grabber.Cone( false ); } ).ToPtr() );
   frc2::JoystickButton(&m_driverController, frc::PS4Controller::Button::kCross)
-      .OnTrue(frc2::StartEndCommand([this]
-                                    { m_leds.Rainbow(); },
-                                    [this]
-                                    { m_leds.SetColor(0, 0, 0); })
+      .WhileTrue(frc2::RunCommand([this]
+                                   { m_leds.Rainbow(); })
+                  .ToPtr());
+  frc2::JoystickButton(&m_driverController, frc::PS4Controller::Button::kSquare)
+      .OnTrue(frc2::InstantCommand([this]
+                                   { m_leds.SetAllRGB(0, 0, 0); })
                   .ToPtr());
   // m_operatorController.LeftTrigger().ToggleOnTrue( frc2::StartEndCommand( [this] { m_grabber.Cube( true ); }, [this] { m_grabber.Cube( false ); } ).ToPtr() );
   m_operatorController.RightTrigger().OnTrue(frc2::InstantCommand([this]
