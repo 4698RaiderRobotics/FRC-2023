@@ -31,7 +31,7 @@ void GrabberSubsystem::Periodic()
     }
     else if (m_loadingCone || m_loadingCube)
     { // Loading a game piece
-        m_leds->SetAllColors(m_loadingCone ? frc::Color::kYellow : frc::Color::kPurple);
+        //m_leds->SetAllColors(m_loadingCone ? frc::Color::kYellow : frc::Color::kPurple);
         if (((frc::Timer::GetFPGATimestamp() - m_startTime) > 0.5_s) && (abs(stallSpeed) < m_target_stall_speed))
         {
             fmt::print("GrabberSubsystem::Periodic stopped with current of {} and speed of {}\n", current, stallSpeed);
@@ -112,6 +112,7 @@ void GrabberSubsystem::HandleCone(void)
 {
     if (!m_hasCone && m_hasCube)
     {
+        // If we already have a cube and we click the Cone Button
         this->HandleCube();
         return;
     }
@@ -120,11 +121,14 @@ void GrabberSubsystem::HandleCone(void)
 
     if (m_hasCone)
     {
+        // If we already have a cone shoot it out.
         m_isEjecting = true;
+        m_leds->SetAllColors(frc::Color::kYellow);
         m_intake.Set(-m_cone_shoot_speed);
     }
     else
     {
+        // Suck in the cone
         m_loadingCone = true;
         m_loadingCube = false;
         m_hasCone = false;
@@ -132,6 +136,7 @@ void GrabberSubsystem::HandleCone(void)
         m_isEjecting = false;
         m_target_amps = m_cone_max_amps;
         m_intake.Set(m_cone_intake_speed);
+        m_leds->SetAllColors(frc::Color::kYellow);
     }
 }
 
@@ -139,6 +144,7 @@ void GrabberSubsystem::HandleCube(void)
 {
     if (!m_hasCube && m_hasCone)
     {
+        // If we already have a Cone and we hit the Cube button, Spit out the Cone Instead of intaking a cube
         this->HandleCone();
         return;
     }
@@ -147,6 +153,7 @@ void GrabberSubsystem::HandleCube(void)
 
     if (m_hasCube)
     {
+        // Edjecting Cube Logic
         m_isEjecting = true;
         if (m_arm->GetAngle() < 10_deg)
         {
@@ -159,6 +166,7 @@ void GrabberSubsystem::HandleCube(void)
     }
     else
     {
+        // Intake Cube Logic
         m_loadingCone = false;
         m_loadingCube = true;
         m_hasCone = false;

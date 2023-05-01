@@ -24,7 +24,6 @@ class AbsoluteEncoder{
         units::degree_t GetPosition( void ) {
             return ( m_absoluteEncoder.GetAbsolutePosition() - m_absoluteEncoderOffset ) * 360_deg * m_invertFactor;
         }
-
         double GetRawPosition() {
             return m_absoluteEncoder.GetAbsolutePosition();
         }

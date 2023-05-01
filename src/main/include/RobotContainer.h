@@ -62,7 +62,7 @@ class RobotContainer {
   const std::string kLeave = "Place Cone and Leave";
   const std::string kPlaceOnly = "Just Place Cone";
   std::string m_autoSelected;
-
+  
   frc::PS4Controller m_driverController{ 0 };
   frc2::CommandXboxController m_operatorController{ 1 };
 
