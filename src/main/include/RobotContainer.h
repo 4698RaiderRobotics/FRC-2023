@@ -48,8 +48,9 @@ class RobotContainer {
   Limelight m_limelight;
   Drivetrain m_drive{ &m_limelight };
   ArmSubsystem m_arm;
-  GrabberSubsystem m_grabber{ PDP, &m_arm};
   LEDs m_leds;
+  GrabberSubsystem m_grabber{ PDP, &m_arm, &m_leds};
+  
 
 //  SimpleAuto m_simpleAuto{ &m_drive, &m_arm, &m_grabber, 30_deg };
 // WizzyWiggAuto m_wizzyWiggAuto{ &m_drive, &m_arm, &m_grabber };
