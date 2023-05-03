@@ -15,8 +15,9 @@ class LEDs : public frc2::SubsystemBase {
  public:
   LEDs();
   void Rainbow();
-  void SetAllRGB(int R, int G, int B);
-  void SetAllColors(frc::Color color);
+  void SetAll(int R, int G, int B);
+  void SetAll(frc::Color color);
+  void Chase(frc::Color color);
   //void Off();
   /**
    * Will be called periodically whenever the CommandScheduler runs.
@@ -32,4 +33,5 @@ class LEDs : public frc2::SubsystemBase {
   std::array<frc::AddressableLED::LEDData, kLength>
       m_ledBuffer;
   int firstPixelHue = 0;
+  int firstPixel = 0;
 };

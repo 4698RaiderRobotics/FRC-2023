@@ -33,7 +33,7 @@ void GrabberSubsystem::Periodic()
     }
     else if (m_loadingCone || m_loadingCube)
     { // Loading a game piece
-        //m_leds->SetAllColors(m_loadingCone ? frc::Color::kYellow : frc::Color::kPurple);
+        //m_leds->SetAll(m_loadingCone ? frc::Color::kYellow : frc::Color::kPurple);
         if ((elapsedTime > 0.5_s) && (fabs(stallSpeed) < m_target_stall_speed))
         {
             fmt::print("GrabberSubsystem::Periodic stopped with current of {} and speed of {}\n", current, stallSpeed);
@@ -89,7 +89,7 @@ void GrabberSubsystem::HandleCone(void)
     {
         // If we already have a cone shoot it out.
         m_isEjecting = true;
-        m_leds->SetAllColors(frc::Color::kYellow);
+        m_leds->SetAll(frc::Color::kYellow);
         m_intake.Set(-m_cone_shoot_speed);
     }
     else
@@ -102,7 +102,7 @@ void GrabberSubsystem::HandleCone(void)
         m_isEjecting = false;
         m_target_amps = m_cone_max_amps;
         m_intake.Set(m_cone_intake_speed);
-        m_leds->SetAllColors(frc::Color::kYellow);
+        m_leds->SetAll(frc::Color::kYellow);
     }
 }
 

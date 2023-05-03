@@ -24,7 +24,12 @@ RobotContainer::RobotContainer()
         m_arm.AdjustAngle(arm_angle_axis.GetAxis() * 0.5_deg);
       },
       {&m_drive, &m_arm}));
-
+  m_leds.SetDefaultCommand(
+    frc2::RunCommand(
+      [this] {
+        m_leds.Rainbow();
+      }
+  ));
   // Configure the button bindings
   ConfigureButtonBindings();
 
@@ -57,7 +62,7 @@ void RobotContainer::ConfigureButtonBindings()
                   .ToPtr());
   frc2::JoystickButton(&m_driverController, frc::PS4Controller::Button::kSquare)
       .OnTrue(frc2::InstantCommand([this]
-                                   { m_leds.SetAllRGB(0, 0, 0); })
+        { m_leds.SetAll(0, 0, 0); })
                   .ToPtr());
   // m_operatorController.LeftTrigger().ToggleOnTrue( frc2::StartEndCommand( [this] { m_grabber.Cube( true ); }, [this] { m_grabber.Cube( false ); } ).ToPtr() );
   m_operatorController.RightTrigger().OnTrue(frc2::InstantCommand([this]

@@ -94,5 +94,9 @@
     "xutility": "cpp",
     "xstring": "cpp"
   },
-  "editor.fontLigatures": true
+  "editor.fontLigatures": true,
+  "editor.formatOnPaste": true,
+  "editor.formatOnSaveMode": "modifications",
+  "editor.formatOnSave": true,
+  "editor.formatOnType": true
 }

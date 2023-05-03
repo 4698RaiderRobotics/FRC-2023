@@ -27,21 +27,23 @@ void LEDs::Rainbow()
     // Check bounds
     firstPixelHue %= 180;
 }
-void LEDs::SetAllRGB(int R, int G, int B)
+void LEDs::SetAll(int R, int G, int B)
 {
     for (int i = 0; i < kLength; i++)
     {
         m_ledBuffer[i].SetRGB(R, G, B);
     }
 }
-
-void LEDs::SetAllColors(frc::Color colors)
-{
-    for (int i = 0; i < kLength; i++)
-    {
+void LEDs::SetAll(frc::Color colors) {
+    for (int i = 0; i < kLength; i++) {
         m_ledBuffer[i].SetLED(colors);
     }
 }
+void LEDs::Chase(frc::Color color) {
+    m_ledBuffer[firstPixel].SetLED(color);
+    firstPixel = (firstPixel + 1) % kLength;
+}
+
 // This method will be called once per scheduler run
 void LEDs::Periodic()
 {
