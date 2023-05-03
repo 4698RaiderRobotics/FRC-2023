@@ -17,7 +17,7 @@ class LEDs : public frc2::SubsystemBase {
   void Rainbow();
   void SetAll(int R, int G, int B);
   void SetAll(frc::Color color);
-  void Chase(frc::Color color);
+  void Chase(frc::Color color, int pixels);
   //void Off();
   /**
    * Will be called periodically whenever the CommandScheduler runs.

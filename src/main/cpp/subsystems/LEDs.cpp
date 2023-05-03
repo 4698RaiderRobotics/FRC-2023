@@ -27,20 +27,27 @@ void LEDs::Rainbow()
     // Check bounds
     firstPixelHue %= 180;
 }
-void LEDs::SetAll(int R, int G, int B)
-{
-    for (int i = 0; i < kLength; i++)
-    {
-        m_ledBuffer[i].SetRGB(R, G, B);
-    }
+void LEDs::SetAll(int r, int g, int b) {
+    SetAll(frc::Color(r, g, b));
 }
 void LEDs::SetAll(frc::Color colors) {
-    for (int i = 0; i < kLength; i++) {
-        m_ledBuffer[i].SetLED(colors);
-    }
+    for (auto pixel : m_ledBuffer)
+        pixel.SetLED(colors);
+
 }
-void LEDs::Chase(frc::Color color) {
-    m_ledBuffer[firstPixel].SetLED(color);
+void LEDs::Chase(frc::Color color, int tailLength) {
+    for (int i = 0; i < kLength; i++) {
+        int distance = abs(firstPixel - i);
+        double modifier = ((tailLength + 1) - distance) / tailLength;
+        modifier > 0 ? modifier : 0;
+        auto pixelColor = frc::Color(
+            color.red * modifier,
+            color.green * modifier,
+            color.blue * modifier
+        );
+        m_ledBuffer[i].SetLED(pixelColor);
+    }
+    // After we hit pixel kLength, wrap around to the first pixel.
     firstPixel = (firstPixel + 1) % kLength;
 }
 
