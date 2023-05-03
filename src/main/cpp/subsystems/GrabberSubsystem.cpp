@@ -19,11 +19,13 @@ void GrabberSubsystem::Periodic()
 {
     double current = m_pdp.GetCurrent(9);
     double stallSpeed = m_enc.GetVelocity();
-
+    auto elapsedTime = frc::Timer::GetFPGATimestamp() - m_startTime;
     if ((m_hasCone || m_hasCube) && m_isEjecting)
     {
-        if ((frc::Timer::GetFPGATimestamp() - m_startTime) > 1.0_s)
+        // Currently Ejecting
+        if (elapsedTime > 1.0_s)
         {
+            // Finsished Ejecting
             m_hasCone = false;
             m_hasCube = false;
             m_intake.Set(0.0);
@@ -32,7 +34,7 @@ void GrabberSubsystem::Periodic()
     else if (m_loadingCone || m_loadingCube)
     { // Loading a game piece
         //m_leds->SetAllColors(m_loadingCone ? frc::Color::kYellow : frc::Color::kPurple);
-        if (((frc::Timer::GetFPGATimestamp() - m_startTime) > 0.5_s) && (abs(stallSpeed) < m_target_stall_speed))
+        if ((elapsedTime > 0.5_s) && (fabs(stallSpeed) < m_target_stall_speed))
         {
             fmt::print("GrabberSubsystem::Periodic stopped with current of {} and speed of {}\n", current, stallSpeed);
             if (m_loadingCone)
@@ -49,7 +51,7 @@ void GrabberSubsystem::Periodic()
             }
             //           m_intake.Set( 0.0 );
         }
-        else if ((frc::Timer::GetFPGATimestamp() - m_startTime) > 5_s)
+        else if (elapsedTime > 5_s)
         {
             // Timed out without getting a game piece
             m_loadingCone = false;
@@ -70,42 +72,6 @@ void GrabberSubsystem::Spin(double speed)
 units::ampere_t GrabberSubsystem::GetCurrent()
 {
     return units::ampere_t{m_intake.GetOutputCurrent()};
-}
-
-void GrabberSubsystem::Cone(bool cone_inward)
-{
-    m_startTime = frc::Timer::GetFPGATimestamp();
-
-    m_isEjecting = !cone_inward;
-
-    if (cone_inward)
-    {
-        m_intake.Set(m_spin_speed);
-    }
-    else
-    {
-        m_intake.Set(-m_spin_speed);
-    }
-
-    fmt::print("Cone inward {}\n", cone_inward);
-}
-
-void GrabberSubsystem::Cube(bool cube_inward)
-{
-    m_startTime = frc::Timer::GetFPGATimestamp();
-
-    m_isEjecting = !cube_inward;
-
-    if (cube_inward)
-    {
-        m_intake.Set(-m_spin_speed);
-    }
-    else
-    {
-        m_intake.Set(m_spin_speed);
-    }
-
-    fmt::print("Cube inward {}\n", cube_inward);
 }
 
 void GrabberSubsystem::HandleCone(void)
