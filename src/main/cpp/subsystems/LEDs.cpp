@@ -39,7 +39,7 @@ void LEDs::Chase(frc::Color color, int tailLength) {
     for (int i = 0; i < kLength; i++) {
         int distance = abs(firstPixel - i);
         double modifier = ((tailLength + 1) - distance) / tailLength;
-        modifier > 0 ? modifier : 0;
+        modifier = modifier > 0 ? modifier : 0;
         auto pixelColor = frc::Color(
             color.red * modifier,
             color.green * modifier,
