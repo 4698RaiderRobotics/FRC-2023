@@ -13,6 +13,7 @@
 #include "commands/UpdateOdom.h"
 #include "commands/ArmSet.h"
 #include "commands/PlaceGamePiece.h"
+#include "commands/LedCommands/LedIdle.h"
 
 RobotContainer::RobotContainer()
 {
@@ -23,13 +24,17 @@ RobotContainer::RobotContainer()
         m_drive.ArcadeDrive(vx_axis.GetAxis(), vy_axis.GetAxis(), omega_axis.GetAxis());
         m_arm.AdjustAngle(arm_angle_axis.GetAxis() * 0.5_deg);
       },
-      {&m_drive, &m_arm}));
-  m_leds.SetDefaultCommand(
-    frc2::RunCommand(
-      [this] {
-        m_leds.Rainbow();
-      }
-  ));
+      { &m_drive, &m_arm }
+      ));
+  /*   m_leds.SetDefaultCommand(
+      frc2::RunCommand(
+        [this] {
+          m_leds.Rainbow();
+        },
+        { &m_leds }
+        )); */
+        //m_leds.SetDefaultCommand(LedIdle(&m_leds).ToPtr());
+  m_leds.SetDefaultCommand(std::move(LedIdle()));
   // Configure the button bindings
   ConfigureButtonBindings();
 
