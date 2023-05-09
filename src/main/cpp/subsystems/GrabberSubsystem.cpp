@@ -9,7 +9,6 @@
 
 GrabberSubsystem::GrabberSubsystem(frc::PowerDistribution &pdp, ArmSubsystem *arm, LEDs *leds) : frc2::SubsystemBase(), m_pdp{pdp}, m_arm{arm}, m_leds{leds}
 {
-    fmt::print("GrabberSubsystem::GrabberSubsystem\n");
     m_intake.RestoreFactoryDefaults();
     m_intake.SetSmartCurrentLimit(40);
 }

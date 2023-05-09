@@ -18,7 +18,9 @@ class LEDs : public frc2::SubsystemBase {
   void SetAll(int R, int G, int B);
   void SetAll(frc::Color color);
   void Chase(frc::Color color, int pixels);
-  //void Off();
+  void Linear_Pulse(frc::Color color, units::time::second_t cycle);
+  void Sinusoidal_Pulse(frc::Color color, units::time::second_t cycle);
+  void Breath_Pulse(frc::Color color, units::second_t cycle);
   /**
    * Will be called periodically whenever the CommandScheduler runs.
    */

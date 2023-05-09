@@ -92,7 +92,9 @@
     "xstddef": "cpp",
     "xtr1common": "cpp",
     "xutility": "cpp",
-    "xstring": "cpp"
+    "xstring": "cpp",
+    "core": "cpp",
+    "matrixfunctions": "cpp"
   },
   "editor.fontLigatures": true,
   "editor.formatOnPaste": true,
