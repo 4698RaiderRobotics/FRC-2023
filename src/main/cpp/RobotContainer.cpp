@@ -13,8 +13,6 @@
 #include "commands/UpdateOdom.h"
 #include "commands/ArmSet.h"
 #include "commands/PlaceGamePiece.h"
-#include "commands/LedCommands/LedIdle.h"
-
 RobotContainer::RobotContainer()
 {
   // Initialize all of your commands and subsystems here
@@ -26,15 +24,7 @@ RobotContainer::RobotContainer()
       },
       { &m_drive, &m_arm }
       ));
-  /*   m_leds.SetDefaultCommand(
-      frc2::RunCommand(
-        [this] {
-          m_leds.Rainbow();
-        },
-        { &m_leds }
-        )); */
-        //m_leds.SetDefaultCommand(LedIdle(&m_leds).ToPtr());
-  m_leds.SetDefaultCommand(std::move(LedIdle()));
+  m_leds.SetDefaultCommand(std::move(m_ledCommand));
   // Configure the button bindings
   ConfigureButtonBindings();
 

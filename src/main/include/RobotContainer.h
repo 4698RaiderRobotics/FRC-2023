@@ -1,6 +1,7 @@
 #pragma once
 
 #include <frc2/command/Command.h>
+#include <frc2/command/Commands.h>
 
 #include <frc2/command/button/JoystickButton.h>
 #include <frc/XboxController.h>
@@ -49,13 +50,21 @@ class RobotContainer {
   Drivetrain m_drive{ &m_limelight };
   ArmSubsystem m_arm;
   LEDs m_leds;
-  GrabberSubsystem m_grabber{ PDP, &m_arm, &m_leds};
+  GrabberSubsystem m_grabber{ PDP, &m_arm, &m_leds };
+  //  SimpleAuto m_simpleAuto{ &m_drive, &m_arm, &m_grabber, 30_deg };
+  // WizzyWiggAuto m_wizzyWiggAuto{ &m_drive, &m_arm, &m_grabber };
   
+  enum CommandSelector { ONE, TWO, THREE };
+  CommandSelector Select() { return ONE; };
 
-//  SimpleAuto m_simpleAuto{ &m_drive, &m_arm, &m_grabber, 30_deg };
-// WizzyWiggAuto m_wizzyWiggAuto{ &m_drive, &m_arm, &m_grabber };
+  frc2::CommandPtr m_ledCommand = frc2::cmd::Select<CommandSelector>(
+    [this] {return Select();},
+    std::pair{ ONE, frc2::cmd::Print("Command One") },
+    std::pair{ TWO, frc2::cmd::Print("Command Two") },
+    std::pair{ THREE, frc2::cmd::Print("Command Three") }
+  );
 
-  frc2::Command *m_autoCommand = nullptr;
+  frc2::Command* m_autoCommand = nullptr;
 
   frc::SendableChooser<std::string> m_chooser;
   const std::string kBalance = "Place Cone and Balance";
