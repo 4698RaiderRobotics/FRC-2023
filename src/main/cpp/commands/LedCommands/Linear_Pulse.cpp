@@ -17,7 +17,7 @@ void Linear_Pulse::Initialize() {
 
 // Called repeatedly when this Command is scheduled to run
 void Linear_Pulse::Execute() {
-  m_led->Breath_Pulse(m_color, 5_sec);
+  m_led->Linear_Pulse(m_color, 5_s);
 }
 
 // Called once the command ends or is interrupted.

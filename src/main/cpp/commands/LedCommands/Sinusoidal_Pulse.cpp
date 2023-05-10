@@ -17,7 +17,7 @@ void Sinusoidal_Pulse::Initialize() {
 
 // Called repeatedly when this Command is scheduled to run
 void Sinusoidal_Pulse::Execute() {
-  m_led->Breath_Pulse(m_color, 6_s);
+  m_led->Sinusoidal_Pulse(m_color, 5_s);
 }
 
 // Called once the command ends or is interrupted.

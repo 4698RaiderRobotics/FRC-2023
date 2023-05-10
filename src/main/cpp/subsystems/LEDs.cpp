@@ -37,7 +37,7 @@ void LEDs::SetAll(frc::Color colors) {
 
 }
 void LEDs::Chase(frc::Color color, int tailLength) {
-    for (auto i = 0; i < m_ledBuffer.size(); i++) {
+    for (auto i = 0; i < kLength; i++) {
         int distance = std::abs(firstPixel - i);
         double modifier = ((tailLength + 1) - distance) / tailLength;
         modifier = modifier > 0 ? modifier : 0;
@@ -70,22 +70,6 @@ void LEDs::Sinusoidal_Pulse(frc::Color color, units::second_t cycle) {
     double t = (2 * loop) / cycle.value();
     // Clamp cos(t) to 0-1 and start at 0
     double magnitude = (cos(t + std::numbers::pi) + 1) / 2;
-    auto pixelColor = frc::Color(
-        color.red * magnitude,
-        color.green * magnitude,
-        color.red * magnitude
-    );
-    SetAll(pixelColor);
-}
-void LEDs::Sinusoidal_Pulse(frc::Color color, units::second_t cycle) {
-    units::second_t time = frc::Timer::GetFPGATimestamp();
-    double loop = fabs(remainder(time.value(), cycle.value()));
-    double t = (2 * loop) / cycle.value();
-    double constexpr e = std::numbers::e;
-    // I heard e^cos(t) looks cool so let's implement that (but from 0-1)
-    double numerator = pow(e, cos(t + std::numbers::pi)) - 1 / e;
-    double denominator = e - 1 / e;
-    double magnitude = numerator / denominator;
     auto pixelColor = frc::Color(
         color.red * magnitude,
         color.green * magnitude,
