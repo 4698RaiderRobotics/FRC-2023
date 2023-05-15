@@ -167,3 +167,6 @@ bin/
 
 # WPI Log Files:
 *.wpilog
+
+# Gradle Generated Compile commands:
+compile_commands.json

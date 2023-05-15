@@ -19,17 +19,15 @@
 #include "commands/LedCommands/Idle.h"
 #include "commands/PlaceGamePiece.h"
 
-RobotContainer::RobotContainer()
-{
+RobotContainer::RobotContainer() {
   // Initialize all of your commands and subsystems here
   m_drive.SetDefaultCommand(frc2::RunCommand(
-      [this]
-      {
-        m_drive.ArcadeDrive(vx_axis.GetAxis(), vy_axis.GetAxis(), omega_axis.GetAxis());
-        m_arm.AdjustAngle(arm_angle_axis.GetAxis() * 0.5_deg);
-      },
-      { &m_drive, &m_arm }
-      ));
+    [this] {
+      m_drive.ArcadeDrive(vx_axis.GetAxis(), vy_axis.GetAxis(), omega_axis.GetAxis());
+  m_arm.AdjustAngle(arm_angle_axis.GetAxis() * 0.5_deg);
+    },
+    { &m_drive, &m_arm }
+    ));
   //m_leds.SetDefaultCommand(std::move(m_ledCommand));
   m_leds.SetDefaultCommand(Idle(&m_leds).IgnoringDisable(true));
   // Configure the button bindings
@@ -41,39 +39,33 @@ RobotContainer::RobotContainer()
   frc::SmartDashboard::PutData("Auto Modes", &m_chooser);
 }
 
-void RobotContainer::ConfigureButtonBindings()
-{
+void RobotContainer::ConfigureButtonBindings() {
   // Configure your button bindings here
 
   // Press the B button to balance the robot on the Charge Station
   frc2::JoystickButton(&m_driverController, frc::PS4Controller::Button::kCircle)
-      .WhileTrue(GyroBalance(&m_drive).ToPtr());
+    .WhileTrue(GyroBalance(&m_drive).ToPtr());
 
   frc2::JoystickButton(&m_driverController, frc::PS4Controller::Button::kTriangle)
-      .WhileTrue(PlaceGamePiece(&m_drive, &m_arm, &m_grabber, 30_deg).ToPtr());
+    .WhileTrue(PlaceGamePiece(&m_drive, &m_arm, &m_grabber, 30_deg).ToPtr());
 
   (frc2::JoystickButton(&m_driverController, frc::PS4Controller::Button::kL1) && frc2::JoystickButton(&m_driverController, frc::PS4Controller::Button::kR1))
-      .OnTrue(frc2::InstantCommand([this]
-                                   { m_drive.ResetGyro(180_deg); },
-                                   {&m_drive})
-                  .ToPtr());
+    .OnTrue(frc2::InstantCommand([this] { m_drive.ResetGyro(180_deg); },
+      { &m_drive })
+      .ToPtr());
   // m_operatorController.RightTrigger().ToggleOnTrue(frc2::StartEndCommand( [this] { m_grabber.Cone( true ); }, [this] { m_grabber.Cone( false ); } ).ToPtr() );
   frc2::JoystickButton(&m_driverController, frc::PS4Controller::Button::kCross)
-      .WhileTrue(frc2::RunCommand([this]
-                                   { m_leds.Rainbow(); })
-                  .ToPtr());
+    .WhileTrue(frc2::RunCommand([this] { m_leds.Rainbow(); })
+      .ToPtr());
   frc2::JoystickButton(&m_driverController, frc::PS4Controller::Button::kSquare)
-      .OnTrue(frc2::InstantCommand([this]
-        { m_leds.SetAll(0, 0, 0); })
-                  .ToPtr());
+    .OnTrue(frc2::InstantCommand([this] { m_leds.SetAll(0, 0, 0); })
+      .ToPtr());
   // m_operatorController.LeftTrigger().ToggleOnTrue( frc2::StartEndCommand( [this] { m_grabber.Cube( true ); }, [this] { m_grabber.Cube( false ); } ).ToPtr() );
-  m_operatorController.RightTrigger().OnTrue(frc2::InstantCommand([this]
-                                                                  { m_grabber.HandleCone(); })
-                                                 .ToPtr());
+  m_operatorController.RightTrigger().OnTrue(frc2::InstantCommand([this] { m_grabber.HandleCone(); })
+    .ToPtr());
 
-  m_operatorController.LeftTrigger().OnTrue(frc2::InstantCommand([this]
-                                                                 { m_grabber.HandleCube(); })
-                                                .ToPtr());
+  m_operatorController.LeftTrigger().OnTrue(frc2::InstantCommand([this] { m_grabber.HandleCube(); })
+    .ToPtr());
 
   // m_operatorController.RightTrigger().ToggleOnTrue( Intake( &m_grabber, true ).ToPtr() );
 
@@ -91,40 +83,34 @@ void RobotContainer::ConfigureButtonBindings()
   m_operatorController.RightStick().OnTrue(ArmSet(&m_arm, -118_deg).ToPtr());
 }
 
-frc2::Command *RobotContainer::GetAutonomousCommand()
-{
+frc2::Command* RobotContainer::GetAutonomousCommand() {
   // An example command will be run in autonomous
   delete m_autoCommand;
   m_autoCommand = nullptr;
 
   m_autoSelected = m_chooser.GetSelected();
 
-  if (m_autoSelected == kBalance)
-  {
+  if (m_autoSelected == kBalance) {
     m_autoCommand = new BalanceAuto(&m_drive, &m_arm, &m_grabber);
   }
-  else if (m_autoSelected == kLeave)
-  {
+  else if (m_autoSelected == kLeave) {
     m_autoCommand = new LeaveAuto(&m_drive, &m_arm, &m_grabber);
   }
-  else if (m_autoSelected == kPlaceOnly)
-  {
+  else if (m_autoSelected == kPlaceOnly) {
     m_autoCommand = new PlaceOnlyAuto(&m_drive, &m_arm, &m_grabber);
   }
 
   return m_autoCommand;
 }
 
-void RobotContainer::TeleopDataSetup()
-{
+void RobotContainer::TeleopDataSetup() {
   //  m_arm.ArmTestSetup();
   //  m_drive.DrivetrainSetup();
   frc::SmartDashboard::PutData(&PDP);
   //  frc::SmartDashboard::PutData(&Compressor);
 }
 
-void RobotContainer::TeleopDataUpdate()
-{
+void RobotContainer::TeleopDataUpdate() {
   //  m_arm.ArmTestSetup();
   //  m_drive.DrivetrainSetup();
   //  frc::SmartDashboard::PutData(&PDP);
@@ -132,8 +118,7 @@ void RobotContainer::TeleopDataUpdate()
   //  m_grabber.GrabberTest();
 }
 
-void RobotContainer::TestDataSetup()
-{
+void RobotContainer::TestDataSetup() {
   // Arm Commands and Setup
 
   frc::SmartDashboard::PutData("Goto -90", new ArmSet(&m_arm, -90_deg));
@@ -148,8 +133,7 @@ void RobotContainer::TestDataSetup()
   frc::SmartDashboard::PutData(&Compressor);
 }
 
-void RobotContainer::TestDataUpdate()
-{
+void RobotContainer::TestDataUpdate() {
   m_arm.ArmDataUpdate();
   // fmt::print( "TestUpdate" );
   // m_grabber.GrabberTest();
