@@ -5,6 +5,8 @@
 
 #include "commands/LedCommands/Rainbow.h"
 
+#include "commands/LedCommands/Idle.h"
+
 Rainbow::Rainbow(LEDs* led): m_led{ led } {
   // Use addRequirements() here to declare subsystem dependencies.
   AddRequirements({ led });
@@ -23,7 +25,7 @@ void Rainbow::Execute() {
 // Called once the command ends or is interrupted.
 void Rainbow::End(bool interrupted) {
   m_led->SetAll(frc::Color(0, 0, 0));
-
+  Idle(m_led).Repeatedly();
 }
 
 // Returns true when the command should end.

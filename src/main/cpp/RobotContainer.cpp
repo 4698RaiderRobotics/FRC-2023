@@ -18,6 +18,7 @@
 #include "commands/ArmSet.h"
 #include "commands/LedCommands/Idle.h"
 #include "commands/PlaceGamePiece.h"
+#include "commands/LedCommands/Rainbow.h"
 
 RobotContainer::RobotContainer() {
   // Initialize all of your commands and subsystems here
@@ -29,7 +30,10 @@ RobotContainer::RobotContainer() {
     { &m_drive, &m_arm }
     ));
   //m_leds.SetDefaultCommand(std::move(m_ledCommand));
-  m_leds.SetDefaultCommand(Idle(&m_leds).IgnoringDisable(true));
+  /*m_leds.SetDefaultCommand(Idle(&m_leds).IgnoringDisable(true).WithInterruptBehavior(frc2::Command::InterruptionBehavior::kCancelSelf).HandleInterrupt([this] {
+    std::cout << "Interrupted \n";
+    }));*/
+  Idle(&m_leds).Repeatedly();
   // Configure the button bindings
   ConfigureButtonBindings();
 
@@ -55,21 +59,14 @@ void RobotContainer::ConfigureButtonBindings() {
       .ToPtr());
   // m_operatorController.RightTrigger().ToggleOnTrue(frc2::StartEndCommand( [this] { m_grabber.Cone( true ); }, [this] { m_grabber.Cone( false ); } ).ToPtr() );
   frc2::JoystickButton(&m_driverController, frc::PS4Controller::Button::kCross)
-    .WhileTrue(frc2::RunCommand([this] { m_leds.Rainbow(); })
-      .ToPtr());
+    .WhileTrue(frc2::RunCommand([this] { m_leds.Sinusoidal_Pulse(frc::Color::kFirstBlue, 5_s); }, { &m_leds }).ToPtr());
+  frc2::JoystickButton(&m_driverController, frc::PS4Controller::Button::kCross).WhileTrue(Rainbow(&m_leds).Repeatedly());
   frc2::JoystickButton(&m_driverController, frc::PS4Controller::Button::kSquare)
-    .OnTrue(frc2::InstantCommand([this] { m_leds.SetAll(0, 0, 0); })
-      .ToPtr());
-  // m_operatorController.LeftTrigger().ToggleOnTrue( frc2::StartEndCommand( [this] { m_grabber.Cube( true ); }, [this] { m_grabber.Cube( false ); } ).ToPtr() );
-  m_operatorController.RightTrigger().OnTrue(frc2::InstantCommand([this] { m_grabber.HandleCone(); })
+    .OnTrue(frc2::InstantCommand([this] { m_leds.SetAll(0, 0, 0); }, { &m_leds }).ToPtr());
+  m_operatorController.RightTrigger().OnTrue(frc2::InstantCommand([this] { m_grabber.HandleCone(); }, { &m_grabber, &m_arm, &m_leds }).ToPtr());
+
+  m_operatorController.LeftTrigger().OnTrue(frc2::InstantCommand([this] { m_grabber.HandleCube(); }, { &m_grabber, &m_arm, &m_leds })
     .ToPtr());
-
-  m_operatorController.LeftTrigger().OnTrue(frc2::InstantCommand([this] { m_grabber.HandleCube(); })
-    .ToPtr());
-
-  // m_operatorController.RightTrigger().ToggleOnTrue( Intake( &m_grabber, true ).ToPtr() );
-
-  // m_operatorController.LeftTrigger().OnTrue(Intake( &m_grabber, true ).ToPtr() );
   m_operatorController.Y().OnTrue(ArmSet(&m_arm, 12_deg).ToPtr());
   // Hamburger 🍔 Button.
   m_operatorController.Button(8).OnTrue(ArmSet(&m_arm, 25_deg).ToPtr());

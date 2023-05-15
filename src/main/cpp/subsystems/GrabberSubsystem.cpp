@@ -88,12 +88,13 @@ void GrabberSubsystem::HandleCone(void)
     {
         // If we already have a cone shoot it out.
         m_isEjecting = true;
-        m_leds->SetAll(frc::Color::kYellow);
         m_intake.Set(-m_cone_shoot_speed);
+        m_leds->Chase(frc::Color::kYellow, 5);
     }
     else
     {
         // Suck in the cone
+        m_leds->Sinusoidal_Pulse(frc::Color::kYellow, 2_s);
         m_loadingCone = true;
         m_loadingCube = false;
         m_hasCone = false;
@@ -101,7 +102,6 @@ void GrabberSubsystem::HandleCone(void)
         m_isEjecting = false;
         m_target_amps = m_cone_max_amps;
         m_intake.Set(m_cone_intake_speed);
-        m_leds->SetAll(frc::Color::kYellow);
     }
 }
 
@@ -119,18 +119,22 @@ void GrabberSubsystem::HandleCube(void)
     if (m_hasCube)
     {
         // Edjecting Cube Logic
+        m_leds->Chase(frc::Color::kBlue, 5);
         m_isEjecting = true;
         if (m_arm->GetAngle() < 10_deg)
         {
+            m_leds->Sinusoidal_Pulse(frc::Color::kBlue, 2_s);
             m_intake.Set(m_cube_shoot_slow_speed);
         }
         else
         {
+            m_leds->Sinusoidal_Pulse(frc::Color::kBlue, 1_s);
             m_intake.Set(m_cube_shoot_fast_speed);
         }
     }
     else
     {
+        m_leds->Chase(frc::Color::kBlue, 5);
         // Intake Cube Logic
         m_loadingCone = false;
         m_loadingCube = true;
