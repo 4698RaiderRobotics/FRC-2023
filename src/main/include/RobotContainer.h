@@ -53,16 +53,9 @@ class RobotContainer {
   GrabberSubsystem m_grabber{ PDP, &m_arm, &m_leds };
   //  SimpleAuto m_simpleAuto{ &m_drive, &m_arm, &m_grabber, 30_deg };
   // WizzyWiggAuto m_wizzyWiggAuto{ &m_drive, &m_arm, &m_grabber };
-  
-  enum CommandSelector { ONE, TWO, THREE };
-  CommandSelector Select() { return ONE; };
 
-  frc2::CommandPtr m_ledCommand = frc2::cmd::Select<CommandSelector>(
-    [this] {return Select();},
-    std::pair{ ONE, frc2::cmd::Print("Command One") },
-    std::pair{ TWO, frc2::cmd::Print("Command Two") },
-    std::pair{ THREE, frc2::cmd::Print("Command Three") }
-  );
+
+
 
   frc2::Command* m_autoCommand = nullptr;
 

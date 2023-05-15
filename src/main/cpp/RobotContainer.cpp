@@ -16,6 +16,7 @@
 #include "commands/GyroBalance.h"
 #include "commands/UpdateOdom.h"
 #include "commands/ArmSet.h"
+#include "commands/LedCommands/Idle.h"
 #include "commands/PlaceGamePiece.h"
 
 RobotContainer::RobotContainer()
@@ -30,34 +31,7 @@ RobotContainer::RobotContainer()
       { &m_drive, &m_arm }
       ));
   //m_leds.SetDefaultCommand(std::move(m_ledCommand));
-  m_leds.SetDefaultCommand(frc2::RunCommand(
-    [this] {
-      units::second_t time = frc::Timer::GetFPGATimestamp();
-  units::second_t period = 10_s;
-  auto floored = (time / period).value();
-  // 5 options
-  int selector = static_cast<int>(floored) % 5;
-  switch (selector) {
-  case 0:
-    m_leds.Linear_Pulse(frc::Color{ 255,0,0 }, 3_s);
-    break;
-  case 1:
-    m_leds.Chase(frc::Color{ 255,0,0 }, 8);
-    break;
-  case 2:
-    m_leds.Linear_Pulse(frc::Color{ 255,0,0 }, 5_s);
-    break;
-  case 3:
-    m_leds.Sinusoidal_Pulse(frc::Color{ 255,0,0 }, 5_s);
-    break;
-  case 4:
-    m_leds.Rainbow();
-
-  }
-    },
-    { &m_leds }
-      )
-  );
+  m_leds.SetDefaultCommand(Idle(&m_leds).IgnoringDisable(true));
   // Configure the button bindings
   ConfigureButtonBindings();
 

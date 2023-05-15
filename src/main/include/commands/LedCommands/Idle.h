@@ -18,7 +18,7 @@
 class Idle
   : public frc2::CommandHelper<frc2::CommandBase, Idle> {
 public:
-  Idle();
+  Idle(LEDs* led);
 
   void Initialize() override;
 
@@ -28,4 +28,5 @@ public:
 
   bool IsFinished() override;
 private:
+  LEDs* m_led;
 };
