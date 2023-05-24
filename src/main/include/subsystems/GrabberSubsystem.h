@@ -18,8 +18,7 @@ class ArmSubsystem;
 class LEDs;
 class GrabberSubsystem : public frc2::SubsystemBase {
  public:
-  GrabberSubsystem( frc::PowerDistribution &, ArmSubsystem*, LEDs* );
-
+   GrabberSubsystem(frc::PowerDistribution&, ArmSubsystem*, LEDs*);
   void Periodic() override;
 
   units::ampere_t GetCurrent();

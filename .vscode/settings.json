@@ -104,7 +104,13 @@
     "__split_buffer": "cpp",
     "__threading_support": "cpp",
     "__tuple": "cpp",
-    "__verbose_abort": "cpp"
+    "__verbose_abort": "cpp",
+    "ios": "cpp",
+    "xfacet": "cpp",
+    "xiosbase": "cpp",
+    "xlocale": "cpp",
+    "xlocinfo": "cpp",
+    "xlocnum": "cpp"
   },
   "editor.fontLigatures": true,
   "editor.formatOnPaste": true,

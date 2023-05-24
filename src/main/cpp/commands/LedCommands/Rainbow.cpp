@@ -21,11 +21,11 @@ void Rainbow::Initialize() {
 void Rainbow::Execute() {
   m_led->Rainbow();
 }
-
 // Called once the command ends or is interrupted.
 void Rainbow::End(bool interrupted) {
   m_led->SetAll(frc::Color(0, 0, 0));
-  Idle(m_led).Repeatedly();
+  auto idle = Idle(m_led).Repeatedly();
+  idle.Schedule();
 }
 
 // Returns true when the command should end.

@@ -15,22 +15,33 @@ class LEDs : public frc2::SubsystemBase {
  public:
   LEDs();
   void Rainbow();
-  void SetAll(int R, int G, int B);
-  void SetAll(frc::Color color);
-  void Chase(frc::Color color, int pixels);
+
+  void Chase(frc::Color color, int tailLength);
   void Linear_Pulse(frc::Color color, units::time::second_t cycle);
   void Sinusoidal_Pulse(frc::Color color, units::time::second_t cycle);
-  void Breath_Pulse(frc::Color color, units::second_t cycle);
+  void SetAll(int R, int G, int B);
+  void SetAll(frc::Color color);
   /**
    * Will be called periodically whenever the CommandScheduler runs.
    */
   void Periodic() override;
+  enum LedCommand { breath, chase, lpulse, rainbow, spulse };
+  LedCommand m_currentLedCommand = chase;
 
- private:
+
+private:
+  void f_setall(int R, int G, int B);
+  void f_setall(frc::Color color);
+  void f_chase(frc::Color color, int tailLength);
+  void f_linear_pulse(frc::Color color, units::time::second_t cycle);
+  void f_sinusoidal_pulse(frc::Color color, units::time::second_t cycle);
+  void f_rainbow();
+
   // Components (e.g. motor controllers and sensors) should generally be
   // declared private and exposed only through public methods.
   static constexpr int kLength = 110;
-  frc::AddressableLED m_led{deviceIDs::kLEDPWMID};
+
+  frc::AddressableLED m_led{ deviceIDs::kLEDPWMID };
 
   std::array<frc::AddressableLED::LEDData, kLength>
       m_ledBuffer;

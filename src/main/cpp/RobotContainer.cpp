@@ -29,11 +29,12 @@ RobotContainer::RobotContainer() {
     },
     { &m_drive, &m_arm }
     ));
+
   //m_leds.SetDefaultCommand(std::move(m_ledCommand));
   /*m_leds.SetDefaultCommand(Idle(&m_leds).IgnoringDisable(true).WithInterruptBehavior(frc2::Command::InterruptionBehavior::kCancelSelf).HandleInterrupt([this] {
     std::cout << "Interrupted \n";
     }));*/
-  Idle(&m_leds).Repeatedly();
+    //m_leds.SetDefaultCommand();
   // Configure the button bindings
   ConfigureButtonBindings();
 
@@ -59,10 +60,10 @@ void RobotContainer::ConfigureButtonBindings() {
       .ToPtr());
   // m_operatorController.RightTrigger().ToggleOnTrue(frc2::StartEndCommand( [this] { m_grabber.Cone( true ); }, [this] { m_grabber.Cone( false ); } ).ToPtr() );
   frc2::JoystickButton(&m_driverController, frc::PS4Controller::Button::kCross)
-    .WhileTrue(frc2::RunCommand([this] { m_leds.Sinusoidal_Pulse(frc::Color::kFirstBlue, 5_s); }, { &m_leds }).ToPtr());
-  frc2::JoystickButton(&m_driverController, frc::PS4Controller::Button::kCross).WhileTrue(Rainbow(&m_leds).Repeatedly());
-  frc2::JoystickButton(&m_driverController, frc::PS4Controller::Button::kSquare)
-    .OnTrue(frc2::InstantCommand([this] { m_leds.SetAll(0, 0, 0); }, { &m_leds }).ToPtr());
+    .OnTrue(frc2::RunCommand([this] { m_leds.Sinusoidal_Pulse(frc::Color::kFirstBlue, 5_s); std::cout << "run\n";}, { &m_leds }).ToPtr());
+  frc2::JoystickButton(&m_driverController, frc::PS4Controller::Button::kCross);
+  //frc2::JoystickButton(&m_driverController, frc::PS4Controller::Button::kSquare)
+  //  .OnTrue(frc2::InstantCommand([this] { m_leds.SetAll(0, 0, 0); }, { &m_leds }).ToPtr());
   m_operatorController.RightTrigger().OnTrue(frc2::InstantCommand([this] { m_grabber.HandleCone(); }, { &m_grabber, &m_arm, &m_leds }).ToPtr());
 
   m_operatorController.LeftTrigger().OnTrue(frc2::InstantCommand([this] { m_grabber.HandleCube(); }, { &m_grabber, &m_arm, &m_leds })
@@ -79,7 +80,9 @@ void RobotContainer::ConfigureButtonBindings() {
 
   m_operatorController.RightStick().OnTrue(ArmSet(&m_arm, -118_deg).ToPtr());
 }
+void RobotContainer::RunLedCommand() {
 
+}
 frc2::Command* RobotContainer::GetAutonomousCommand() {
   // An example command will be run in autonomous
   delete m_autoCommand;

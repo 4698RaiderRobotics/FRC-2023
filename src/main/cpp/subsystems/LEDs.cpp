@@ -12,31 +12,32 @@ LEDs::LEDs()
     m_led.Start();
 }
 
-void LEDs::Rainbow()
-{
-    // For every pixel
-    for (size_t i = 0; i < m_ledBuffer.size(); i++)
-    {
-        // Calculate the hue - hue is easier for rainbows because the color
-        // shape is a circle so only one value needs to precess
-        const auto pixelHue = (firstPixelHue + (i * 180 / kLength)) % 180;
-        // Set the value
-        m_ledBuffer[i].SetHSV(pixelHue, 255, 128);
-    }
-    // Increase by to make the rainbow "move"
-    firstPixelHue += 3;
-    // Check bounds
-    firstPixelHue %= 180;
-}
+
 void LEDs::SetAll(int r, int g, int b) {
     SetAll(frc::Color(r, g, b));
 }
 void LEDs::SetAll(frc::Color colors) {
-    for (auto pixel : m_ledBuffer)
-        pixel.SetLED(colors);
-
+    /*for (auto pixel : m_ledBuffer)
+        pixel.SetLED(colors);*/
+    for (int i = 0; i < kLength; i++) {
+        m_ledBuffer[i].SetLED(colors);
+    }
+}
+void LEDs::Rainbow() {
+    m_currentLedCommand = rainbow;
 }
 void LEDs::Chase(frc::Color color, int tailLength) {
+    m_currentLedCommand = chase;
+}
+
+void LEDs::Linear_Pulse(frc::Color color, units::second_t cycle) {
+    m_currentLedCommand = lpulse;
+}
+void LEDs::Sinusoidal_Pulse(frc::Color color, units::second_t cycle) {
+    m_currentLedCommand = spulse;
+}
+// Internal commands
+void LEDs::f_chase(frc::Color color, int tailLength) {
     for (auto i = 0; i < kLength; i++) {
         int distance = std::abs(firstPixel - i);
         double modifier = ((tailLength + 1) - distance) / tailLength;
@@ -51,9 +52,10 @@ void LEDs::Chase(frc::Color color, int tailLength) {
     }
     // After we hit pixel kLength, wrap around to the first pixel.
     firstPixel = (firstPixel + 1) % kLength;
+    //std::cout << "Chasing\n";
 }
 
-void LEDs::Linear_Pulse(frc::Color color, units::second_t cycle) {
+void LEDs::f_linear_pulse(frc::Color color, units::time::second_t cycle) {
     units::second_t time = frc::Timer::GetFPGATimestamp();
     double loop = fabs(remainder(time.value(), cycle.value()));
     double magnitude = (2 * loop) / cycle.value();
@@ -63,8 +65,9 @@ void LEDs::Linear_Pulse(frc::Color color, units::second_t cycle) {
         color.red * magnitude
     );
     SetAll(pixelColor);
+    std::cout << "l Pulsing\n";
 }
-void LEDs::Sinusoidal_Pulse(frc::Color color, units::second_t cycle) {
+void LEDs::f_sinusoidal_pulse(frc::Color color, units::time::second_t cycle) {
     units::second_t time = frc::Timer::GetFPGATimestamp();
     double loop = fabs(remainder(time.value(), cycle.value()));
     double t = (2 * loop) / cycle.value();
@@ -76,9 +79,41 @@ void LEDs::Sinusoidal_Pulse(frc::Color color, units::second_t cycle) {
         color.red * magnitude
     );
     SetAll(pixelColor);
+    std::cout << "s Pulsing\n";
+}
+void LEDs::f_rainbow() {
+    // For every pixel
+    for (size_t i = 0; i < m_ledBuffer.size(); i++) {
+        // Calculate the hue - hue is easier for rainbows because the color
+        // shape is a circle so only one value needs to precess
+        const auto pixelHue = (firstPixelHue + (i * 180 / kLength)) % 180;
+        // Set the value
+        m_ledBuffer[i].SetHSV(pixelHue, 255, 128);
+    }
+    // Increase by to make the rainbow "move"
+    firstPixelHue += 3;
+    // Check bounds
+    firstPixelHue %= 180;
+    std::cout << "displaying Rainbow\n";
 }
 // This method will be called once per scheduler run
 void LEDs::Periodic()
 {
     m_led.SetData(m_ledBuffer);
+    if (m_currentLedCommand == chase) {
+        //Chase(frc::Color::kBlue, 10);
+        f_chase(frc::Color::kBlue, 10);
+    }
+    else if (m_currentLedCommand == rainbow) {
+        // Rainbow();
+        f_rainbow();
+    }
+    else if (m_currentLedCommand == lpulse) {
+        //Linear_Pulse(frc::Color::kBlue, 5_s);
+        f_linear_pulse(frc::Color::kBlue, 5_s);
+    }
+    else if (m_currentLedCommand == spulse) {
+        //Sinusoidal_Pulse(frc::Color::kBlue, 5_s);
+        f_sinusoidal_pulse(frc::Color::kBlue, 5_s);
+    }
 }

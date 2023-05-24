@@ -16,6 +16,7 @@ GrabberSubsystem::GrabberSubsystem(frc::PowerDistribution &pdp, ArmSubsystem *ar
 // This method will be called once per scheduler run
 void GrabberSubsystem::Periodic()
 {
+
     double current = m_pdp.GetCurrent(9);
     double stallSpeed = m_enc.GetVelocity();
     auto elapsedTime = frc::Timer::GetFPGATimestamp() - m_startTime;
@@ -89,7 +90,8 @@ void GrabberSubsystem::HandleCone(void)
         // If we already have a cone shoot it out.
         m_isEjecting = true;
         m_intake.Set(-m_cone_shoot_speed);
-        m_leds->Chase(frc::Color::kYellow, 5);
+        //m_leds->Chase(frc::Color::kYellow, 5);
+        //m_leds->m_currentLedCommand = 
     }
     else
     {

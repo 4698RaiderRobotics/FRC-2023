@@ -35,12 +35,11 @@ class RobotContainer {
   RobotContainer();
 
   frc2::Command* GetAutonomousCommand();
-
+  void RunLedCommand();
   void TeleopDataSetup();
   void TeleopDataUpdate();
   void TestDataSetup();
   void TestDataUpdate();
-
  private:
   frc::PowerDistribution PDP{0, frc::PowerDistribution::ModuleType::kCTRE};
   frc::Compressor Compressor{9, frc::PneumaticsModuleType::CTREPCM}; 
@@ -53,8 +52,6 @@ class RobotContainer {
   GrabberSubsystem m_grabber{ PDP, &m_arm, &m_leds };
   //  SimpleAuto m_simpleAuto{ &m_drive, &m_arm, &m_grabber, 30_deg };
   // WizzyWiggAuto m_wizzyWiggAuto{ &m_drive, &m_arm, &m_grabber };
-
-
 
 
   frc2::Command* m_autoCommand = nullptr;
