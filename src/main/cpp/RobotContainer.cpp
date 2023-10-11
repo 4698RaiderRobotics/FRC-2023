@@ -25,7 +25,8 @@ RobotContainer::RobotContainer() {
   m_drive.SetDefaultCommand(frc2::RunCommand(
     [this] {
       m_drive.ArcadeDrive(vx_axis.GetAxis(), vy_axis.GetAxis(), omega_axis.GetAxis());
-  m_arm.AdjustAngle(arm_angle_axis.GetAxis() * 0.5_deg);
+  //m_arm.AdjustArmAngle(arm_angle_axis.GetAxis() * 0.5_deg);
+  //m_arm.AdjustWristAngle(wrist_angle_axis.GetAxis() * 0.5_deg);
     },
     { &m_drive, &m_arm }
     ));
@@ -68,17 +69,20 @@ void RobotContainer::ConfigureButtonBindings() {
 
   m_operatorController.LeftTrigger().OnTrue(frc2::InstantCommand([this] { m_grabber.HandleCube(); }, { &m_grabber, &m_arm, &m_leds })
     .ToPtr());
-  m_operatorController.Y().OnTrue(ArmSet(&m_arm, 12_deg).ToPtr());
+
+  m_operatorController.Y().OnTrue(ArmSet(&m_arm, physical::kArmLowerPlaceHeight, physical::kWristLowerPlaceHeight, 0.5).ToPtr());
+
   // Hamburger 🍔 Button.
-  m_operatorController.Button(8).OnTrue(ArmSet(&m_arm, 25_deg).ToPtr());
+  m_operatorController.Button(8).OnTrue(ArmSet(&m_arm, 25_deg, -100_deg, 0.5).ToPtr());
 
-  m_operatorController.B().OnTrue(ArmSet(&m_arm, -4_deg).ToPtr());
+  m_operatorController.B().OnTrue(ArmSet(&m_arm, physical::kArmUpperPlaceHeight, physical::kWristUpperPlaceHeight, 0.5).ToPtr());
 
-  m_operatorController.A().OnTrue(ArmSet(&m_arm, -90_deg).ToPtr());
+  m_operatorController.A().OnTrue(ArmSet(&m_arm, -90_deg, 45_deg, 0.5).ToPtr());
 
-  m_operatorController.X().OnTrue(ArmSet(&m_arm, -35_deg).ToPtr());
+  m_operatorController.X().OnTrue(ArmSet(&m_arm, physical::kArmMidPlaceHeight, physical::kWristMidPlaceHeight, 0.5).ToPtr());
 
-  m_operatorController.RightStick().OnTrue(ArmSet(&m_arm, -118_deg).ToPtr());
+  m_operatorController.RightStick().OnTrue(ArmSet(&m_arm, -118_deg, 45_deg, 0.5).ToPtr());
+
 }
 void RobotContainer::RunLedCommand() {
 
@@ -121,10 +125,10 @@ void RobotContainer::TeleopDataUpdate() {
 void RobotContainer::TestDataSetup() {
   // Arm Commands and Setup
 
-  frc::SmartDashboard::PutData("Goto -90", new ArmSet(&m_arm, -90_deg));
-  frc::SmartDashboard::PutData("Goto 30", new ArmSet(&m_arm, 30_deg));
-  frc::SmartDashboard::PutData("Goto 45", new ArmSet(&m_arm, 45_deg));
-  frc::SmartDashboard::PutData("Goto -35", new ArmSet(&m_arm, -35_deg));
+  //frc::SmartDashboard::PutData("Goto -90", new ArmSet(&m_arm, -90_deg));
+  //frc::SmartDashboard::PutData("Goto 30", new ArmSet(&m_arm, 30_deg));
+  //frc::SmartDashboard::PutData("Goto 45", new ArmSet(&m_arm, 45_deg));
+  //frc::SmartDashboard::PutData("Goto -35", new ArmSet(&m_arm, -35_deg));
   // frc::SmartDashboard::PutData( "Run Grabber Motor.", new Intake(&m_grabber, true));
   m_arm.ArmDataSetup();
 

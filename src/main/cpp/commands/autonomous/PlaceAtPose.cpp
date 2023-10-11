@@ -17,12 +17,12 @@ PlaceAtPose::PlaceAtPose( Drivetrain *drive, ArmSubsystem *arm, GrabberSubsystem
   alliance = blueSide ? 1 : -1;
   AddCommands(
     DriveToPoseCommand( drive, m_targetPose ),
-    ArmSet( arm, physical::kPlaceHeight ),
+    ArmSet(arm, physical::kArmMidPlaceHeight, physical::kWristMidPlaceHeight, 0.5),
     DriveToPoseCommand( drive, { m_targetPose.X() - ( physical::kPlaceDistance * alliance ), m_targetPose.Y(), m_targetPose.Rotation() } ),
     frc2::InstantCommand( [this, grabber] { grabber->Spin( -0.5 ) ;}, { grabber } ),
     frc2::WaitCommand( 0.25_s ),
     frc2::InstantCommand( [this, grabber] { grabber->Spin( 0.0 ) ;}, { grabber } ),
     DriveToPoseCommand( drive, { m_targetPose.X() + ( physical::kPlaceDistance * alliance ), m_targetPose.Y(), m_targetPose.Rotation() } ),
-    ArmSet( arm, -118_deg )
+    ArmSet(arm, -118_deg, 45_deg, 0.5)
   );
 }

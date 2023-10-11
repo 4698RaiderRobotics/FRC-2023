@@ -123,7 +123,7 @@ void GrabberSubsystem::HandleCube(void)
         // Edjecting Cube Logic
         m_leds->Chase(frc::Color::kBlue, 5);
         m_isEjecting = true;
-        if (m_arm->GetAngle() < 10_deg)
+        if (m_arm->GetArmAngle() < 10_deg)
         {
             m_leds->Sinusoidal_Pulse(frc::Color::kBlue, 2_s);
             m_intake.Set(m_cube_shoot_slow_speed);

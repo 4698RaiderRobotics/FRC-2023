@@ -14,17 +14,28 @@
 class ArmSet
     : public frc2::CommandHelper<frc2::CommandBase, ArmSet> {
  public:
-  ArmSet( ArmSubsystem *arm, units::degree_t angle );
+   ArmSet(ArmSubsystem* arm, units::degree_t armAngle, units::degree_t wristAngle, double delayProportion);
 
   void Initialize() override;
 
   void Execute() override;
 
   bool IsFinished() override;
-  
+
+  void End(bool interrupted) override;
+
+  Command::InterruptionBehavior GetInterruptionBehavior() const override;
+
  private:
   ArmSubsystem *m_arm; 
-  units::degree_t m_angle;
+  units::degree_t m_armAngle;
+  units::degree_t m_wristAngle;
+  units::degree_t m_delayArmAngle;
+  units::degree_t m_delayWristAngle;
+  double m_delayProportion;
+
+  units::degree_t m_startingArmAngle;
+  units::degree_t m_startingWristAngle;
 
   units::second_t m_startTime;
 };

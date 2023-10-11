@@ -18,8 +18,8 @@ namespace pidf {
     // PID values for drive motor of swerve modules
     constexpr double kDriveP = 0.0001;
     constexpr double kDriveI = 0;
-    constexpr double kDriveD = 0.001;
-    constexpr double kDriveFF = 0.0002;
+    constexpr double kDriveD = 0.0001;
+    constexpr double kDriveFF = 0.00017;
 
     // P value for auto balance on charge station
     constexpr double kGyroBalanceP = 0.024;
@@ -27,6 +27,25 @@ namespace pidf {
     //constexpr double kXTargetP = 0.005;
     //constexpr double kYTargetP = 0.1;
     //constexpr double kOmegaTargetP = 0.001;
+
+    // PID values for wrist mechanism
+    constexpr double kWristG = 0.3;
+    constexpr double kWristS = 0.0;
+    constexpr double kWristV = 1.3;
+
+    constexpr double kWristP = 0.004;
+    constexpr double kWristI = 0.0;
+    constexpr double kWristD = 0.0005;
+
+    // PID values for arm mechanism
+    constexpr double kArmG = 1.1;
+    constexpr double kArmGWrist = 0.4;
+    constexpr double kArmS = 0.0;
+    constexpr double kArmV = 0.35;
+
+    constexpr double kArmP = 0.0035;
+    constexpr double kArmI = 0.0;
+    constexpr double kArmD = 0.0002;
 }
 
 namespace deviceIDs {
@@ -42,11 +61,14 @@ namespace deviceIDs {
     constexpr int kLeftArmMotorID = 11;
     constexpr int kRightArmMotorID = 12;
 
+    constexpr int kWristMotorID = 15;
+
     constexpr int kFrontLeftAbsoluteEncoderID = 1;
     constexpr int kFrontRightAbsoluteEncoderID = 0;
     constexpr int kBackLeftAbsoluteEncoderID = 3;
     constexpr int kBackRightAbsoluteEncoderID = 2;
     constexpr int kArmEncoderID = 4;
+    constexpr int kWristEncoderID = 5;
 
     constexpr int kPigeonIMUID = 13;
 
@@ -88,6 +110,9 @@ namespace physical {
     // Gear ratio of the turn motors. 12.8 rotations of the turning motor is one rotation of the swerve module.
     constexpr double kTurnGearRatio = 12.8;
 
+    // Gear ratio between the absolute encoder for the wrist and the wrist
+    constexpr double kWristEncoderGearRatio = 24.0 / 34.0;
+
     // The width of the drive base from the center of one module to another adjacent one.
     constexpr units::meter_t kDriveBaseWidth = 23.25_in;
 
@@ -103,6 +128,8 @@ namespace physical {
     // Absolute encoder offset for the arm encoder
     constexpr double kArmAbsoluteOffset = 0.495;
 
+    constexpr double kWristAbsoluteOffset = 0.465;
+
     // IsFinished condition for arm
     constexpr units::degree_t kArmAngleError = 3_deg;
 
@@ -110,5 +137,16 @@ namespace physical {
     constexpr units::inch_t kLimelightYAxisOffset = 157.8_in;
 
     constexpr units::inch_t kPlaceDistance = 0_in;
-    constexpr units::degree_t kPlaceHeight = 12_deg;
+
+    constexpr units::degree_t kArmLowerPlaceHeight = -60_deg;
+    constexpr units::degree_t kWristLowerPlaceHeight = 20_deg;
+    constexpr double kLowerDelayProportion = 0.0;
+
+    constexpr units::degree_t kArmMidPlaceHeight = -15_deg;
+    constexpr units::degree_t kWristMidPlaceHeight = -30_deg;
+    constexpr double kMidDelayProportion = 0.3;
+
+    constexpr units::degree_t kArmUpperPlaceHeight = 45_deg;
+    constexpr units::degree_t kWristUpperPlaceHeight = -135_deg;
+    constexpr double kUpperDelayProportion = 0.5;
 }

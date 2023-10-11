@@ -15,10 +15,10 @@ PlaceGamePiece::PlaceGamePiece( Drivetrain *drive, ArmSubsystem *arm, GrabberSub
                                 units::degree_t angle ) {
   AddCommands(
     DriveToPoseCommand{ drive },
-    ArmSet( arm, angle ),
+    ArmSet(arm, angle, 0_deg, 0.5),
     TestProfileMove( drive, physical::kPlaceDistance, TestProfileMove::FORWARD ),
     TestProfileMove( drive, -physical::kPlaceDistance, TestProfileMove::FORWARD ),
-    ArmSet( arm, -90_deg )
+    ArmSet(arm, -90_deg, 0_deg, 0.5)
 );
   m_timer.Restart();
 }

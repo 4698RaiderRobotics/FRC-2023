@@ -6,6 +6,7 @@
 
 #include <frc2/command/SubsystemBase.h>
 #include <ctre/phoenix/motorcontrol/can/TalonFX.h>
+#include <rev/CANSparkMax.h>
 #include <frc/motorcontrol/MotorControllerGroup.h>
 #include <frc/controller/ArmFeedforward.h>
 #include <frc/controller/PIDController.h>
@@ -24,9 +25,11 @@ class ArmSubsystem : public frc2::SubsystemBase {
 
   void Periodic() override;
 
-  void GotoAngle( units::degree_t angle );
+  void GotoAngle(units::degree_t armAngle, units::degree_t wristAngle);
 
-  void AdjustAngle( units::degree_t delta_angle );
+  void AdjustArmAngle(units::degree_t delta_angle);
+
+  void AdjustWristAngle( units::degree_t delta_angle);
 
   bool Finished( );
 
@@ -34,46 +37,49 @@ class ArmSubsystem : public frc2::SubsystemBase {
 
   void ArmDataUpdate( );
 
-  void Brake( bool state );
+  units::degree_t GetArmAngle();
 
-  units::degree_t GetAngle();
+  units::degree_t GetWristAngle();
 
  private:
 
-  ctre::phoenix::motorcontrol::can::TalonFX m_left{ deviceIDs::kLeftArmMotorID };
-  ctre::phoenix::motorcontrol::can::TalonFX m_right{ deviceIDs::kRightArmMotorID }; 
+   ctre::phoenix::motorcontrol::can::TalonFX m_leftArm{ deviceIDs::kLeftArmMotorID };
+   ctre::phoenix::motorcontrol::can::TalonFX m_rightArm{ deviceIDs::kRightArmMotorID };
 
-  AbsoluteEncoder m_enc{ deviceIDs::kArmEncoderID, physical::kArmAbsoluteOffset, true };
+  rev::CANSparkMax m_wrist{ deviceIDs::kWristMotorID, rev::CANSparkMaxLowLevel::MotorType::kBrushless };
 
-  frc::DoubleSolenoid m_brake{ 9, frc::PneumaticsModuleType::CTREPCM, 2, 3 };
+  rev::SparkMaxRelativeEncoder m_enc{ m_wrist.GetEncoder() };
 
-  // double kS = 0.4;
-  // double kG = 1.7;
-  // double kV = 0.4;
-  // double kA = 0.0;
+  AbsoluteEncoder m_armEncoder{ deviceIDs::kArmEncoderID, physical::kArmAbsoluteOffset, true };
+  AbsoluteEncoder m_wristEncoder{ deviceIDs::kWristEncoderID, physical::kWristAbsoluteOffset, true };
 
-  double kS = 0.5;
-  double kG = 1.8;
-  double kV = 0.4;
-  double kA = 0.0;
-
-  double kP = 0.0015;
-  double kI = 0.0;
-  double kD = 0.001;
+  units::degree_t armAngle = m_armEncoder.GetPosition();
+  units::degree_t wristAngle = m_wristEncoder.GetPosition() * physical::kWristEncoderGearRatio;
 
   units::degree_t max_angle = 120_deg;
   units::degree_t min_angle = -120_deg;
+  units::degree_t maxWristAngle = 75_deg;
+  units::degree_t minWristAngle = -135_deg;
 
-  frc2::PIDController pid{ kP, kI, kD };
-  
-  frc::ArmFeedforward feedforward{ units::volt_t{ kS }, units::volt_t{ kG },  units::unit_t<frc::ArmFeedforward::kv_unit> { kV }  };
+  frc2::PIDController wristPID{ pidf::kWristP, pidf::kWristI, pidf::kWristD };
 
-  frc::TrapezoidProfile<units::degrees>::Constraints m_constraints{ 720_deg_per_s, 360_deg_per_s_sq };
-  frc::TrapezoidProfile<units::degrees>::State m_goal;
-  frc::TrapezoidProfile<units::degrees>::State m_setpoint;
+  frc::ArmFeedforward wristFeedforward{ units::volt_t{ pidf::kWristS }, units::volt_t{ pidf::kWristG },  units::unit_t<frc::ArmFeedforward::kv_unit> { pidf::kWristV } };
+
+  frc::TrapezoidProfile<units::degrees>::Constraints m_wristConstraints{ 720_deg_per_s, 360_deg_per_s_sq };
+  frc::TrapezoidProfile<units::degrees>::State m_wristGoal;
+  frc::TrapezoidProfile<units::degrees>::State m_wristSetpoint;
+
+  frc2::PIDController armPID{ pidf::kArmP, pidf::kArmI, pidf::kArmD };
+
+  frc::ArmFeedforward armFeedforward{ units::volt_t{ pidf::kArmS }, units::volt_t{ pidf::kArmG },  units::unit_t<frc::ArmFeedforward::kv_unit> { pidf::kArmV } };
+
+  frc::TrapezoidProfile<units::degrees>::Constraints m_armConstraints{ 720_deg_per_s, 360_deg_per_s_sq };
+  frc::TrapezoidProfile<units::degrees>::State m_armGoal;
+  frc::TrapezoidProfile<units::degrees>::State m_armSetpoint;
 
   units::second_t dt = 20_ms;
-  units::degree_t m_angle = -118_deg;
+  units::degree_t m_armAngle;
+  units::degree_t m_wristAngle;
 
   bool disabled = true;
 };

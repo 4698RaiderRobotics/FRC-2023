@@ -69,6 +69,7 @@ class RobotContainer {
   ControllerAxis vy_axis{ m_driverController, frc::PS4Controller::Axis::kLeftX, true };
   ControllerAxis omega_axis{ m_driverController, frc::PS4Controller::Axis::kRightX, true };
   ControllerAxis arm_angle_axis{ m_operatorController, frc::XboxController::Axis::kLeftY, true };
+  ControllerAxis wrist_angle_axis{ m_operatorController, frc::XboxController::Axis::kRightY, true };
 
   void ConfigureButtonBindings();
 };
