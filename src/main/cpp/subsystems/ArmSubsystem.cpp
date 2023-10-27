@@ -17,6 +17,9 @@ ArmSubsystem::ArmSubsystem() {
 
     m_wrist.EnableVoltageCompensation(12);
 
+    armAngle = GetArmAngle();
+    wristAngle = GetWristAngle();
+
     m_wristSetpoint.position = wristAngle;
     m_wristGoal = { wristAngle, 0_deg_per_s };
     m_armSetpoint.position = armAngle;
@@ -25,48 +28,66 @@ ArmSubsystem::ArmSubsystem() {
 
 void ArmSubsystem::Periodic() {
 
-    armAngle = m_armEncoder.GetPosition();
-    wristAngle = m_wristEncoder.GetPosition() * physical::kWristEncoderGearRatio;
+    if (!m_armEncoder.IsConnected() ) {
+        FRC_ReportError(-111 /*generic error*/, "Arm Absolute Encoder is disconnected.");
+        return;
+    }
+
+    if ( !m_wristEncoder.IsConnected()) {
+        FRC_ReportError(-111 /*generic error*/, "Wrist Absolute Encoder is disconnected.");
+        return;
+    }
+
+    armAngle = GetArmAngle();
+    wristAngle = GetWristAngle();
+    if (armAngle > 180_deg) {
+        m_armEncoder.SetPositionNegative();
+    }
+    if (wristAngle > 180_deg) {
+        m_wristEncoder.SetPositionNegative();
+    }
+
+
+    armAngle = GetArmAngle();
+    wristAngle = GetWristAngle();
 
     // Holds arm in position after enabled
     if ( disabled && frc::DriverStation::IsEnabled() ) {
         m_wristSetpoint.position = wristAngle;
         m_armSetpoint.position = armAngle;
-        m_armAngle = armAngle;
-        m_wristAngle = wristAngle;
+        m_armAngleGoal = armAngle;
+        m_wristAngleGoal = wristAngle;
         disabled = false;
     } else if ( !disabled && frc::DriverStation::IsDisabled() ) {
         disabled = true;
     }
-    
+
+    // Update Shuffleboard with values
+    // ArmData();
 
     // Checks for unplugged absolute encoder on the arm
-    if (armAngle > 120_deg || armAngle < -140_deg) {
+    if (armAngle > 120_deg || armAngle < -140_deg ) {
         FRC_ReportError	( -111 /*generic error*/, "Arm Absolute Encoder out of bounds." );
         return;
     }
 
-    m_armGoal = { m_armAngle, 0_deg_per_s };
-    m_wristGoal = { m_wristAngle, 0_deg_per_s };
+    m_armGoal = { m_armAngleGoal, 0_deg_per_s };
+    m_wristGoal = { m_wristAngleGoal, 0_deg_per_s };
 
     frc::TrapezoidProfile<units::degrees> m_wristProfile{ m_wristConstraints, m_wristGoal, m_wristSetpoint };
     m_wristSetpoint = m_wristProfile.Calculate(dt);
 
-    double wristOutput = wristPID.Calculate(wristAngle.value(), m_wristSetpoint.position.value());
 
     units::degree_t alpha = 90_deg + wristAngle + armAngle;
 
+    double wristOutput = wristPID.Calculate(wristAngle.value(), m_wristSetpoint.position.value());
     double wristFeedforwardOut = wristFeedforward.Calculate(alpha, m_wristSetpoint.velocity).value();
 
-    frc::SmartDashboard::PutNumber("Wrist PID Output", wristOutput);
-    frc::SmartDashboard::PutNumber("Wrist Feedforward Output", wristFeedforwardOut);
-
-    frc::SmartDashboard::PutNumber("Goal Angle", m_wristSetpoint.position.value());
-    frc::SmartDashboard::PutNumber("Goal Velocity", m_wristSetpoint.velocity.value());
-    frc::SmartDashboard::PutNumber("Current Angle", wristAngle.value());
-    frc::SmartDashboard::PutNumber("Current Velocity", m_enc.GetVelocity() * 0.0129 * 6.0);
+    // frc::SmartDashboard::PutNumber("Wrist PID Output", wristOutput);
+    // frc::SmartDashboard::PutNumber("Wrist Feedforward Output", wristFeedforwardOut);
 
     m_wrist.Set(wristOutput + wristFeedforwardOut / 12);
+
 
     // Arm Control
     frc::TrapezoidProfile<units::degrees> m_armProfile{ m_armConstraints, m_armGoal, m_armSetpoint };
@@ -75,14 +96,8 @@ void ArmSubsystem::Periodic() {
     double armOutput = armPID.Calculate(armAngle.value(), m_armSetpoint.position.value());
     double armFeedforwardOut = armFeedforward.Calculate(m_armSetpoint.position, m_armSetpoint.velocity).value() + pidf::kArmGWrist * units::math::cos(alpha).value();
 
-    frc::SmartDashboard::PutNumber("Arm PID Output", armOutput);
-    frc::SmartDashboard::PutNumber("Arm Feedforward Output", armFeedforwardOut);
-
-    frc::SmartDashboard::PutNumber("Goal Arm Angle", m_armSetpoint.position.value());
-    frc::SmartDashboard::PutNumber("Goal Arm Velocity", m_armSetpoint.velocity.value());
-    frc::SmartDashboard::PutNumber("Current Arm Angle", armAngle.value());
-    frc::SmartDashboard::PutNumber("Current Arm Velocity", m_leftArm.GetSensorCollection().GetIntegratedSensorVelocity()
-        * 3600.0 / 2048.0 * 12.0 / 58.0 * 18.0 / 58.0 * 15.0 / 26.0);
+    // frc::SmartDashboard::PutNumber("Arm PID Output", armOutput);
+    // frc::SmartDashboard::PutNumber("Arm Feedforward Output", armFeedforwardOut);
 
     m_leftArm.Set(ctre::phoenix::motorcontrol::ControlMode::PercentOutput, armOutput + armFeedforwardOut / 12.0);
 }
@@ -90,39 +105,45 @@ void ArmSubsystem::Periodic() {
 // Changed the setpoint of the arm
 void ArmSubsystem::GotoAngle(units::degree_t armAngle, units::degree_t wristAngle) {
     // fmt::print( "GoToAngle = {}\n", angle);
-    m_armAngle = armAngle;
+    m_armAngleGoal = armAngle;
 
-    m_wristAngle = wristAngle;
+    m_wristAngleGoal = wristAngle;
 
         // Range check angle
-    if (m_armAngle > max_angle) m_armAngle = max_angle;
-    if (m_armAngle < min_angle) m_armAngle = min_angle;
+    if (m_armAngleGoal > max_angle) m_armAngleGoal = max_angle;
+    if (m_armAngleGoal < min_angle) m_armAngleGoal = min_angle;
 
-    if (m_wristAngle > maxWristAngle) m_wristAngle = maxWristAngle;
-    if (m_wristAngle < minWristAngle) m_wristAngle = minWristAngle;
+    if (m_wristAngleGoal > maxWristAngle) m_wristAngleGoal = maxWristAngle;
+    if (m_wristAngleGoal < minWristAngle) m_wristAngleGoal = minWristAngle;
 }
 
 // Allows setpoint of arm to be nudged
 void ArmSubsystem::AdjustArmAngle(units::degree_t delta_angle) {
-    m_armAngle += delta_angle;
+    m_armAngleGoal += delta_angle;
 
     //m_wristAngle += delta_angle;
     // fmt::print( "AdjustAngle = {}\n", delta_angle );
 
         // Range check angle
-    if (m_armAngle > max_angle) m_armAngle = max_angle;
-    if (m_armAngle < min_angle) m_armAngle = min_angle;
+    if (m_armAngleGoal > max_angle) m_armAngleGoal = max_angle;
+    if (m_armAngleGoal < min_angle) m_armAngleGoal = min_angle;
 }
 
 void ArmSubsystem::AdjustWristAngle(units::degree_t delta_angle) {
-    m_wristAngle += delta_angle;
+    m_wristAngleGoal += delta_angle;
 
-    if (m_wristAngle > maxWristAngle) m_wristAngle = maxWristAngle;
-    if (m_wristAngle < minWristAngle) m_wristAngle = minWristAngle;
+    if (m_wristAngleGoal > maxWristAngle) m_wristAngleGoal = maxWristAngle;
+    if (m_wristAngleGoal < minWristAngle) m_wristAngleGoal = minWristAngle;
+}
+
+void ArmSubsystem::ArmOn( double armSpeed, double wristSpeed ) {
+    m_leftArm.Set( ctre::phoenix::motorcontrol::ControlMode::PercentOutput, armSpeed );
+    m_wrist.Set( wristSpeed );
 }
 
 bool ArmSubsystem::Finished( ) {
-    return (units::math::abs(m_armEncoder.GetPosition() - m_armAngle) < physical::kArmAngleError && units::math::abs(wristAngle - m_wristAngle) < physical::kArmAngleError);
+    return (units::math::abs(m_armEncoder.GetCountingPosition() - m_armAngleGoal) < 
+            physical::kArmAngleError && units::math::abs(wristAngle - m_wristAngleGoal) < physical::kArmAngleError);
 }
 
 void ArmSubsystem::ArmDataSetup( ) {
@@ -162,10 +183,28 @@ void ArmSubsystem::ArmDataUpdate( ) {
     */
 }
 
+void ArmSubsystem::ArmData() {
+
+    frc::SmartDashboard::PutNumber("Goal Arm Angle", m_armSetpoint.position.value());
+    frc::SmartDashboard::PutNumber("Goal Arm Velocity", m_armSetpoint.velocity.value());
+    frc::SmartDashboard::PutNumber("Current Arm Angle", armAngle.value());
+    frc::SmartDashboard::PutNumber("Current Arm Velocity", m_leftArm.GetSensorCollection().GetIntegratedSensorVelocity()
+        * 3600.0 / 2048.0 * 12.0 / 58.0 * 18.0 / 58.0 * 15.0 / 26.0);
+    frc::SmartDashboard::PutNumber("ArmPosition", GetArmAngle().value());
+    frc::SmartDashboard::PutNumber("ArmRawPosition", m_armEncoder.GetRawPosition());
+
+    frc::SmartDashboard::PutNumber("Goal Angle", m_wristSetpoint.position.value());
+    frc::SmartDashboard::PutNumber("Goal Velocity", m_wristSetpoint.velocity.value());
+    frc::SmartDashboard::PutNumber("Current Angle", wristAngle.value());
+    frc::SmartDashboard::PutNumber("Current Velocity", m_enc.GetVelocity() * 0.0129 * 6.0);
+    frc::SmartDashboard::PutNumber("WristPosition", GetWristAngle().value());
+    frc::SmartDashboard::PutNumber("WristRawPosition", m_wristEncoder.GetRawPosition());
+}
+
 units::degree_t ArmSubsystem::GetArmAngle() {
-    return m_armEncoder.GetPosition();
+    return m_armEncoder.GetCountingPosition();
 }
 
 units::degree_t ArmSubsystem::GetWristAngle() {
-    return m_wristEncoder.GetPosition() * physical::kWristEncoderGearRatio;
+    return m_wristEncoder.GetCountingPosition() * physical::kWristEncoderGearRatio;
 }

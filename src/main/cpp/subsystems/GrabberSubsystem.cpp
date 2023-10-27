@@ -20,39 +20,32 @@ void GrabberSubsystem::Periodic()
     double current = m_pdp.GetCurrent(9);
     double stallSpeed = m_enc.GetVelocity();
     auto elapsedTime = frc::Timer::GetFPGATimestamp() - m_startTime;
-    if ((m_hasCone || m_hasCube) && m_isEjecting)
-    {
+    if ((m_hasCone || m_hasCube) && m_isEjecting) {
         // Currently Ejecting
-        if (elapsedTime > 1.0_s)
-        {
+        if (elapsedTime > 1.0_s) {
             // Finsished Ejecting
             m_hasCone = false;
             m_hasCube = false;
             m_intake.Set(0.0);
+            m_leds->Rainbow();
         }
-    }
-    else if (m_loadingCone || m_loadingCube)
-    { // Loading a game piece
-        //m_leds->SetAll(m_loadingCone ? frc::Color::kYellow : frc::Color::kPurple);
-        if ((elapsedTime > 0.5_s) && (fabs(stallSpeed) < m_target_stall_speed))
-        {
+    } else if (m_loadingCone || m_loadingCube) {
+            // Loading a game piece
+        if ((elapsedTime > 0.5_s) && (fabs(stallSpeed) < m_target_stall_speed)) {
             fmt::print("GrabberSubsystem::Periodic stopped with current of {} and speed of {}\n", current, stallSpeed);
-            if (m_loadingCone)
-            {
+            if (m_loadingCone) {
                 m_hasCone = true;
                 m_loadingCone = false;
-                m_intake.Set(0.05);
-            }
-            else
-            {
+                m_intake.Set(-0.05);
+                m_leds->SetAll(frc::Color::kYellow);
+            } else {
                 m_hasCube = true;
                 m_loadingCube = false;
-                m_intake.Set(-0.05);
+                m_intake.Set(0.05);
+                m_leds->SetAll(frc::Color::kPurple);
             }
             //           m_intake.Set( 0.0 );
-        }
-        else if (elapsedTime > 5_s)
-        {
+        } else if (elapsedTime > 5_s) {
             // Timed out without getting a game piece
             m_loadingCone = false;
             m_loadingCube = false;
@@ -89,14 +82,12 @@ void GrabberSubsystem::HandleCone(void)
     {
         // If we already have a cone shoot it out.
         m_isEjecting = true;
-        m_intake.Set(-m_cone_shoot_speed);
-        //m_leds->Chase(frc::Color::kYellow, 5);
-        //m_leds->m_currentLedCommand = 
+        m_intake.Set(m_cone_shoot_speed);
     }
     else
     {
         // Suck in the cone
-        m_leds->Sinusoidal_Pulse(frc::Color::kYellow, 2_s);
+        m_leds->Chase(frc::Color::kYellow, 20);
         m_loadingCone = true;
         m_loadingCube = false;
         m_hasCone = false;
@@ -121,22 +112,21 @@ void GrabberSubsystem::HandleCube(void)
     if (m_hasCube)
     {
         // Edjecting Cube Logic
-        m_leds->Chase(frc::Color::kBlue, 5);
         m_isEjecting = true;
         if (m_arm->GetArmAngle() < 10_deg)
         {
-            m_leds->Sinusoidal_Pulse(frc::Color::kBlue, 2_s);
+            //            m_leds->Sinusoidal_Pulse(frc::Color::kBlue, 2_s);
             m_intake.Set(m_cube_shoot_slow_speed);
         }
         else
         {
-            m_leds->Sinusoidal_Pulse(frc::Color::kBlue, 1_s);
+            //            m_leds->Sinusoidal_Pulse(frc::Color::kBlue, 1_s);
             m_intake.Set(m_cube_shoot_fast_speed);
         }
     }
     else
     {
-        m_leds->Chase(frc::Color::kBlue, 5);
+        m_leds->Chase(frc::Color::kPurple, 20);
         // Intake Cube Logic
         m_loadingCone = false;
         m_loadingCube = true;
@@ -144,8 +134,16 @@ void GrabberSubsystem::HandleCube(void)
         m_hasCube = false;
         m_isEjecting = false;
         m_target_amps = m_cube_max_amps;
-        m_intake.Set(-m_cube_intake_speed);
+        m_intake.Set(m_cube_intake_speed);
     }
+}
+
+bool GrabberSubsystem::HasCube() {
+    return m_hasCube;
+}
+
+bool GrabberSubsystem::HasCone() {
+    return m_hasCone;
 }
 
 void GrabberSubsystem::GrabberTest()

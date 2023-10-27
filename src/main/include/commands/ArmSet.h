@@ -14,7 +14,7 @@
 class ArmSet
     : public frc2::CommandHelper<frc2::CommandBase, ArmSet> {
  public:
-   ArmSet(ArmSubsystem* arm, units::degree_t armAngle, units::degree_t wristAngle, double delayProportion);
+   ArmSet(ArmSubsystem* arm, units::degree_t armAngle, units::degree_t wristAngle, double delayProportion, bool finish = false);
 
   void Initialize() override;
 
@@ -33,6 +33,9 @@ class ArmSet
   units::degree_t m_delayArmAngle;
   units::degree_t m_delayWristAngle;
   double m_delayProportion;
+  bool m_isWaiting;
+
+  bool m_finish;
 
   units::degree_t m_startingArmAngle;
   units::degree_t m_startingWristAngle;

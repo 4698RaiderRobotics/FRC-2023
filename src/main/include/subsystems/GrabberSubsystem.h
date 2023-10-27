@@ -31,13 +31,17 @@ class GrabberSubsystem : public frc2::SubsystemBase {
 
   void HandleCube( void );
   void HandleCone( void );
+
+  bool HasCube();
+  bool HasCone();
+  
  private:
   double m_spin_speed = 1.0;
-  double m_cone_intake_speed = 0.5;
+  double m_cone_intake_speed = -0.5;
   double m_cone_shoot_speed = 1.0;
   double m_cube_intake_speed = 0.5;
-  double m_cube_shoot_fast_speed = 0.75;
-  double m_cube_shoot_slow_speed = 0.25;
+  double m_cube_shoot_fast_speed = -0.50;
+  double m_cube_shoot_slow_speed = -0.25;
 
   double m_cone_max_amps = 15.0;
   double m_cube_max_amps = 10.0;

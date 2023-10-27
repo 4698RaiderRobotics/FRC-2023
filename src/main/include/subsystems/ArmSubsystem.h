@@ -31,11 +31,15 @@ class ArmSubsystem : public frc2::SubsystemBase {
 
   void AdjustWristAngle( units::degree_t delta_angle);
 
+  void ArmOn( double armSpeed, double wristSpeed );
+
   bool Finished( );
 
   void ArmDataSetup( );
 
-  void ArmDataUpdate( );
+  void ArmDataUpdate();
+
+  void ArmData();
 
   units::degree_t GetArmAngle();
 
@@ -53,19 +57,19 @@ class ArmSubsystem : public frc2::SubsystemBase {
   AbsoluteEncoder m_armEncoder{ deviceIDs::kArmEncoderID, physical::kArmAbsoluteOffset, true };
   AbsoluteEncoder m_wristEncoder{ deviceIDs::kWristEncoderID, physical::kWristAbsoluteOffset, true };
 
-  units::degree_t armAngle = m_armEncoder.GetPosition();
-  units::degree_t wristAngle = m_wristEncoder.GetPosition() * physical::kWristEncoderGearRatio;
+  units::degree_t armAngle;
+  units::degree_t wristAngle;
 
   units::degree_t max_angle = 120_deg;
-  units::degree_t min_angle = -120_deg;
+  units::degree_t min_angle = -135_deg;
   units::degree_t maxWristAngle = 75_deg;
-  units::degree_t minWristAngle = -135_deg;
+  units::degree_t minWristAngle = -180_deg;
 
   frc2::PIDController wristPID{ pidf::kWristP, pidf::kWristI, pidf::kWristD };
 
   frc::ArmFeedforward wristFeedforward{ units::volt_t{ pidf::kWristS }, units::volt_t{ pidf::kWristG },  units::unit_t<frc::ArmFeedforward::kv_unit> { pidf::kWristV } };
 
-  frc::TrapezoidProfile<units::degrees>::Constraints m_wristConstraints{ 720_deg_per_s, 360_deg_per_s_sq };
+  frc::TrapezoidProfile<units::degrees>::Constraints m_wristConstraints{ 180_deg_per_s, 360_deg_per_s_sq };
   frc::TrapezoidProfile<units::degrees>::State m_wristGoal;
   frc::TrapezoidProfile<units::degrees>::State m_wristSetpoint;
 
@@ -73,13 +77,13 @@ class ArmSubsystem : public frc2::SubsystemBase {
 
   frc::ArmFeedforward armFeedforward{ units::volt_t{ pidf::kArmS }, units::volt_t{ pidf::kArmG },  units::unit_t<frc::ArmFeedforward::kv_unit> { pidf::kArmV } };
 
-  frc::TrapezoidProfile<units::degrees>::Constraints m_armConstraints{ 720_deg_per_s, 360_deg_per_s_sq };
+  frc::TrapezoidProfile<units::degrees>::Constraints m_armConstraints{ 180_deg_per_s, 360_deg_per_s_sq };
   frc::TrapezoidProfile<units::degrees>::State m_armGoal;
   frc::TrapezoidProfile<units::degrees>::State m_armSetpoint;
 
   units::second_t dt = 20_ms;
-  units::degree_t m_armAngle;
-  units::degree_t m_wristAngle;
+  units::degree_t m_armAngleGoal;
+  units::degree_t m_wristAngleGoal;
 
   bool disabled = true;
 };

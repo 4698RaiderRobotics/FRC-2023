@@ -16,13 +16,16 @@ namespace pidf {
     constexpr double kTurnD = 0;
 
     // PID values for drive motor of swerve modules
+//    constexpr double kDriveP = 0.0001;
     constexpr double kDriveP = 0.0001;
     constexpr double kDriveI = 0;
     constexpr double kDriveD = 0.0001;
+//    constexpr double kDriveFF = 0.00017;
     constexpr double kDriveFF = 0.00017;
 
     // P value for auto balance on charge station
-    constexpr double kGyroBalanceP = 0.024;
+ //   constexpr double kGyroBalanceP = 0.0075;
+    constexpr double kGyroBalanceP = 0.03;
 
     //constexpr double kXTargetP = 0.005;
     //constexpr double kYTargetP = 0.1;
@@ -38,14 +41,25 @@ namespace pidf {
     constexpr double kWristD = 0.0005;
 
     // PID values for arm mechanism
-    constexpr double kArmG = 1.1;
-    constexpr double kArmGWrist = 0.4;
-    constexpr double kArmS = 0.0;
-    constexpr double kArmV = 0.35;
+    // Before gear ratio change
+    // constexpr double kArmG = 1.1;
+    // constexpr double kArmGWrist = 0.4;
+    // constexpr double kArmS = 0.0;
+    // constexpr double kArmV = 0.35;
 
-    constexpr double kArmP = 0.0035;
+    // constexpr double kArmP = 0.0035;
+    // constexpr double kArmI = 0.0;
+    // constexpr double kArmD = 0.0002;
+
+    // After gear ratio change
+    constexpr double kArmG = 0.5671;
+    constexpr double kArmGWrist = 0.2062;
+    constexpr double kArmS = 0.0;
+    constexpr double kArmV = 0.6788;
+
+    constexpr double kArmP = 0.006788;
     constexpr double kArmI = 0.0;
-    constexpr double kArmD = 0.0002;
+    constexpr double kArmD = 0.0003879;
 }
 
 namespace deviceIDs {
@@ -102,7 +116,8 @@ namespace physical {
     constexpr meters_per_rev_t kDriveMetersPerRotation = std::numbers::pi * 4.0_in / (kDriveGearRatio *  1_tr );
 
     // Gear ratio of the arm
-    constexpr double kArmGearRatio = 12.0 / 58.0 * 18.0 / 58.0 * 15.0 / 26.0;
+    constexpr double kOldArmGearRatio = 12.0 / 58.0 * 18.0 / 58.0 * 15.0 / 26.0;
+    constexpr double kArmGearRatio = 8.0 / 60.0 * 18.0 / 58.0 * 12.0 / 26.0;
 
     // Conversion factor for falcon motors
     constexpr double tics_per_100ms_to_deg_per_s = 3600.0 / 2048.0;
@@ -136,17 +151,22 @@ namespace physical {
     constexpr units::inch_t kLimelightXAxisOffset = 325.61_in;
     constexpr units::inch_t kLimelightYAxisOffset = 157.8_in;
 
-    constexpr units::inch_t kPlaceDistance = 0_in;
+    constexpr units::inch_t kPlaceDistance = 11_in;
 
     constexpr units::degree_t kArmLowerPlaceHeight = -60_deg;
     constexpr units::degree_t kWristLowerPlaceHeight = 20_deg;
     constexpr double kLowerDelayProportion = 0.0;
 
-    constexpr units::degree_t kArmMidPlaceHeight = -15_deg;
-    constexpr units::degree_t kWristMidPlaceHeight = -30_deg;
-    constexpr double kMidDelayProportion = 0.3;
+    constexpr units::degree_t kArmConeMidPlaceHeight = 50_deg;
+    constexpr units::degree_t kWristConeMidPlaceHeight = -165_deg;
+    constexpr units::degree_t kArmCubeMidPlaceHeight = -30_deg;
+    constexpr units::degree_t kWristCubeMidPlaceHeight = 0_deg;
+    
+    constexpr units::degree_t kArmSubstationMidPlaceHeight = 25_deg;
+    constexpr units::degree_t kWristSubstationMidPlaceHeight = -90_deg;
+    constexpr double kMidDelayProportion = 0.3; 
 
-    constexpr units::degree_t kArmUpperPlaceHeight = 45_deg;
-    constexpr units::degree_t kWristUpperPlaceHeight = -135_deg;
+    constexpr units::degree_t kArmUpperPlaceHeight = 30_deg;
+    constexpr units::degree_t kWristUpperPlaceHeight = -90_deg;
     constexpr double kUpperDelayProportion = 0.5;
 }

@@ -4,6 +4,7 @@
 
 #include <frc2/command/WaitCommand.h>
 #include <frc2/command/InstantCommand.h>
+#include <frc2/command/ParallelCommandGroup.h>
 
 #include "commands/autonomous/PlaceAtPose.h"
 #include "commands/DriveToPoseCommand.h"
@@ -16,13 +17,19 @@
 PlaceAtPose::PlaceAtPose( Drivetrain *drive, ArmSubsystem *arm, GrabberSubsystem *grabber, frc::Pose2d m_targetPose, bool blueSide ) {
   alliance = blueSide ? 1 : -1;
   AddCommands(
-    DriveToPoseCommand( drive, m_targetPose ),
-    ArmSet(arm, physical::kArmMidPlaceHeight, physical::kWristMidPlaceHeight, 0.5),
+    frc2::ParallelCommandGroup(frc2::SequentialCommandGroup(frc2::WaitCommand(0.5_s), frc2::InstantCommand([this, arm] {arm->ArmOn(-0.75, 0.5); }, { arm }),
+      frc2::WaitCommand(0.4_s), frc2::InstantCommand([this, arm] {arm->ArmOn(0.0, 0.0); }, { arm })), 
+      DriveToPoseCommand(drive, { m_targetPose.X() - (physical::kPlaceDistance * alliance), m_targetPose.Y(), m_targetPose.Rotation() })),
+    // frc2::WaitCommand(0.5_s),
+    // frc2::InstantCommand([this, arm] {arm->ArmOn(-0.75, 0.5); }, { arm }),
+    // frc2::WaitCommand(0.4_s),
+    // frc2::InstantCommand([this, arm] {arm->ArmOn(0.0, 0.0); }, { arm }),
+    //ArmSet(arm, arm->GetArmAngle() - 10_deg, arm->GetWristAngle() + 10_deg, 0.3, true ),
     DriveToPoseCommand( drive, { m_targetPose.X() - ( physical::kPlaceDistance * alliance ), m_targetPose.Y(), m_targetPose.Rotation() } ),
-    frc2::InstantCommand( [this, grabber] { grabber->Spin( -0.5 ) ;}, { grabber } ),
+    ArmSet(arm, physical::kArmUpperPlaceHeight, physical::kWristUpperPlaceHeight, 0.3),
+    frc2::InstantCommand( [this, grabber] { grabber->Spin( -0.35 ) ;}, { grabber } ),
     frc2::WaitCommand( 0.25_s ),
     frc2::InstantCommand( [this, grabber] { grabber->Spin( 0.0 ) ;}, { grabber } ),
-    DriveToPoseCommand( drive, { m_targetPose.X() + ( physical::kPlaceDistance * alliance ), m_targetPose.Y(), m_targetPose.Rotation() } ),
-    ArmSet(arm, -118_deg, 45_deg, 0.5)
+    ArmSet(arm, -118_deg, 61_deg, 0.3)
   );
 }

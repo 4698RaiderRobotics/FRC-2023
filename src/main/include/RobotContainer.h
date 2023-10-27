@@ -50,16 +50,13 @@ class RobotContainer {
   ArmSubsystem m_arm;
   LEDs m_leds;
   GrabberSubsystem m_grabber{ PDP, &m_arm, &m_leds };
-  //  SimpleAuto m_simpleAuto{ &m_drive, &m_arm, &m_grabber, 30_deg };
-  // WizzyWiggAuto m_wizzyWiggAuto{ &m_drive, &m_arm, &m_grabber };
-
 
   frc2::Command* m_autoCommand = nullptr;
 
   frc::SendableChooser<std::string> m_chooser;
-  const std::string kBalance = "Place Cone and Balance";
-  const std::string kLeave = "Place Cone and Leave";
-  const std::string kPlaceOnly = "Just Place Cone";
+  const std::string kBalance = "Place Cube and Balance";
+  const std::string kLeave = "Place Cube and Leave";
+  const std::string kPlaceOnly = "Just Place Cube";
   std::string m_autoSelected;
   
   frc::PS4Controller m_driverController{ 0 };

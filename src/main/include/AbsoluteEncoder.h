@@ -18,19 +18,37 @@ class AbsoluteEncoder{
             if ( inverted ) {
                 m_invertFactor = -1;
             }
+
+            m_absoluteEncoder.SetPositionOffset(absoluteEncoderOffset);
+            m_absoluteEncoder.SetDistancePerRotation(360.0);
         }
 
-        // Returns the angle in degrees
-        units::degree_t GetPosition( void ) {
-            return ( m_absoluteEncoder.GetAbsolutePosition() - m_absoluteEncoderOffset ) * 360_deg * m_invertFactor;
+        // Returns the angle in degrees wrapping 0-360
+        units::degree_t GetRollOverPosition(void) {
+            return (m_absoluteEncoder.GetAbsolutePosition() - m_absoluteEncoderOffset) * 360_deg * m_invertFactor;
         }
+
+        // Returns the angle in degrees without wrapping at zero
+        units::degree_t GetCountingPosition(void) {
+            return (m_absoluteEncoder.GetDistance() * 1_deg * m_invertFactor) - position_offset;
+        }
+        
         double GetRawPosition() {
             return m_absoluteEncoder.GetAbsolutePosition();
         }
-    private:
+
+        void SetPositionNegative(void) {
+            position_offset = 360.0_deg;
+        }
+
+        bool IsConnected( void ) {
+            return m_absoluteEncoder.IsConnected();
+        }
+private:
         frc::DutyCycleEncoder m_absoluteEncoder;
 
         const double m_absoluteEncoderOffset;
 
         int m_invertFactor;
+        units::degree_t position_offset{ 0_deg };
 };

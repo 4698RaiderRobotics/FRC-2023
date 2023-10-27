@@ -48,6 +48,7 @@ void Drivetrain::Drive( frc::ChassisSpeeds speeds, bool fieldRelative ) {
     m_kinematics.DesaturateWheelSpeeds( &states, physical::kMaxDriveSpeed );
 
     auto [ fl, fr, bl, br ] = states;
+    //fmt::print("Drivetrain::Drive Speed = {}\n", speeds.vx);
 
     // Sets each SwerveModule to the correct SwerveModuleState
     m_frontLeft.SetDesiredState( fl );
@@ -114,10 +115,10 @@ void Drivetrain::Periodic( ) {
         }
         if ( frc::DriverStation::IsDisabled() ) {
             if ( visionPose.X() < 7.5_m ) {
-                fmt::print( "Blue Alliance\n");
+//                fmt::print( "Blue Alliance\n");
                 m_gyro_operator_offset = 360_deg - units::degree_t{ m_gyro.GetYaw() } - visionPose.Rotation().Degrees();
             } else {
-                fmt::print( "Red Alliance\n");
+//                fmt::print( "Red Alliance\n");
                 m_gyro_operator_offset = 180_deg - units::degree_t{ m_gyro.GetYaw() } - visionPose.Rotation().Degrees();
             }
 

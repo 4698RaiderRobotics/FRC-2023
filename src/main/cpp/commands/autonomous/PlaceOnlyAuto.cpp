@@ -16,13 +16,15 @@ PlaceOnlyAuto::PlaceOnlyAuto( Drivetrain *drive, ArmSubsystem *arm, GrabberSubsy
   fmt::print( "PlaceOnlyAuto::PlaceOnlyAuto\n" );
   // If on blue side, do blue auto
   if ( drive->GetPose().X() < 7.5_m ) {
-    m_targetpose = drive->GetPose().Nearest( std::span<frc::Pose2d> ( blueAllianceTargetPoints, 2 ) );
+    //m_targetpose = drive->GetPose().Nearest( std::span<frc::Pose2d> ( blueAllianceTargetPoints, 2 ) );
+    m_targetpose = drive->blueAllianceGridPoints[4];
     AddCommands(
       PlaceAtPose( drive, arm, grabber, m_targetpose, true )
     );
   // If on red side, do red auto
   } else if ( drive->GetPose().X() > 7.5_m ) {
-    m_targetpose = drive->GetPose().Nearest( std::span<frc::Pose2d> ( redAllianceTargetPoints, 2 ) );
+    //m_targetpose = drive->GetPose().Nearest( std::span<frc::Pose2d> ( redAllianceTargetPoints, 2 ) );
+    m_targetpose = drive->redAllianceGridPoints[4];
     AddCommands(
       PlaceAtPose( drive, arm, grabber, m_targetpose, false )
     );

@@ -25,7 +25,7 @@ class LEDs : public frc2::SubsystemBase {
    * Will be called periodically whenever the CommandScheduler runs.
    */
   void Periodic() override;
-  enum LedCommand { breath, chase, lpulse, rainbow, spulse };
+  enum LedCommand { breath, chase, lpulse, rainbow, spulse, constant };
   LedCommand m_currentLedCommand = chase;
 
 
@@ -47,4 +47,8 @@ private:
       m_ledBuffer;
   int firstPixelHue = 0;
   int firstPixel = 0;
+
+  frc::Color m_currColor;
+  int m_chaseTaillength;
+  units::second_t m_cycleTime;
 };

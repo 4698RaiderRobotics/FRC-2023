@@ -10,30 +10,41 @@ LEDs::LEDs()
     m_led.SetLength(m_ledBuffer.size());
     m_led.SetData(m_ledBuffer);
     m_led.Start();
+
+    m_currColor = frc::Color::kBlue;
+    m_chaseTaillength = 10;
+    m_cycleTime = 5_s;
 }
 
 
 void LEDs::SetAll(int r, int g, int b) {
     SetAll(frc::Color(r, g, b));
 }
-void LEDs::SetAll(frc::Color colors) {
+void LEDs::SetAll(frc::Color color) {
     /*for (auto pixel : m_ledBuffer)
         pixel.SetLED(colors);*/
     for (int i = 0; i < kLength; i++) {
-        m_ledBuffer[i].SetLED(colors);
+        m_ledBuffer[i].SetLED(color);
     }
+    m_currentLedCommand = constant;
 }
 void LEDs::Rainbow() {
     m_currentLedCommand = rainbow;
 }
 void LEDs::Chase(frc::Color color, int tailLength) {
+    m_currColor = color;
+    m_chaseTaillength = tailLength;
     m_currentLedCommand = chase;
 }
 
 void LEDs::Linear_Pulse(frc::Color color, units::second_t cycle) {
+    m_currColor = color;
+    m_cycleTime = cycle;
     m_currentLedCommand = lpulse;
 }
 void LEDs::Sinusoidal_Pulse(frc::Color color, units::second_t cycle) {
+    m_currColor = color;
+    m_cycleTime = cycle;
     m_currentLedCommand = spulse;
 }
 // Internal commands
@@ -65,7 +76,7 @@ void LEDs::f_linear_pulse(frc::Color color, units::time::second_t cycle) {
         color.red * magnitude
     );
     SetAll(pixelColor);
-    std::cout << "l Pulsing\n";
+    //    std::cout << "l Pulsing\n";
 }
 void LEDs::f_sinusoidal_pulse(frc::Color color, units::time::second_t cycle) {
     units::second_t time = frc::Timer::GetFPGATimestamp();
@@ -79,7 +90,7 @@ void LEDs::f_sinusoidal_pulse(frc::Color color, units::time::second_t cycle) {
         color.red * magnitude
     );
     SetAll(pixelColor);
-    std::cout << "s Pulsing\n";
+    //    std::cout << "s Pulsing\n";
 }
 void LEDs::f_rainbow() {
     // For every pixel
@@ -94,7 +105,7 @@ void LEDs::f_rainbow() {
     firstPixelHue += 3;
     // Check bounds
     firstPixelHue %= 180;
-    std::cout << "displaying Rainbow\n";
+    //    std::cout << "displaying Rainbow\n";
 }
 // This method will be called once per scheduler run
 void LEDs::Periodic()
@@ -102,7 +113,7 @@ void LEDs::Periodic()
     m_led.SetData(m_ledBuffer);
     if (m_currentLedCommand == chase) {
         //Chase(frc::Color::kBlue, 10);
-        f_chase(frc::Color::kBlue, 10);
+        f_chase(m_currColor, m_chaseTaillength);
     }
     else if (m_currentLedCommand == rainbow) {
         // Rainbow();
@@ -110,10 +121,10 @@ void LEDs::Periodic()
     }
     else if (m_currentLedCommand == lpulse) {
         //Linear_Pulse(frc::Color::kBlue, 5_s);
-        f_linear_pulse(frc::Color::kBlue, 5_s);
+        f_linear_pulse(m_currColor, m_cycleTime);
     }
     else if (m_currentLedCommand == spulse) {
         //Sinusoidal_Pulse(frc::Color::kBlue, 5_s);
-        f_sinusoidal_pulse(frc::Color::kBlue, 5_s);
+        f_sinusoidal_pulse(m_currColor, m_cycleTime);
     }
 }

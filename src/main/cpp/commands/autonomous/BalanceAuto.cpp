@@ -18,10 +18,11 @@ BalanceAuto::BalanceAuto(Drivetrain* drive, ArmSubsystem* arm, GrabberSubsystem*
   frc::Pose2d blueAllianceTargetPoints[2] = { drive->blueAllianceGridPoints[3], drive->blueAllianceGridPoints[5] };
   fmt::print("BalanceAuto::BalanceAuto\n");
 
-  units::meter_t auto_drive_distance = 1.75_m;
+  units::meter_t auto_drive_distance = 2.25_m;
   // If on blue side, do blue auto
   if (drive->GetPose().X() < 7.5_m) {
-    m_targetpose = drive->GetPose().Nearest(std::span<frc::Pose2d>(blueAllianceTargetPoints, 2));
+    //m_targetpose = drive->GetPose().Nearest(std::span<frc::Pose2d>(blueAllianceTargetPoints, 2));
+    m_targetpose = drive->blueAllianceGridPoints[4];
     AddCommands(
       PlaceAtPose(drive, arm, grabber, m_targetpose, true),
       //      DriveToPoseCommand( drive, { m_targetpose.X() + auto_drive_distance, m_targetpose.Y(), 180_deg } ),
@@ -31,7 +32,8 @@ BalanceAuto::BalanceAuto(Drivetrain* drive, ArmSubsystem* arm, GrabberSubsystem*
     // If on red side, do red auto
   }
   else if (drive->GetPose().X() > 7.5_m) {
-    m_targetpose = drive->GetPose().Nearest(std::span<frc::Pose2d>(redAllianceTargetPoints, 2));
+    //m_targetpose = drive->GetPose().Nearest(std::span<frc::Pose2d>(redAllianceTargetPoints, 2));
+    m_targetpose = drive->redAllianceGridPoints[4];
     AddCommands(
       PlaceAtPose(drive, arm, grabber, m_targetpose, false),
       //      DriveToPoseCommand( drive, { m_targetpose.X() - auto_drive_distance, m_targetpose.Y(), 0_deg } ),

@@ -22,8 +22,9 @@ class GyroBalance : public frc2::CommandHelper<frc2::CommandBase, GyroBalance> {
 
     frc::ChassisSpeeds speeds;
 
-    double error;
-    double currentAngle;
-  
-    units::meters_per_second_t drivePower;
+    units::degree_t error;
+    units::degree_t currentAngle;
+
+    bool direction = true;
+    int flip = 1;
 };

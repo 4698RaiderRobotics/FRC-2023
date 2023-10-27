@@ -36,5 +36,5 @@ void TestProfileMove::Execute( void ) {
 }
 
 bool TestProfileMove::IsFinished( void ) {
-  return m_profile.IsFinished( m_elapsed_time );
+  return m_profile.IsFinished( m_elapsed_time + 0.25_s );
 }
