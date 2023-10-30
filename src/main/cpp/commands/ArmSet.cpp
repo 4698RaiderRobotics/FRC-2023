@@ -30,12 +30,12 @@ void ArmSet::Initialize() {
   if (m_delayProportion > 0) {
     if (m_delayArmAngle > 0_deg /* && m_arm->GetArmAngle() < m_startingArmAngle + m_delayArmAngle */) {
       // fmt::print("Wrist Delayed until arm at {}, current {}, time {}\n", m_startingArmAngle + m_delayArmAngle, m_arm->GetArmAngle(), frc::Timer::GetFPGATimestamp());
-      // m_arm->GotoAngle(m_armAngle, m_startingWristAngle);
+      m_arm->GotoAngle(m_armAngle, m_startingWristAngle);
       m_isWaiting = true;
     }
     else if (m_delayArmAngle < 0_deg /* && m_arm->GetWristAngle() < m_startingWristAngle + m_delayWristAngle */) {
       // fmt::print("Arm Delayed until wrist at {}, current {}, time {}\n", m_startingWristAngle + m_delayWristAngle, m_arm->GetWristAngle(), frc::Timer::GetFPGATimestamp());
-      // m_arm->GotoAngle(m_startingArmAngle, m_wristAngle);
+      m_arm->GotoAngle(m_startingArmAngle, m_wristAngle);
       m_isWaiting = true;
     }
     /*

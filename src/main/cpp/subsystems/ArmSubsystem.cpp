@@ -104,7 +104,7 @@ void ArmSubsystem::Periodic() {
 
 // Changed the setpoint of the arm
 void ArmSubsystem::GotoAngle(units::degree_t armAngle, units::degree_t wristAngle) {
-    // fmt::print( "GoToAngle = {}\n", angle);
+    // fmt::print( "GoToArmAngle = {}, GoToWristAngle = {} \n", armAngle, wristAngle );
     m_armAngleGoal = armAngle;
 
     m_wristAngleGoal = wristAngle;
@@ -115,6 +115,7 @@ void ArmSubsystem::GotoAngle(units::degree_t armAngle, units::degree_t wristAngl
 
     if (m_wristAngleGoal > maxWristAngle) m_wristAngleGoal = maxWristAngle;
     if (m_wristAngleGoal < minWristAngle) m_wristAngleGoal = minWristAngle;
+    // fmt::print( "GoalArm = {}, GoalWrist = {}\n", m_armAngleGoal, m_wristAngleGoal );
 }
 
 // Allows setpoint of arm to be nudged
@@ -193,10 +194,10 @@ void ArmSubsystem::ArmData() {
     frc::SmartDashboard::PutNumber("ArmPosition", GetArmAngle().value());
     frc::SmartDashboard::PutNumber("ArmRawPosition", m_armEncoder.GetRawPosition());
 
-    frc::SmartDashboard::PutNumber("Goal Angle", m_wristSetpoint.position.value());
-    frc::SmartDashboard::PutNumber("Goal Velocity", m_wristSetpoint.velocity.value());
-    frc::SmartDashboard::PutNumber("Current Angle", wristAngle.value());
-    frc::SmartDashboard::PutNumber("Current Velocity", m_enc.GetVelocity() * 0.0129 * 6.0);
+    frc::SmartDashboard::PutNumber("Goal Wrist Angle", m_wristSetpoint.position.value());
+    frc::SmartDashboard::PutNumber("Goal Wrist Velocity", m_wristSetpoint.velocity.value());
+    frc::SmartDashboard::PutNumber("Current Wrist Angle", wristAngle.value());
+    frc::SmartDashboard::PutNumber("Current Wrist Velocity", m_enc.GetVelocity() * 0.0129 * 6.0);
     frc::SmartDashboard::PutNumber("WristPosition", GetWristAngle().value());
     frc::SmartDashboard::PutNumber("WristRawPosition", m_wristEncoder.GetRawPosition());
 }
