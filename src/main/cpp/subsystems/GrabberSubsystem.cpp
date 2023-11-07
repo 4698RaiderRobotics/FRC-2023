@@ -7,7 +7,7 @@
 #include "subsystems/LEDs.h"
 #include <frc/Timer.h>
 
-GrabberSubsystem::GrabberSubsystem(frc::PowerDistribution &pdp, ArmSubsystem *arm, LEDs *leds) : frc2::SubsystemBase(), m_pdp{pdp}, m_arm{arm}, m_leds{leds}
+GrabberSubsystem::GrabberSubsystem(ArmSubsystem *arm, LEDs *leds) : frc2::SubsystemBase(), m_arm{arm}, m_leds{leds}
 {
     m_intake.RestoreFactoryDefaults();
     m_intake.SetSmartCurrentLimit(40);
@@ -17,7 +17,6 @@ GrabberSubsystem::GrabberSubsystem(frc::PowerDistribution &pdp, ArmSubsystem *ar
 void GrabberSubsystem::Periodic()
 {
 
-    double current = m_pdp.GetCurrent(9);
     double stallSpeed = m_enc.GetVelocity();
     auto elapsedTime = frc::Timer::GetFPGATimestamp() - m_startTime;
     if ((m_hasCone || m_hasCube) && m_isEjecting) {
@@ -32,7 +31,7 @@ void GrabberSubsystem::Periodic()
     } else if (m_loadingCone || m_loadingCube) {
             // Loading a game piece
         if ((elapsedTime > 0.5_s) && (fabs(stallSpeed) < m_target_stall_speed)) {
-            fmt::print("GrabberSubsystem::Periodic stopped with current of {} and speed of {}\n", current, stallSpeed);
+            fmt::print("GrabberSubsystem::Periodic stopped with speed of {}\n", stallSpeed);
             if (m_loadingCone) {
                 m_hasCone = true;
                 m_loadingCone = false;
@@ -53,7 +52,7 @@ void GrabberSubsystem::Periodic()
         }
     }
     // fmt::print( "Intake current: {}\n", current );
-    frc::SmartDashboard::PutNumber("Intake Current", current);
+
 }
 
 // Speed of rollers is value from -1 to 1

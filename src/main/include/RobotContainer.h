@@ -41,7 +41,6 @@ class RobotContainer {
   void TestDataSetup();
   void TestDataUpdate();
  private:
-  frc::PowerDistribution PDP{0, frc::PowerDistribution::ModuleType::kCTRE};
   frc::Compressor Compressor{9, frc::PneumaticsModuleType::CTREPCM}; 
 
   // The robot's subsystems and commands are defined here...
@@ -49,7 +48,7 @@ class RobotContainer {
   Drivetrain m_drive{ &m_limelight };
   ArmSubsystem m_arm;
   LEDs m_leds;
-  GrabberSubsystem m_grabber{ PDP, &m_arm, &m_leds };
+  GrabberSubsystem m_grabber{ &m_arm, &m_leds };
 
   frc2::Command* m_autoCommand = nullptr;
 

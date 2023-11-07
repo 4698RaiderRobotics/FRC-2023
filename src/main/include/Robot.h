@@ -2,8 +2,7 @@
 
 #include <frc/TimedRobot.h>
 #include <frc2/command/Command.h>
-
-
+#include <frc/PowerDistribution.h>
 
 #include "RobotContainer.h"
 
@@ -31,4 +30,6 @@ class Robot : public frc::TimedRobot {
   frc2::Command* m_autonomousCommand = nullptr;
 
   RobotContainer m_container;
+
+  frc::PowerDistribution m_pdp{0, frc::PowerDistribution::ModuleType::kCTRE};
 };

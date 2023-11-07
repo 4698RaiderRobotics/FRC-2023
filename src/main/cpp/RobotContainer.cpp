@@ -145,7 +145,6 @@ void RobotContainer::TestDataSetup() {
   m_arm.ArmDataSetup();
 
   m_drive.DrivetrainSetup();
-  frc::SmartDashboard::PutData(&PDP);
   frc::SmartDashboard::PutData(&Compressor);
 }
 
