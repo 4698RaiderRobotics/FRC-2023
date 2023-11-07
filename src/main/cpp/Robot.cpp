@@ -11,14 +11,25 @@
 #include "frc/DataLogManager.h"
 #include "frc/DriverStation.h"
 
+#include "DataLogger.h"
+
 void Robot::RobotInit()
 {
   // Starts recording to data log
   frc::DataLogManager::Start();
+  wpi::log::DataLog& log = frc::DataLogManager::GetLog();
   // Record both DS control and joystick data
-  frc::DriverStation::StartDataLog(frc::DataLogManager::GetLog());
+  frc::DriverStation::StartDataLog(log);
   // Log in Telelop:
   //frc::CameraServer::StartAutomaticCapture();
+
+//  logger.StartDataLog( log );
+
+  // voltage = wpi::log::DoubleLogEntry( log, "PDP/Bus Voltage" );
+  // current = wpi::log::DoubleLogEntry( log, "PDP/Total Current" );
+  // power = wpi::log::DoubleLogEntry( log, "PDP/Total Power" );
+  // temp = wpi::log::DoubleLogEntry( log, "PDP/Temperature" );
+  // brown = wpi::log::BooleanLogEntry( log, "PDP/Brown Out" );
 }
 
 /**
@@ -31,6 +42,12 @@ ccc * <p> This runs after the mode specific periodic functions, but before
 void Robot::RobotPeriodic()
 {
   frc2::CommandScheduler::GetInstance().Run();
+
+  DataLogger::GetInstance().Send("PDP/Bus Voltage", m_pdp.GetVoltage());
+  DataLogger::GetInstance().Send("PDP/Total Current", m_pdp.GetTotalCurrent());
+  DataLogger::GetInstance().Send("PDP/Temperature", m_pdp.GetTemperature());
+  DataLogger::GetInstance().Send("PDP/Total Power", m_pdp.GetTotalPower());
+  DataLogger::GetInstance().Send("PDP/Brown Out", (bool) m_pdp.GetFaults().Brownout);
 }
 
 /**

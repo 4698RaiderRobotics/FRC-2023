@@ -38,6 +38,7 @@ class SwerveModule {
         rev::CANSparkMax m_turnMotor;
 
         rev::SparkMaxRelativeEncoder m_driveEncoder = m_driveMotor.GetEncoder();
+        rev::SparkMaxRelativeEncoder m_turnMotorEncoder = m_turnMotor.GetEncoder();
         AbsoluteEncoder m_turnEncoder;
 
         // The drive motor uses an onboard PID controller (rev::SparkMaxPIDController). 
@@ -46,14 +47,8 @@ class SwerveModule {
 
         // The turn motor uses the software PID controller (frc2::PIDController). 
         // The motor needs to be set with the Set() function with the PID controller's output.
-        frc2::PIDController m_turnPIDController{ kTurnP, kTurnI, kTurnD };
+        frc2::PIDController m_turnPIDController{0,0,0};
 
-        double kTurnP = 0.0095;
-        double kTurnI = 0;
-        double kTurnD = 0;
+        std::string m_name;
 
-        double kDriveP = 0.0001;
-        double kDriveI = 0;
-        double kDriveD = 0.001;
-        double kDriveFF = 0.0002;
 };

@@ -7,6 +7,8 @@
 #include <frc/geometry/Pose2d.h>
 #include <frc/smartdashboard/SmartDashboard.h>
 #include <frc/smartdashboard/Field2d.h>
+#include <frc/DataLogManager.h>
+#include <wpi/DataLog.h>
 
 #include <units/time.h>
 #include <frc2/command/SubsystemBase.h>
@@ -46,6 +48,8 @@ class Drivetrain : public frc2::SubsystemBase {
 
   private:
     void AverageVisionPose( frc::Pose2d visionPose, units::second_t timestamp );
+
+    void LogSwerveStateArray( wpi::log::DoubleArrayLogEntry& m_logEntry, wpi::array<frc::SwerveModuleState, 4U> states );
     
     Limelight *m_limelight;
     bool m_noValidPose = true;
@@ -70,6 +74,9 @@ class Drivetrain : public frc2::SubsystemBase {
     frc::Trajectory m_trajectory;
     ctre::phoenix::sensors::PigeonIMU m_gyro{deviceIDs::kPigeonIMUID};
 
+    wpi::array<frc::SwerveModuleState, 4U> m_desiredStates{ wpi::empty_array };
+    wpi::array<frc::SwerveModuleState, 4U> m_actualStates{ wpi::empty_array };
+
     frc::Translation2d m_frontLeftLocation{ +( physical::kDriveBaseLength / 2 ), +( physical::kDriveBaseWidth / 2 ) };
     frc::Translation2d m_frontRightLocation{ +( physical::kDriveBaseLength / 2 ), -( physical::kDriveBaseWidth / 2 ) };
     frc::Translation2d m_backLeftLocation{ -( physical::kDriveBaseLength / 2 ), +( physical::kDriveBaseWidth / 2 ) };
@@ -91,6 +98,10 @@ class Drivetrain : public frc2::SubsystemBase {
           frc::ProfiledPIDController<units::radian> {
             1, 0, 0, frc::TrapezoidProfile<units::radian>::Constraints{
               6.28_rad_per_s, 3.14_rad_per_s / 1_s}}};
+
+  wpi::log::DoubleArrayLogEntry m_actualLogEntry;
+  wpi::log::DoubleArrayLogEntry m_desiredLogEntry;
+  wpi::log::DoubleArrayLogEntry m_poseLogEntry;
 
   public:
     frc::Field2d m_field;

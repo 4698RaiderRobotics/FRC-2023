@@ -6,14 +6,24 @@
 #include "subsystems/Limelight.h"
 
 Drivetrain::Drivetrain( Limelight *ll ) : m_limelight{ll} {
-  ResetGyro( 180_deg );
+    ResetGyro( 180_deg );
 
-  for( int n=0; n<9; ++n ) {
-    redAllianceGridPoints[n] = { 14.3_m, 20_in + 22_in*n, 0_deg };
-    blueAllianceGridPoints[n] = { 2.25_m, 20_in + 22_in*n, 180_deg };
-  }
+    for( int n=0; n<9; ++n ) {
+        redAllianceGridPoints[n] = { 14.3_m, 20_in + 22_in*n, 0_deg };
+        blueAllianceGridPoints[n] = { 2.25_m, 20_in + 22_in*n, 180_deg };
+    }
 
-  frc::SmartDashboard::PutData("Field", &m_field);
+    frc::DataLogManager::Start();
+
+    frc::DriverStation::StartDataLog( frc::DataLogManager::GetLog() );
+
+    wpi::log::DataLog& log = frc::DataLogManager::GetLog();
+
+    m_actualLogEntry = wpi::log::DoubleArrayLogEntry( log, "/Swerve/Actual States" );
+    m_desiredLogEntry = wpi::log::DoubleArrayLogEntry( log, "/Swerve/Desired States" );
+    m_poseLogEntry = wpi::log::DoubleArrayLogEntry( log, "/Robot/Robot2D" );
+
+    frc::SmartDashboard::PutData("Field", &m_field);
 }
 
 // Drives with joystick inputs
@@ -42,19 +52,16 @@ void Drivetrain::ArcadeDrive( double xSpeed, double ySpeed, double omegaSpeed, b
 void Drivetrain::Drive( frc::ChassisSpeeds speeds, bool fieldRelative ) {
     //m_field.SetRobotPose(m_odometry.GetPose());
     // An array of SwerveModuleStates computed from the ChassisSpeeds object
-    auto states = m_kinematics.ToSwerveModuleStates( fieldRelative ? speeds.FromFieldRelativeSpeeds( 
+    m_desiredStates = m_kinematics.ToSwerveModuleStates( fieldRelative ? speeds.FromFieldRelativeSpeeds( 
                     speeds.vx, speeds.vy, speeds.omega, m_odometry.GetEstimatedPosition().Rotation() ) :
                     speeds );
-    m_kinematics.DesaturateWheelSpeeds( &states, physical::kMaxDriveSpeed );
+    m_kinematics.DesaturateWheelSpeeds( &m_desiredStates, physical::kMaxDriveSpeed );
 
-    auto [ fl, fr, bl, br ] = states;
+    
     //fmt::print("Drivetrain::Drive Speed = {}\n", speeds.vx);
 
     // Sets each SwerveModule to the correct SwerveModuleState
-    m_frontLeft.SetDesiredState( fl );
-    m_frontRight.SetDesiredState( fr );
-    m_backLeft.SetDesiredState( bl );
-    m_backRight.SetDesiredState( br );
+    
 
  //   wpi::array opStates = { m_frontLeft.GetState(), m_frontRight.GetState(), m_backLeft.GetState(), m_backRight.GetState() };
     // Displays the SwerveModules current position
@@ -98,6 +105,11 @@ void Drivetrain::StopDrive( ) {
 }
 
 void Drivetrain::Periodic( ) {
+    m_frontLeft.SetDesiredState( m_desiredStates[0] );
+    m_frontRight.SetDesiredState( m_desiredStates[1] );
+    m_backLeft.SetDesiredState( m_desiredStates[2] );
+    m_backRight.SetDesiredState( m_desiredStates[3] );
+
     // Updates the odometry of the robot given the SwerveModules' states
     m_odometry.Update( frc::Rotation2d{ units::degree_t{ m_gyro.GetYaw() } },
     {
@@ -151,6 +163,19 @@ void Drivetrain::Periodic( ) {
 
     m_field.SetRobotPose( estm_pose );
     m_field.GetObject( "Vision Pose" )->SetPose( visionPose );
+
+    m_actualStates[0] = m_frontLeft.GetState();
+    m_actualStates[1] = m_frontRight.GetState();
+    m_actualStates[2] = m_backLeft.GetState();
+    m_actualStates[3] = m_backRight.GetState();
+    LogSwerveStateArray(m_actualLogEntry, m_actualStates);
+    LogSwerveStateArray(m_desiredLogEntry, m_desiredStates);
+
+    frc::Pose2d currentPose = m_odometry.GetEstimatedPosition();
+    m_poseLogEntry.Append({ currentPose.X().value(),
+                            currentPose.Y().value(),
+                            currentPose.Rotation().Degrees().value() });
+
 }
 
 // Resets the gyro to an angle
@@ -261,4 +286,14 @@ void Drivetrain::PoseToNetworkTables() {
     frc::SmartDashboard::PutNumber( "Robot Pose X", m_odometry.GetEstimatedPosition().X().value() );
     frc::SmartDashboard::PutNumber( "Robot Pose Y", m_odometry.GetEstimatedPosition().Y().value() );
     frc::SmartDashboard::PutNumber( "Robot Pose Theta", m_odometry.GetEstimatedPosition().Rotation().Degrees().value() );
+}
+
+void Drivetrain::LogSwerveStateArray(wpi::log::DoubleArrayLogEntry& logEntry, wpi::array<frc::SwerveModuleState, 4U> states) {
+    static double state_array[8];
+
+    for (int i = 0; i < 4; ++i) {
+        state_array[2 * i] = states[i].angle.Degrees().value();
+        state_array[2 * i + 1] = states[i].speed.value();
+    }
+    logEntry.Append(state_array);
 }

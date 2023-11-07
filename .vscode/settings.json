@@ -113,7 +113,7 @@
     "xlocnum": "cpp"
   },
   "editor.fontLigatures": true,
-  "editor.formatOnPaste": true,
+  "editor.formatOnPaste": false,
   "editor.formatOnSaveMode": "modifications",
   "editor.formatOnSave": false,
   "editor.formatOnType": false,
