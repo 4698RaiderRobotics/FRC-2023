@@ -11,8 +11,8 @@
 // For more information, see:
 // https://docs.wpilib.org/en/stable/docs/software/commandbased/convenience-features.html
 PlaceOnlyAuto::PlaceOnlyAuto( Drivetrain *drive, ArmSubsystem *arm, GrabberSubsystem *grabber ) {
-  frc::Pose2d redAllianceTargetPoints[2] = { drive->redAllianceGridPoints[3], drive->redAllianceGridPoints[5] };
-  frc::Pose2d blueAllianceTargetPoints[2] = { drive->blueAllianceGridPoints[3], drive->blueAllianceGridPoints[5] };
+  // frc::Pose2d redAllianceTargetPoints[2] = { drive->redAllianceGridPoints[3], drive->redAllianceGridPoints[5] };
+  // frc::Pose2d blueAllianceTargetPoints[2] = { drive->blueAllianceGridPoints[3], drive->blueAllianceGridPoints[5] };
   fmt::print( "PlaceOnlyAuto::PlaceOnlyAuto\n" );
   // If on blue side, do blue auto
   if ( drive->GetPose().X() < 7.5_m ) {

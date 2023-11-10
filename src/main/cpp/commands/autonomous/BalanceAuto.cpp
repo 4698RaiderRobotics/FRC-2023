@@ -14,8 +14,8 @@
 // For more information, see:
 // https://docs.wpilib.org/en/stable/docs/software/commandbased/convenience-features.html
 BalanceAuto::BalanceAuto(Drivetrain* drive, ArmSubsystem* arm, GrabberSubsystem* grabber) {
-  frc::Pose2d redAllianceTargetPoints[2] = { drive->redAllianceGridPoints[3], drive->redAllianceGridPoints[5] };
-  frc::Pose2d blueAllianceTargetPoints[2] = { drive->blueAllianceGridPoints[3], drive->blueAllianceGridPoints[5] };
+  // frc::Pose2d redAllianceTargetPoints[2] = { drive->redAllianceGridPoints[3], drive->redAllianceGridPoints[5] };
+  // frc::Pose2d blueAllianceTargetPoints[2] = { drive->blueAllianceGridPoints[3], drive->blueAllianceGridPoints[5] };
   fmt::print("BalanceAuto::BalanceAuto\n");
 
   units::meter_t auto_drive_distance = 2.25_m;

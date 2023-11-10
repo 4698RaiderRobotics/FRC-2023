@@ -12,6 +12,9 @@
 #include <frc/geometry/Pose2d.h>
 #include <frc/geometry/Rotation2d.h>
 #include <frc2/command/SubsystemBase.h>
+
+#include <wpi/DataLog.h>
+
 #include "Constants.h"
 
 class Limelight : public frc2::SubsystemBase {
@@ -46,4 +49,5 @@ class Limelight : public frc2::SubsystemBase {
         frc::Pose2d l_Pose;
         units::degree_t rZ;
         frc::Pose2d t_speeds;
+        wpi::log::DoubleArrayLogEntry m_poseLogEntry;
 };

@@ -2,11 +2,14 @@
 #include <iostream>
 
 #include <frc/Timer.h>
+#include <frc/DataLogManager.h>
 
 #include "subsystems/Limelight.h"
 
 Limelight::Limelight()
 {
+    m_poseLogEntry = wpi::log::DoubleArrayLogEntry( frc::DataLogManager::GetLog(), "/ATVision/Robot2D" );
+
 //    frc::SmartDashboard::PutData("Field2", &m_field);
 }
 
@@ -55,6 +58,10 @@ bool Limelight::getFieldAprilTagPose( frc::Pose2d&april_tag_pose, units::second_
 
     // See https://docs.limelightvision.io/en/latest/apriltags_in_3d.html#using-wpilib-s-pose-estimator
     timestamp = frc::Timer::GetFPGATimestamp() - units::second_t{ botpose[6]/1000.0 };
+
+    m_poseLogEntry.Append( { april_tag_pose.X().value(),
+                            april_tag_pose.Y().value(),
+                            april_tag_pose.Rotation().Degrees().value() }, timestamp.value() );
 
     return true;
 }
