@@ -6,6 +6,8 @@
 #include <frc/DriverStation.h>
 #include <frc/Timer.h>
 
+#include "DataLogger.h"
+
 ArmSubsystem::ArmSubsystem() {
     m_rightArm.SetInverted(true);
     m_rightArm.Follow(m_leftArm);
@@ -218,6 +220,13 @@ void ArmSubsystem::ArmData() {
     frc::SmartDashboard::PutNumber("Current Wrist Velocity", m_enc.GetVelocity() * 0.0129 * 6.0);
     frc::SmartDashboard::PutNumber("WristPosition", GetWristAngle().value());
     frc::SmartDashboard::PutNumber("WristRawPosition", m_wristEncoder.GetAbsolutePosition() * physical::kWristAbsoluteOffset.value());
+
+    // DataLogger::GetInstance().Send( "Arm/Left Arm Current", m_leftArm.GetOutputCurrent() );
+    // DataLogger::GetInstance().Send( "Arm/Right Arm Current", m_rightArm.GetOutputCurrent() );
+    // DataLogger::GetInstance().Send( "Arm/Goal Angle", m_armSetpoint.position.value() );
+    // DataLogger::GetInstance().Send( "Arm/Goal Velocity", m_armSetpoint.velocity.value() );
+    // DataLogger::GetInstance().Send( "Arm/Current Angle", armAngle.value() );
+    // DataLogger::GetInstance().Send( "Arm/Current Angle", armAngle.value() );
 }
 
 units::degree_t ArmSubsystem::GetArmAngle() {
