@@ -61,7 +61,7 @@ bool Limelight::getFieldAprilTagPose( frc::Pose2d&april_tag_pose, units::second_
 
     m_poseLogEntry.Append( { april_tag_pose.X().value(),
                             april_tag_pose.Y().value(),
-                            april_tag_pose.Rotation().Degrees().value() }, timestamp.value() );
+                            april_tag_pose.Rotation().Degrees().value() } );
 
     return true;
 }

@@ -219,7 +219,7 @@ void ArmSubsystem::ArmData() {
     frc::SmartDashboard::PutNumber("Current Wrist Angle", wristAngle.value());
     frc::SmartDashboard::PutNumber("Current Wrist Velocity", m_enc.GetVelocity() * 0.0129 * 6.0);
     frc::SmartDashboard::PutNumber("WristPosition", GetWristAngle().value());
-    frc::SmartDashboard::PutNumber("WristRawPosition", m_wristEncoder.GetAbsolutePosition() * physical::kWristAbsoluteOffset.value());
+    frc::SmartDashboard::PutNumber("WristRawPosition", m_wristEncoder.GetAbsolutePosition() * physical::kWristEncoderGearRatio);
 
     // DataLogger::GetInstance().Send( "Arm/Left Arm Current", m_leftArm.GetOutputCurrent() );
     // DataLogger::GetInstance().Send( "Arm/Right Arm Current", m_rightArm.GetOutputCurrent() );

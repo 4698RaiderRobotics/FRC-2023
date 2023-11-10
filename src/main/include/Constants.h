@@ -92,7 +92,7 @@ namespace physical {
     // Absolute encoder offset for the arm encoder
     constexpr double kArmAbsoluteOffset = 0.495;
 
-    constexpr units::degree_t kWristAbsoluteOffset = -60.5_deg;
+    constexpr units::degree_t kWristAbsoluteOffset = -53.7_deg;
 
     // IsFinished condition for arm
     constexpr units::degree_t kArmAngleError = 3_deg;
