@@ -47,9 +47,10 @@ RobotContainer::RobotContainer() {
   // Configure the button bindings
   ConfigureButtonBindings();
 
-  m_chooser.SetDefaultOption(kBalance, kBalance);
-  m_chooser.AddOption(kLeave, kLeave);
-  m_chooser.AddOption(kPlaceOnly, kPlaceOnly);
+  m_chooser.SetDefaultOption( kBalance, kBalance );
+  m_chooser.AddOption( kLeave, kLeave );
+  m_chooser.AddOption( kPlaceOnly, kPlaceOnly );
+  m_chooser.AddOption( kDoNothing, kDoNothing );
   frc::SmartDashboard::PutData("Auto Modes", &m_chooser);
 }
 
@@ -89,7 +90,7 @@ void RobotContainer::ConfigureButtonBindings() {
 
   m_operatorController.Y().OnTrue(ArmSet(&m_arm, physical::kArmUpperPlaceHeight, physical::kWristUpperPlaceHeight, 0.3, true).ToPtr());
 
-  m_operatorController.A().OnTrue(ArmSet(&m_arm, -90_deg, 14_deg, 0.3, true).ToPtr());
+  m_operatorController.A().OnTrue(ArmSet(&m_arm, -90_deg, 12_deg, 0.3, true).ToPtr());
 
   m_operatorController.B().OnTrue(PlaceMid( &m_arm, &m_grabber ).ToPtr() );
 
@@ -114,6 +115,9 @@ frc2::Command* RobotContainer::GetAutonomousCommand() {
   }
   else if (m_autoSelected == kPlaceOnly) {
     m_autoCommand = new PlaceOnlyAuto(&m_drive, &m_arm, &m_grabber);
+  }
+  else if ( m_autoSelected == kDoNothing ) {
+    m_autoCommand = new DoNothingAuto( &m_drive, &m_arm, &m_grabber );
   }
 
   return m_autoCommand;

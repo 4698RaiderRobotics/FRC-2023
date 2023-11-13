@@ -75,7 +75,7 @@ namespace physical {
     constexpr double kTurnGearRatio = 12.8;
 
     // Gear ratio between the absolute encoder for the wrist and the wrist
-    constexpr double kWristEncoderGearRatio = 24.0 / 34.0;
+    constexpr double kWristEncoderGearRatio = 26.0 / 34.0;
 
     // The width of the drive base from the center of one module to another adjacent one.
     constexpr units::meter_t kDriveBaseWidth = 23.25_in;
@@ -92,7 +92,7 @@ namespace physical {
     // Absolute encoder offset for the arm encoder
     constexpr double kArmAbsoluteOffset = 0.495;
 
-    constexpr units::degree_t kWristAbsoluteOffset = -53.7_deg;
+    constexpr units::degree_t kWristAbsoluteOffset = -70.0_deg;
 
     // IsFinished condition for arm
     constexpr units::degree_t kArmAngleError = 3_deg;
@@ -100,7 +100,7 @@ namespace physical {
     constexpr units::inch_t kLimelightXAxisOffset = 325.61_in;
     constexpr units::inch_t kLimelightYAxisOffset = 157.8_in;
 
-    constexpr units::inch_t kPlaceDistance = 11_in;
+    constexpr units::inch_t kPlaceDistance = 9_in;
 
     constexpr units::degree_t kArmLowerPlaceHeight = -60_deg;
     constexpr units::degree_t kWristLowerPlaceHeight = 20_deg;
@@ -111,7 +111,7 @@ namespace physical {
     constexpr units::degree_t kArmCubeMidPlaceHeight = -30_deg;
     constexpr units::degree_t kWristCubeMidPlaceHeight = 0_deg;
     
-    constexpr units::degree_t kArmSubstationMidPlaceHeight = 63_deg;
+    constexpr units::degree_t kArmSubstationMidPlaceHeight = 53_deg;
     constexpr units::degree_t kWristSubstationMidPlaceHeight = -175_deg;
     constexpr double kMidDelayProportion = 0.3; 
 

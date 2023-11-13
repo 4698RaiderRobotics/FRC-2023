@@ -30,6 +30,6 @@ PlaceAtPose::PlaceAtPose( Drivetrain *drive, ArmSubsystem *arm, GrabberSubsystem
     frc2::InstantCommand( [this, grabber] { grabber->Spin( -0.35 ) ;}, { grabber } ),
     frc2::WaitCommand( 0.25_s ),
     frc2::InstantCommand( [this, grabber] { grabber->Spin( 0.0 ) ;}, { grabber } ),
-    ArmSet(arm, -118_deg, 61_deg, 0.3)
+    ArmSet(arm, -118_deg, 50_deg, 0.3)
   );
 }

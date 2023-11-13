@@ -20,6 +20,7 @@
 #include "commands/autonomous/PlaceOnlyAuto.h"
 #include "commands/autonomous/BalanceAuto.h"
 #include "commands/autonomous/LeaveAuto.h"
+#include "commands/autonomous/DoNothingAuto.h"
 
 #include "ControllerAxis.h"
 
@@ -56,6 +57,7 @@ class RobotContainer {
   const std::string kBalance = "Place Cube and Balance";
   const std::string kLeave = "Place Cube and Leave";
   const std::string kPlaceOnly = "Just Place Cube";
+  const std::string kDoNothing = "Do Nothing";
   std::string m_autoSelected;
   
   frc::PS4Controller m_driverController{ 0 };

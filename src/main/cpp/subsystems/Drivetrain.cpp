@@ -98,6 +98,7 @@ void Drivetrain::DriveTrajectory( frc::Trajectory::State trajectoryState, const 
 }
 
 void Drivetrain::StopDrive( ) {
+    ArcadeDrive( 0, 0, 0 );
     m_frontLeft.StopMotors( );
     m_backLeft.StopMotors( );
     m_frontRight.StopMotors( );

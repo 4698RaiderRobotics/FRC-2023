@@ -37,8 +37,14 @@ class AbsoluteEncoder{
             return m_absoluteEncoder.GetAbsolutePosition();
         }
 
-        void SetPositionNegative(void) {
-            position_offset = 360.0_deg;
+        void SetPositionOffset(void) {
+            while (GetCountingPosition() > 180_deg) {
+                position_offset += 360_deg;
+            }
+            while ( GetCountingPosition() < -180_deg ) {
+                position_offset -= 360_deg;
+            }
+            
         }
 
         bool IsConnected( void ) {
