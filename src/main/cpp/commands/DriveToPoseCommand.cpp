@@ -104,7 +104,7 @@ bool DriveToPoseCommand::IsFinished() {
     //              m_drive->GetPose().X(), m_drive->GetPose().Y(), m_drive->GetPose().Rotation().Degrees(), 
     //              distance_error, angle_error );
 
-  bool atTargetLocation = distance_error < 1.0_cm && angle_error < 0.15_deg;
+  bool atTargetLocation = distance_error < 3.0_cm && angle_error < 1_deg;
   if( atTargetLocation ) { 
     fmt::print( "DriveToPoseCommand::IsFinished target( {}, {}, {} ), robot( {}, {}, {} ) = L{}, A{}\n", 
                  m_targetpose.X(), m_targetpose.Y(), m_targetpose.Rotation().Degrees(), 

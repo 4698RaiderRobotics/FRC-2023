@@ -6,6 +6,8 @@
 #include <frc/DriverStation.h>
 #include <frc/Timer.h>
 
+#include "DataLogger.h"
+
 ArmSubsystem::ArmSubsystem() {
     m_rightArm.SetInverted(true);
     m_rightArm.Follow(m_leftArm);
@@ -19,7 +21,7 @@ ArmSubsystem::ArmSubsystem() {
     m_wrist.EnableVoltageCompensation(12);
 
     m_wristEncoder.ConfigSensorDirection( true );
-    m_wristEncoder.SetPosition( m_wristEncoder.GetAbsolutePosition() * physical::kWristEncoderGearRatio - physical::kWristAbsoluteOffset.value() );
+    m_wristEncoder.SetPosition( m_wristEncoder.GetAbsolutePosition() - physical::kWristAbsoluteOffset.value() );
 
     armAngle = GetArmAngle();
     wristAngle = GetWristAngle();
@@ -48,18 +50,14 @@ void ArmSubsystem::Periodic() {
         return;
     }
 
+    m_armEncoder.SetPositionOffset();
     armAngle = GetArmAngle();
     wristAngle = GetWristAngle();
-    if (armAngle > 180_deg) {
-        m_armEncoder.SetPositionNegative();
-    }
+    
     // if (wristAngle > 180_deg) {
     //     m_wristEncoder.SetPositionNegative();
     // }
 
-
-    armAngle = GetArmAngle();
-    wristAngle = GetWristAngle();
 
     // Holds arm in position after enabled
     if ( disabled && frc::DriverStation::IsEnabled() ) {
@@ -217,7 +215,14 @@ void ArmSubsystem::ArmData() {
     frc::SmartDashboard::PutNumber("Current Wrist Angle", wristAngle.value());
     frc::SmartDashboard::PutNumber("Current Wrist Velocity", m_enc.GetVelocity() * 0.0129 * 6.0);
     frc::SmartDashboard::PutNumber("WristPosition", GetWristAngle().value());
-    frc::SmartDashboard::PutNumber("WristRawPosition", m_wristEncoder.GetAbsolutePosition() * physical::kWristAbsoluteOffset.value());
+    frc::SmartDashboard::PutNumber("WristRawPosition", m_wristEncoder.GetAbsolutePosition());
+
+    // DataLogger::GetInstance().Send( "Arm/Left Arm Current", m_leftArm.GetOutputCurrent() );
+    // DataLogger::GetInstance().Send( "Arm/Right Arm Current", m_rightArm.GetOutputCurrent() );
+    // DataLogger::GetInstance().Send( "Arm/Goal Angle", m_armSetpoint.position.value() );
+    // DataLogger::GetInstance().Send( "Arm/Goal Velocity", m_armSetpoint.velocity.value() );
+    // DataLogger::GetInstance().Send( "Arm/Current Angle", armAngle.value() );
+    // DataLogger::GetInstance().Send( "Arm/Current Angle", armAngle.value() );
 }
 
 units::degree_t ArmSubsystem::GetArmAngle() {
