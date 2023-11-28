@@ -11,7 +11,7 @@
 // NOTE:  Consider using this command inline, rather than writing a subclass.
 // For more information, see:
 // https://docs.wpilib.org/en/stable/docs/software/commandbased/convenience-features.html
-LeaveAuto::LeaveAuto( Drivetrain *drive, ArmSubsystem *arm, GrabberSubsystem *grabber ) {
+LeaveAuto::LeaveAuto( Drivetrain *drive, ArmSubsystem *arm, GrabberSubsystem *grabber, LEDs *leds ) {
   // frc::Pose2d redAllianceTargetPoints[2] = { drive->redAllianceGridPoints[0], drive->redAllianceGridPoints[8] };
   // frc::Pose2d blueAllianceTargetPoints[2] = { drive->blueAllianceGridPoints[0], drive->blueAllianceGridPoints[8] };
   frc::Pose2d redAllianceTargetPoints[2] = { drive->redAllianceGridPoints[1], drive->redAllianceGridPoints[7] };
@@ -29,7 +29,7 @@ LeaveAuto::LeaveAuto( Drivetrain *drive, ArmSubsystem *arm, GrabberSubsystem *gr
     // 🟦 Blue Alliance
     m_targetpose = drive->GetPose().Nearest( std::span<frc::Pose2d> ( blueAllianceTargetPoints, 2 ) );
     AddCommands(
-      PlaceAtPose( drive, arm, grabber, m_targetpose, true ),
+      PlaceAtPose( drive, arm, grabber, leds, m_targetpose, true ),
       DriveToPoseCommand( drive, { m_targetpose.X() + 6_in, m_targetpose.Y() + driveOverDistance, 180_deg } ),
       DriveToPoseCommand( drive, { m_targetpose.X() + drive_out_distance,
                           m_targetpose.Y() + driveOverDistance, 180_deg } )
@@ -39,7 +39,7 @@ LeaveAuto::LeaveAuto( Drivetrain *drive, ArmSubsystem *arm, GrabberSubsystem *gr
     // 🟥 Red Alliance
     m_targetpose = drive->GetPose().Nearest( std::span<frc::Pose2d> ( redAllianceTargetPoints, 2 ) );
     AddCommands(
-      PlaceAtPose( drive, arm, grabber, m_targetpose, false ),
+      PlaceAtPose( drive, arm, grabber, leds, m_targetpose, false ),
       DriveToPoseCommand(drive, { m_targetpose.X() - 6_in, m_targetpose.Y() + driveOverDistance, 0_deg }),
       DriveToPoseCommand( drive, { m_targetpose.X() - drive_out_distance,
                           m_targetpose.Y() + driveOverDistance, 0_deg } )

@@ -16,7 +16,7 @@ class LeaveAuto
     : public frc2::CommandHelper<frc2::SequentialCommandGroup,
                                  LeaveAuto> {
  public:
-  LeaveAuto( Drivetrain *drive, ArmSubsystem *arm, GrabberSubsystem *grabber );
+  LeaveAuto( Drivetrain *drive, ArmSubsystem *arm, GrabberSubsystem *grabber, LEDs *leds );
 
  private:
   frc::Pose2d m_targetpose;

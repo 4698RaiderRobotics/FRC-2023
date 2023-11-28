@@ -76,6 +76,7 @@ class ArmSubsystem : public frc2::SubsystemBase {
                                         units::unit_t<frc::ArmFeedforward::kv_unit> { pidf::kWristV }, 
                                         units::unit_t<frc::ArmFeedforward::ka_unit> { pidf::kWristA } };
 
+//  frc::TrapezoidProfile<units::degrees>::Constraints m_wristConstraints{ 360_deg_per_s, 720_deg_per_s_sq };
   frc::TrapezoidProfile<units::degrees>::Constraints m_wristConstraints{ 360_deg_per_s, 720_deg_per_s_sq };
   frc::TrapezoidProfile<units::degrees>::State m_wristGoal;
   frc::TrapezoidProfile<units::degrees>::State m_wristSetpoint;
@@ -86,25 +87,26 @@ class ArmSubsystem : public frc2::SubsystemBase {
                                       units::unit_t<frc::ArmFeedforward::kv_unit> { pidf::kArmV }, 
                                       units::unit_t<frc::ArmFeedforward::ka_unit> { pidf::kArmA } };
 
+//  frc::TrapezoidProfile<units::degrees>::Constraints m_armConstraints{ 360_deg_per_s, 540_deg_per_s_sq };
   frc::TrapezoidProfile<units::degrees>::Constraints m_armConstraints{ 360_deg_per_s, 540_deg_per_s_sq };
   frc::TrapezoidProfile<units::degrees>::State m_armGoal;
   frc::TrapezoidProfile<units::degrees>::State m_armSetpoint;
 
-  frc::Mechanism2d m_mech{100, 100};
+  frc::Mechanism2d m_mech{100/39.0, 100/39.0};
 
-  frc::MechanismRoot2d* m_root = m_mech.GetRoot("shoulder", 50, 50);
+  frc::MechanismRoot2d* m_root = m_mech.GetRoot("shoulder", 50/39.0, 50/39.0);
 
-  frc::MechanismLigament2d* m_armLigament = m_root->Append<frc::MechanismLigament2d>("arm", 25.5, 90_deg);
+  frc::MechanismLigament2d* m_armLigament = m_root->Append<frc::MechanismLigament2d>("arm", 25.5/39.0, 90_deg);
 
-  frc::MechanismLigament2d* m_wristLigament = m_armLigament->Append<frc::MechanismLigament2d>("wrist", 11.25, 90_deg);
-  frc::MechanismLigament2d* m_wristLigament2 = m_wristLigament->Append<frc::MechanismLigament2d>("wrist2", 12.5, 30_deg);
+  frc::MechanismLigament2d* m_wristLigament = m_armLigament->Append<frc::MechanismLigament2d>("wrist", 11.25/39.0, 90_deg);
+  frc::MechanismLigament2d* m_wristLigament2 = m_wristLigament->Append<frc::MechanismLigament2d>("wrist2", 12.5/39.0, 30_deg);
 
-  frc::MechanismLigament2d* m_armSetpointLigament = m_root->Append<frc::MechanismLigament2d>("armSetpoint", 25.5, 90_deg, 6, 
+  frc::MechanismLigament2d* m_armSetpointLigament = m_root->Append<frc::MechanismLigament2d>("armSetpoint", 25.5/39.0, 90_deg, 6, 
                                                                                               frc::Color8Bit{frc::Color::kBlue});
 
-  frc::MechanismLigament2d* m_wristSetpointLigament = m_armSetpointLigament->Append<frc::MechanismLigament2d>("wristSetpoint", 11.25, 90_deg, 6, 
+  frc::MechanismLigament2d* m_wristSetpointLigament = m_armSetpointLigament->Append<frc::MechanismLigament2d>("wristSetpoint", 11.25/39.0, 90_deg, 6, 
                                                                                                               frc::Color8Bit{ frc::Color::kBlue });
-  frc::MechanismLigament2d* m_wristSetpointLigament2 = m_wristSetpointLigament->Append<frc::MechanismLigament2d>("wristSetpoint2", 12.5, 30_deg, 6,
+  frc::MechanismLigament2d* m_wristSetpointLigament2 = m_wristSetpointLigament->Append<frc::MechanismLigament2d>("wristSetpoint2", 12.5/39.0, 30_deg, 6,
                                                                                                                   frc::Color8Bit{ frc::Color::kBlue });
 
   units::second_t dt = 20_ms;

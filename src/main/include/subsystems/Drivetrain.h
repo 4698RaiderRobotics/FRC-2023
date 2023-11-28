@@ -94,9 +94,9 @@ class Drivetrain : public frc2::SubsystemBase {
     };
     // Drive controller for driving a trajectory
     frc::HolonomicDriveController m_controller{ 
-          frc2::PIDController{ 1, 0, 0 }, frc2::PIDController{ 1, 0, 0 },
+          frc2::PIDController{ 6, 0, 0 }, frc2::PIDController{ 6, 0, 0 },
           frc::ProfiledPIDController<units::radian> {
-            1, 0, 0, frc::TrapezoidProfile<units::radian>::Constraints{
+            10, 0, 0, frc::TrapezoidProfile<units::radian>::Constraints{
               6.28_rad_per_s, 3.14_rad_per_s / 1_s}}};
 
   wpi::log::DoubleArrayLogEntry m_actualLogEntry;
@@ -107,4 +107,6 @@ class Drivetrain : public frc2::SubsystemBase {
     frc::Field2d m_field;
     frc::Pose2d redAllianceGridPoints[9];
     frc::Pose2d blueAllianceGridPoints[9];
+    frc::Trajectory twoPiecePrac;
+    frc::Trajectory twoPiecePrac2;
 };

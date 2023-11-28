@@ -38,14 +38,7 @@ void ArmSet::Initialize() {
       m_arm->GotoAngle(m_startingArmAngle, m_wristAngle);
       m_isWaiting = true;
     }
-    /*
-    else {
-      fmt::print("Normal Goto Angle\n");
-      m_arm->GotoAngle(m_armAngle, m_wristAngle);
-    }
-    */
-  }
-  else {
+  } else {
     // fmt::print("Normal Goto Angle\n");
     m_arm->GotoAngle(m_armAngle, m_wristAngle);
   }
@@ -56,9 +49,11 @@ void ArmSet::Execute() {
 
   if (m_delayArmAngle > 0_deg && m_arm->GetArmAngle() < m_startingArmAngle + m_delayArmAngle) {
     /* do Nothing.... wait for arm */
+    //  fmt::print("Wrist Delay, arm_ang({}), delay_ang({})\n", m_arm->GetArmAngle(), m_startingArmAngle + m_delayArmAngle);
   }
   else if (m_delayArmAngle < 0_deg && m_arm->GetWristAngle() < m_startingWristAngle + m_delayWristAngle) {
     /* do nothing ... wait for wrist */
+    //  fmt::print("Arm Delay, wrist_ang({}), delay_ang({})\n", m_arm->GetWristAngle(), m_startingWristAngle + m_delayWristAngle);
   }
   else if (m_isWaiting) {
     /* Switch to moving both angles */
@@ -86,6 +81,8 @@ void ArmSet::Execute() {
 }
 
 bool ArmSet::IsFinished() {
+  if( m_isWaiting ) return false;
+
   if (!m_finish) {
     return units::math::abs( m_armAngle - m_arm->GetArmAngle() ) < 6_deg && units::math::abs( m_wristAngle - m_arm->GetWristAngle() ) < 6_deg;
   } else {

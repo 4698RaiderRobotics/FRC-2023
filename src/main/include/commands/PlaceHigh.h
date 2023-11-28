@@ -4,19 +4,17 @@
 
 #pragma once
 
-
 #include <frc2/command/CommandHelper.h>
 #include <frc2/command/SequentialCommandGroup.h>
 
 #include "subsystems/Drivetrain.h"
 #include "subsystems/ArmSubsystem.h"
 #include "subsystems/GrabberSubsystem.h"
+#include "subsystems/LEDs.h"
 
-class PlaceOnlyAuto
-    : public frc2::CommandHelper<frc2::SequentialCommandGroup,PlaceOnlyAuto> {
+class PlaceHigh
+    : public frc2::CommandHelper<frc2::SequentialCommandGroup,
+                                 PlaceHigh> {
  public:
-  PlaceOnlyAuto( Drivetrain *drive, ArmSubsystem *arm, GrabberSubsystem *grabber, LEDs *leds );
-
- private:
-  frc::Pose2d m_targetpose;
+  PlaceHigh(Drivetrain *drive, ArmSubsystem *arm, GrabberSubsystem *grabber, LEDs *leds);
 };

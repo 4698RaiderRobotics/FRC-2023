@@ -16,7 +16,7 @@ class BalanceAuto
     : public frc2::CommandHelper<frc2::SequentialCommandGroup,
                                  BalanceAuto> {
  public:
-  BalanceAuto( Drivetrain *drive, ArmSubsystem *arm, GrabberSubsystem *grabber );
+  BalanceAuto( Drivetrain *drive, ArmSubsystem *arm, GrabberSubsystem *grabber, LEDs *leds );
 
 
  private:

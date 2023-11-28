@@ -51,6 +51,7 @@ RobotContainer::RobotContainer() {
   m_chooser.AddOption( kLeave, kLeave );
   m_chooser.AddOption( kPlaceOnly, kPlaceOnly );
   m_chooser.AddOption( kDoNothing, kDoNothing );
+  m_chooser.AddOption( kTrajPractice, kTrajPractice );
   frc::SmartDashboard::PutData("Auto Modes", &m_chooser);
 }
 
@@ -108,16 +109,18 @@ frc2::Command* RobotContainer::GetAutonomousCommand() {
   m_autoSelected = m_chooser.GetSelected();
 
   if (m_autoSelected == kBalance) {
-    m_autoCommand = new BalanceAuto(&m_drive, &m_arm, &m_grabber);
+    m_autoCommand = new BalanceAuto(&m_drive, &m_arm, &m_grabber, &m_leds);
   }
   else if (m_autoSelected == kLeave) {
-    m_autoCommand = new LeaveAuto(&m_drive, &m_arm, &m_grabber);
+    m_autoCommand = new LeaveAuto(&m_drive, &m_arm, &m_grabber, &m_leds);
   }
   else if (m_autoSelected == kPlaceOnly) {
-    m_autoCommand = new PlaceOnlyAuto(&m_drive, &m_arm, &m_grabber);
+    m_autoCommand = new PlaceOnlyAuto(&m_drive, &m_arm, &m_grabber, &m_leds);
   }
   else if ( m_autoSelected == kDoNothing ) {
-    m_autoCommand = new DoNothingAuto( &m_drive, &m_arm, &m_grabber );
+    m_autoCommand = new DoNothingAuto( &m_drive, &m_arm, &m_grabber, &m_leds );
+  } else if (m_autoSelected == kTrajPractice) {
+    m_autoCommand = new TrajPracticeAuto(&m_drive, &m_arm, &m_grabber, &m_leds);
   }
 
   return m_autoCommand;
@@ -149,13 +152,13 @@ void RobotContainer::TestDataSetup() {
   m_arm.ArmDataSetup();
 
   m_drive.DrivetrainSetup();
-  frc::SmartDashboard::PutData(&Compressor);
+  // frc::SmartDashboard::PutData(&Compressor);
 }
 
 void RobotContainer::TestDataUpdate() {
-  m_arm.ArmDataUpdate();
+  // m_arm.ArmDataUpdate();
   // fmt::print( "TestUpdate" );
   // m_grabber.GrabberTest();
-  m_drive.DrivetrainTest();
-  m_limelight.LimelightTest();
+  // m_drive.DrivetrainTest();
+  // m_limelight.LimelightTest();
 }

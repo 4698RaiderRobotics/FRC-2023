@@ -13,7 +13,7 @@
 // NOTE:  Consider using this command inline, rather than writing a subclass.
 // For more information, see:
 // https://docs.wpilib.org/en/stable/docs/software/commandbased/convenience-features.html
-BalanceAuto::BalanceAuto(Drivetrain* drive, ArmSubsystem* arm, GrabberSubsystem* grabber) {
+BalanceAuto::BalanceAuto(Drivetrain* drive, ArmSubsystem* arm, GrabberSubsystem* grabber, LEDs *leds) {
   // frc::Pose2d redAllianceTargetPoints[2] = { drive->redAllianceGridPoints[3], drive->redAllianceGridPoints[5] };
   // frc::Pose2d blueAllianceTargetPoints[2] = { drive->blueAllianceGridPoints[3], drive->blueAllianceGridPoints[5] };
   fmt::print("BalanceAuto::BalanceAuto\n");
@@ -24,7 +24,7 @@ BalanceAuto::BalanceAuto(Drivetrain* drive, ArmSubsystem* arm, GrabberSubsystem*
     //m_targetpose = drive->GetPose().Nearest(std::span<frc::Pose2d>(blueAllianceTargetPoints, 2));
     m_targetpose = drive->blueAllianceGridPoints[4];
     AddCommands(
-      PlaceAtPose(drive, arm, grabber, m_targetpose, true),
+      PlaceAtPose(drive, arm, grabber, leds, m_targetpose, true),
       //      DriveToPoseCommand( drive, { m_targetpose.X() + auto_drive_distance, m_targetpose.Y(), 180_deg } ),
       TestProfileMove(drive, -auto_drive_distance, TestProfileMove::FORWARD),
       GyroBalance(drive)
@@ -35,7 +35,7 @@ BalanceAuto::BalanceAuto(Drivetrain* drive, ArmSubsystem* arm, GrabberSubsystem*
     //m_targetpose = drive->GetPose().Nearest(std::span<frc::Pose2d>(redAllianceTargetPoints, 2));
     m_targetpose = drive->redAllianceGridPoints[4];
     AddCommands(
-      PlaceAtPose(drive, arm, grabber, m_targetpose, false),
+      PlaceAtPose(drive, arm, grabber, leds, m_targetpose, false),
       //      DriveToPoseCommand( drive, { m_targetpose.X() - auto_drive_distance, m_targetpose.Y(), 0_deg } ),
       TestProfileMove(drive, -auto_drive_distance, TestProfileMove::FORWARD),
       GyroBalance(drive)

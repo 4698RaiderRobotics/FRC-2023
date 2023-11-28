@@ -44,6 +44,7 @@ void ArmSubsystem::Periodic() {
         return;
     }
 
+
     m_wristEncoder.GetFaults( wrist_faults );
     if ( wrist_faults.HasAnyFault() ) {
         FRC_ReportError(-111 /*generic error*/, "Wrist Absolute Encoder has a fault.");
@@ -53,29 +54,26 @@ void ArmSubsystem::Periodic() {
     m_armEncoder.SetPositionOffset();
     armAngle = GetArmAngle();
     wristAngle = GetWristAngle();
-    
-    // if (wristAngle > 180_deg) {
-    //     m_wristEncoder.SetPositionNegative();
-    // }
-
-
-    // Holds arm in position after enabled
-    if ( disabled && frc::DriverStation::IsEnabled() ) {
-        m_wristSetpoint.position = wristAngle;
-        m_armSetpoint.position = armAngle;
-        m_armAngleGoal = armAngle;
-        m_wristAngleGoal = wristAngle;
-        disabled = false;
-    } else if ( !disabled && frc::DriverStation::IsDisabled() ) {
-        disabled = true;
-    }
 
     // Update Shuffleboard with values
      ArmData();
 
-    // Checks for unplugged absolute encoder on the arm
+        // Checks for bad angle data on arm absolute encoder
     if (armAngle > 120_deg || armAngle < -140_deg ) {
         FRC_ReportError	( -111 /*generic error*/, "Arm Absolute Encoder out of bounds." );
+        return;
+    }
+
+    // Have the setpoint track the disabled position
+    if ( frc::DriverStation::IsDisabled() ) {
+        m_armSetpoint.position = armAngle;
+        m_armSetpoint.velocity = 0_deg_per_s;
+        m_armAngleGoal = armAngle;
+
+        m_wristSetpoint.position = wristAngle;
+        m_wristSetpoint.velocity = 0_deg_per_s;
+        m_wristAngleGoal = wristAngle;
+
         return;
     }
 
@@ -91,8 +89,8 @@ void ArmSubsystem::Periodic() {
     double wristOutput = wristPID.Calculate(wristAngle.value(), m_wristSetpoint.position.value());
     double wristFeedforwardOut = wristFeedforward.Calculate(alpha, m_wristSetpoint.velocity).value();
 
-    // frc::SmartDashboard::PutNumber("Wrist PID Output", wristOutput);
-    // frc::SmartDashboard::PutNumber("Wrist Feedforward Output", wristFeedforwardOut);
+    frc::SmartDashboard::PutNumber("Wrist PID Output", wristOutput);
+    frc::SmartDashboard::PutNumber("Wrist Feedforward Output", wristFeedforwardOut);
 
     m_wrist.Set(wristOutput + wristFeedforwardOut / 12);
 
@@ -105,8 +103,8 @@ void ArmSubsystem::Periodic() {
     double armFeedforwardOut = armFeedforward.Calculate(m_armSetpoint.position, 
                                                         m_armSetpoint.velocity).value() + pidf::kArmGWrist * units::math::cos(alpha).value();
 
-    // frc::SmartDashboard::PutNumber("Arm PID Output", armOutput);
-    // frc::SmartDashboard::PutNumber("Arm Feedforward Output", armFeedforwardOut);
+    frc::SmartDashboard::PutNumber("Arm PID Output", armOutput);
+    frc::SmartDashboard::PutNumber("Arm Feedforward Output", armFeedforwardOut);
 
     m_leftArm.Set(ctre::phoenix::motorcontrol::ControlMode::PercentOutput, armOutput + armFeedforwardOut / 12.0);
 

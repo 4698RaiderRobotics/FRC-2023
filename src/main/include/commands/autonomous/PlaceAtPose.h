@@ -10,12 +10,13 @@
 #include "subsystems/Drivetrain.h"
 #include "subsystems/ArmSubsystem.h"
 #include "subsystems/GrabberSubsystem.h"
+#include "subsystems/LEDs.h"
 
 class PlaceAtPose
     : public frc2::CommandHelper<frc2::SequentialCommandGroup,
                                  PlaceAtPose> {
  public:
-  PlaceAtPose( Drivetrain *drive, ArmSubsystem *arm, GrabberSubsystem *grabber, frc::Pose2d m_targetPose, bool blueSide );
+  PlaceAtPose( Drivetrain *drive, ArmSubsystem *arm, GrabberSubsystem *grabber, LEDs *leds, frc::Pose2d m_targetPose, bool blueSide );
 
  private:
   double alliance;

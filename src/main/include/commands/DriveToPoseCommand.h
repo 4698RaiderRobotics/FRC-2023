@@ -34,6 +34,8 @@ class DriveToPoseCommand
   bool IsFinished() override;
 
 private:
+  units::second_t m_elapsed = 0_s;
+
   Drivetrain *m_drive;
   frc::Pose2d m_targetpose;
 

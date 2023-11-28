@@ -2,11 +2,23 @@
 #include <frc/DriverStation.h>
 #include <frc/Timer.h>
 
+#include <frc/Filesystem.h>
+#include <frc/trajectory/TrajectoryUtil.h>
+#include <wpi/fs.h>
+
 #include "subsystems/Drivetrain.h"
 #include "subsystems/Limelight.h"
 
 Drivetrain::Drivetrain( Limelight *ll ) : m_limelight{ll} {
     ResetGyro( 180_deg );
+
+    fs::path deployDirectory = frc::filesystem::GetDeployDirectory();
+    deployDirectory = deployDirectory / "pathplanner" / "generatedJSON" / "TwoPiecePrac.wpilib.json";
+    twoPiecePrac = frc::TrajectoryUtil::FromPathweaverJson(deployDirectory.string());
+
+    deployDirectory = frc::filesystem::GetDeployDirectory();
+    deployDirectory = deployDirectory / "pathplanner" / "generatedJSON" / "TwoPiecePrac2.wpilib.json";
+    twoPiecePrac2 = frc::TrajectoryUtil::FromPathweaverJson(deployDirectory.string());
 
     for( int n=0; n<9; ++n ) {
         redAllianceGridPoints[n] = { 14.3_m, 20_in + 22_in*n, 0_deg };
@@ -161,6 +173,10 @@ void Drivetrain::Periodic( ) {
 
 //    frc::SmartDashboard::PutNumber( "Pitch", m_gyro.GetPitch() );
 //    frc::SmartDashboard::PutNumber( "Roll", m_gyro.GetRoll() );
+
+    frc::SmartDashboard::PutNumber("Current X", GetPose().X().value());
+    frc::SmartDashboard::PutNumber("Current Y", GetPose().Y().value());
+    frc::SmartDashboard::PutNumber("Current Angle", GetPose().Rotation().Degrees().value());
 
     m_field.SetRobotPose( estm_pose );
     m_field.GetObject( "Vision Pose" )->SetPose( visionPose );

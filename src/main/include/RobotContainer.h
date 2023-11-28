@@ -9,7 +9,6 @@
 #include <frc2/command/button/CommandXboxController.h>
 
 #include <frc/PowerDistribution.h>
-#include <frc/Compressor.h>
 
 #include "subsystems/Drivetrain.h"
 #include "subsystems/Limelight.h"
@@ -21,6 +20,7 @@
 #include "commands/autonomous/BalanceAuto.h"
 #include "commands/autonomous/LeaveAuto.h"
 #include "commands/autonomous/DoNothingAuto.h"
+#include "commands/autonomous/TrajPracticeAuto.h"
 
 #include "ControllerAxis.h"
 
@@ -42,7 +42,6 @@ class RobotContainer {
   void TestDataSetup();
   void TestDataUpdate();
  private:
-  frc::Compressor Compressor{9, frc::PneumaticsModuleType::CTREPCM}; 
 
   // The robot's subsystems and commands are defined here...
   Limelight m_limelight;
@@ -58,6 +57,7 @@ class RobotContainer {
   const std::string kLeave = "Place Cube and Leave";
   const std::string kPlaceOnly = "Just Place Cube";
   const std::string kDoNothing = "Do Nothing";
+  const std::string kTrajPractice = "Trajectory Practice";
   std::string m_autoSelected;
   
   frc::PS4Controller m_driverController{ 0 };
